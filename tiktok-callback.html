@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Authorization - Mona Moon Content</title>
+</head>
+<body>
+  <h1>TikTok Authorization</h1>
+  <p id="status">Processing authorization...</p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const state = params.get("state");
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
+
+    const status = document.getElementById("status");
+
+    if (code) {
+      status.innerHTML =
+        "<strong>Authorization successful.</strong><br><br>" +
+        "Code received.<br>" +
+        "You can now return to Mona Moon Content.";
+      console.log("TikTok authorization code:", code);
+      console.log("State:", state);
+    } else if (error) {
+      status.innerHTML =
+        "<strong>Authorization failed.</strong><br><br>" +
+        error + "<br>" +
+        (errorDescription || "");
+    } else {
+      status.innerHTML = "No authorization code received yet.";
+    }
+  </script>
+</body>
+</html>
