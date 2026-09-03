@@ -4,12 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="description"
-    content="Mona Moon Content is a web-based content management and publishing application for the Mona Moon digital brand."
-  >
+  <meta name="description" content="Mona Moon Content is a content management and publishing application used to organize, review and publish social media content for the Mona Moon digital brand.">
 
-  <title>Mona Moon Content | Official Website</title>
+  <title>Mona Moon Content | Content Management & Publishing</title>
 
   <style>
     * {
@@ -25,154 +22,194 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: #0d0d12;
-      color: #f5f5f7;
-      line-height: 1.6;
+      color: #f4f4f7;
+      line-height: 1.65;
     }
 
     header {
-      padding: 22px 8%;
-      border-bottom: 1px solid #2a2a32;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(13, 13, 18, 0.96);
+      border-bottom: 1px solid #292933;
+    }
+
+    nav {
+      max-width: 1150px;
+      margin: auto;
+      padding: 20px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      background: #0d0d12;
-      z-index: 10;
+      gap: 20px;
     }
 
     .brand {
-      font-size: 22px;
-      font-weight: bold;
+      font-size: 20px;
+      font-weight: 700;
       letter-spacing: 1px;
     }
 
-    nav a {
-      color: #dddddd;
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    a {
+      color: #ffffff;
       text-decoration: none;
-      margin-left: 20px;
     }
 
-    nav a:hover {
-      text-decoration: underline;
+    .nav-links a {
+      color: #cfcfd7;
+      font-size: 14px;
     }
 
-    .hero {
-      padding: 100px 8%;
-      max-width: 1050px;
-    }
-
-    .hero h1 {
-      font-size: 52px;
-      line-height: 1.15;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      color: #c9c9d0;
-      max-width: 780px;
+    .nav-links a:hover {
+      color: #ffffff;
     }
 
     section {
-      padding: 65px 8%;
-      border-top: 1px solid #24242c;
+      max-width: 1150px;
+      margin: auto;
+      padding: 75px 24px;
     }
 
-    section h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
+    .hero {
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    section p {
-      color: #c9c9d0;
-      max-width: 950px;
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #a9a9b5;
+      font-size: 13px;
+      margin-bottom: 18px;
     }
 
-    .cards {
+    h1 {
+      font-size: clamp(42px, 7vw, 76px);
+      line-height: 1.05;
+      max-width: 900px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: 34px;
+      margin-bottom: 22px;
+    }
+
+    h3 {
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #c9c9d1;
+      max-width: 850px;
+    }
+
+    .hero p {
+      font-size: 19px;
+      max-width: 780px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 13px 20px;
+      border: 1px solid #444451;
+      border-radius: 8px;
+      background: #f3f3f5;
+      color: #111116;
+      font-weight: 700;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: #ffffff;
+    }
+
+    .divider {
+      border-top: 1px solid #292933;
+    }
+
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-top: 35px;
     }
 
     .card {
-      background: #17171f;
-      padding: 28px;
+      border: 1px solid #30303a;
+      background: #15151c;
       border-radius: 12px;
-      border: 1px solid #262630;
-    }
-
-    .card h3 {
-      margin-bottom: 12px;
-      font-size: 20px;
+      padding: 25px;
     }
 
     .card p {
-      color: #c9c9d0;
+      font-size: 15px;
     }
 
     .steps {
-      margin-top: 28px;
+      margin-top: 30px;
       display: grid;
-      gap: 16px;
-      max-width: 900px;
+      gap: 18px;
     }
 
     .step {
+      padding: 22px;
+      border-left: 3px solid #737383;
       background: #15151c;
-      border: 1px solid #262630;
-      border-radius: 10px;
-      padding: 20px;
     }
 
-    .step strong {
-      display: block;
-      margin-bottom: 6px;
+    .platform {
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .contact-box {
+      margin-top: 30px;
+      padding: 28px;
+      border: 1px solid #30303a;
+      border-radius: 12px;
+      background: #15151c;
     }
 
     footer {
-      padding: 40px 8%;
-      border-top: 1px solid #2a2a32;
-      color: #aaaaaa;
+      border-top: 1px solid #292933;
+      padding: 35px 24px;
+      text-align: center;
+      color: #9c9ca7;
     }
 
     footer a {
-      color: #dddddd;
-      margin-right: 20px;
-      text-decoration: none;
+      color: #cfcfd7;
+      margin: 0 10px;
     }
 
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    .footer-copy {
-      margin-top: 15px;
-    }
-
-    @media (max-width: 700px) {
-      header {
-        flex-direction: column;
+    @media (max-width: 760px) {
+      nav {
         align-items: flex-start;
-        gap: 12px;
-      }
-
-      nav a {
-        margin-left: 0;
-        margin-right: 15px;
+        flex-direction: column;
       }
 
       .hero {
-        padding-top: 70px;
+        min-height: 480px;
       }
 
-      .hero h1 {
-        font-size: 38px;
-      }
-
-      .hero p {
-        font-size: 18px;
+      section {
+        padding: 55px 20px;
       }
     }
   </style>
@@ -180,144 +217,287 @@
 
 <body>
 
-  <header>
+<header>
+  <nav>
     <div class="brand">MONA MOON CONTENT</div>
 
-    <nav>
+    <div class="nav-links">
       <a href="#about">About</a>
       <a href="#features">Features</a>
-      <a href="#workflow">How It Works</a>
-      <a href="#purpose">Purpose</a>
-    </nav>
-  </header>
+      <a href="#how">How It Works</a>
+      <a href="#platforms">Platforms</a>
+      <a href="#support">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </div>
+  </nav>
+</header>
 
-  <main>
+<main>
 
-    <div class="hero">
-      <h1>Content creation and publishing for Mona Moon</h1>
+  <section class="hero">
+    <div class="eyebrow">Content Management & Publishing</div>
+
+    <h1>Create, organize and publish content for Mona Moon.</h1>
+
+    <p>
+      Mona Moon Content is a web-based content management application
+      designed to support the creation, organization, review and publishing
+      of lifestyle, fashion, fitness and travel content for the Mona Moon
+      digital brand.
+    </p>
+
+    <div class="actions">
+      <a class="button" href="#how">How It Works</a>
+      <a class="button secondary" href="#support">Contact Support</a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="about">
+    <div class="eyebrow">About</div>
+    <h2>About Mona Moon Content</h2>
+
+    <p>
+      Mona Moon Content provides a centralized workflow for preparing
+      social media content. The application helps organize content ideas,
+      captions, media assets, publishing activities and platform-specific
+      content while maintaining a consistent digital brand identity.
+    </p>
+
+    <br>
+
+    <p>
+      The application is designed to support the Mona Moon content workflow
+      from initial content preparation through review and authorized
+      publishing to supported social media platforms.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="features">
+    <div class="eyebrow">Application</div>
+    <h2>Core Features</h2>
+
+    <div class="grid">
+
+      <div class="card">
+        <h3>Content Planning</h3>
+        <p>
+          Organize content concepts and prepare material for upcoming
+          social media posts.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Caption Management</h3>
+        <p>
+          Prepare and review captions and supporting text before content
+          is published.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Media Organization</h3>
+        <p>
+          Manage the images and video assets associated with Mona Moon
+          social media content.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Content Review</h3>
+        <p>
+          Review prepared content before it enters the publishing workflow.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Platform Publishing</h3>
+        <p>
+          Send approved content to supported social platforms using
+          authorized platform integrations.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Brand Consistency</h3>
+        <p>
+          Maintain a consistent content direction across lifestyle,
+          fitness, fashion and travel topics.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="how">
+    <div class="eyebrow">Workflow</div>
+    <h2>How It Works</h2>
+
+    <p>
+      Mona Moon Content follows a structured workflow designed to keep
+      content preparation and publishing organized.
+    </p>
+
+    <div class="steps">
+
+      <div class="step">
+        <h3>1. Prepare</h3>
+        <p>
+          Content ideas, captions and media assets are prepared for the
+          Mona Moon digital brand.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>2. Organize</h3>
+        <p>
+          Content is organized according to platform, format and publishing
+          requirements.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>3. Review</h3>
+        <p>
+          Prepared content is reviewed before publishing.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>4. Authorize</h3>
+        <p>
+          Platform access is provided through the official authorization
+          mechanisms offered by supported social media services.
+        </p>
+      </div>
+
+      <div class="step">
+        <h3>5. Publish</h3>
+        <p>
+          Approved content can then be transferred or published using the
+          supported platform integration.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="platforms">
+    <div class="eyebrow">Integrations</div>
+    <h2>Supported Platforms</h2>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="platform">TikTok</div>
+        <p>
+          Mona Moon Content uses TikTok's official developer services to
+          authorize account access and support approved content publishing
+          workflows.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="platform">Instagram</div>
+        <p>
+          Content can be prepared and organized for the Mona Moon Instagram
+          publishing workflow.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="platform">Threads</div>
+        <p>
+          Text and media content can be prepared for the Mona Moon Threads
+          presence.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="platform">Facebook</div>
+        <p>
+          Content planning supports the broader Mona Moon social media
+          presence, including Facebook.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="privacy">
+    <div class="eyebrow">Transparency</div>
+    <h2>Privacy & User Control</h2>
+
+    <p>
+      Mona Moon Content only uses platform access that has been explicitly
+      authorized through the relevant platform's official authorization
+      process. Platform permissions are used only for the functionality
+      associated with the content workflow.
+    </p>
+
+    <div class="actions">
+      <a class="button secondary" href="privacy.html">
+        Read Privacy Policy
+      </a>
+
+      <a class="button secondary" href="terms.html">
+        Read Terms of Service
+      </a>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="support">
+    <div class="eyebrow">Help</div>
+    <h2>Contact & Support</h2>
+
+    <p>
+      Questions about Mona Moon Content, platform integrations,
+      authorization, privacy or support can be sent directly to the
+      project contact address.
+    </p>
+
+    <div class="contact-box">
+      <h3>Mona Moon Content Support</h3>
 
       <p>
-        Mona Moon Content is a web-based content management application
-        designed to support the creation, organization, review and publishing
-        of lifestyle, fashion and fitness content for the Mona Moon digital brand.
+        Email:
+        <a href="mailto:monamonicamoon@gmail.com">
+          monamonicamoon@gmail.com
+        </a>
+      </p>
+
+      <p>
+        Support topics include application access, platform authorization,
+        publishing functionality and privacy questions.
       </p>
     </div>
+  </section>
 
-    <section id="about">
-      <h2>About Mona Moon Content</h2>
+</main>
 
-      <p>
-        Mona Moon Content provides a centralized workflow for preparing social
-        media content. The application helps organize content ideas, captions,
-        media assets and publishing activities while maintaining a consistent
-        digital brand identity.
-      </p>
-    </section>
+<footer>
+  <p>© 2026 Mona Moon Content</p>
 
-    <section id="features">
-      <h2>Core Features</h2>
-
-      <div class="cards">
-
-        <div class="card">
-          <h3>Content Creation</h3>
-          <p>
-            Prepare and organize lifestyle, fashion and fitness content for
-            social media publishing.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Content Management</h3>
-          <p>
-            Manage content ideas, captions and media assets through a
-            structured content workflow.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Review and Approval</h3>
-          <p>
-            Review content before publication so that only approved material
-            is selected for publishing.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>Social Publishing</h3>
-          <p>
-            Support authorized publishing workflows to connected social media
-            platforms, including TikTok.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="workflow">
-      <h2>How It Works</h2>
-
-      <p>
-        The Mona Moon Content workflow is designed to keep content creation
-        and publishing organized and controlled.
-      </p>
-
-      <div class="steps">
-
-        <div class="step">
-          <strong>1. Prepare content</strong>
-          Content ideas, captions and media assets are created and organized.
-        </div>
-
-        <div class="step">
-          <strong>2. Review content</strong>
-          Content is reviewed before it is selected for publishing.
-        </div>
-
-        <div class="step">
-          <strong>3. Authorize publishing</strong>
-          Publishing only takes place through authorized platform integrations.
-        </div>
-
-        <div class="step">
-          <strong>4. Publish approved content</strong>
-          Approved content can be sent to the selected connected social media account.
-        </div>
-
-      </div>
-    </section>
-
-    <section id="purpose">
-      <h2>Purpose</h2>
-
-      <p>
-        Mona Moon Content is operated for the Mona Moon digital brand and is
-        intended to simplify content production, organization and social media
-        publishing while keeping the publishing process controlled and consistent.
-      </p>
-    </section>
-
-    <section>
-      <h2>Privacy and Terms</h2>
-
-      <p>
-        Information about data handling and use of this service is available
-        in the Privacy Policy and Terms of Service linked below.
-      </p>
-    </section>
-
-  </main>
-
-  <footer>
-    <p>
-      <a href="privacy.htlm">Privacy Policy</a>
-      <a href="terms.htlm">Terms of Service</a>
-    </p>
-
-    <p class="footer-copy">
-      © 2026 Mona Moon Content
-    </p>
-  </footer>
+  <p>
+    <a href="privacy.html">Privacy Policy</a>
+    |
+    <a href="terms.html">Terms of Service</a>
+    |
+    <a href="mailto:monamonicamoon@gmail.com">Support</a>
+  </p>
+</footer>
 
 </body>
 </html>
