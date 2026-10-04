@@ -1,0 +1,22 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.friendshipglobaldesign.johntrade'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.friendshipglobaldesign.johntrade"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
