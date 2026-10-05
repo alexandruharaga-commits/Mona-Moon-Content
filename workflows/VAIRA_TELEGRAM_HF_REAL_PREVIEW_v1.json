@@ -1,0 +1,691 @@
+{
+  "name": "VAIRA TELEGRAM • HIGGSFIELD REAL PREVIEW v1.0 • TEST SAFE",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "id": "vaira-node-1",
+      "name": "VAIRA • Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -1600,
+        0
+      ],
+      "webhookId": "vaira-telegram-preview-trigger",
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const src=$input.first()?.json??{};\nconst msg=src.message||src.edited_message||src.callback_query?.message||{};\nconst chatId=String(msg.chat?.id||'').trim();\nif(!chatId)return [];\nconst raw=String(src.callback_query?.data||msg.text||msg.caption||'').trim();\nconst k=raw.toLowerCase();\nconst S=$getWorkflowStaticData('global');\nS.vaira=S.vaira||{ownerChatId:null,target:'MONA',inputMode:null,pending:{},approved:{}};\nconst V=S.vaira;\nif(!V.ownerChatId){\n  if(!['/start','/menu','start','menu'].includes(k))\n    return [{json:{action:'REPLY',chatId,text:'🔐 Trimite /start pentru a lega VAIRA de acest chat.',menu:false}}];\n  V.ownerChatId=chatId;\n}\nif(chatId!==String(V.ownerChatId))return [];\nif(['/start','/menu','start','menu','🎛️ menu'].includes(k))\n  return [{json:{action:'REPLY',chatId,menu:true,text:'🎛️ VAIRA CONTROL CENTER\\n\\nTarget: '+V.target+'\\nMode: PHOTO\\nSocial publish: OFF / TEST SAFE\\n\\nAlege personajul, apoi ➕ CREATE.'}}];\nif(k==='🌙 mona'||k==='mona'){V.target='MONA';return [{json:{action:'REPLY',chatId,menu:true,text:'🌙 MONA selectată.'}}];}\nif(k==='🖤 naya'||k==='naya'){V.target='NAYA';return [{json:{action:'REPLY',chatId,menu:true,text:'🖤 NAYA selectată.'}}];}\nif(k==='➕ create'||k==='create'||k==='/create'){V.inputMode='CREATE';return [{json:{action:'REPLY',chatId,menu:false,text:'✍️ Trimite descrierea fotografiei pentru '+V.target+'.'}}];}\nif(k==='📊 status'||k==='status'||k==='/status'){\n  const p=V.pending?.[chatId]||null;\n  return [{json:{action:'REPLY',chatId,menu:true,text:'📊 VAIRA STATUS\\nTarget: '+V.target+'\\nPending preview: '+(p?'YES':'NO')+'\\nSocial publish: OFF / TEST SAFE'}}];\n}\nif(k==='vaira_approve'){\n  const p=V.pending?.[chatId]||null;\n  if(!p)return [{json:{action:'REPLY',chatId,menu:true,text:'⚠️ Nu există preview pending.'}}];\n  V.approved[chatId]={...p,approvedAt:new Date().toISOString()};\n  delete V.pending[chatId];\n  return [{json:{action:'REPLY',chatId,menu:true,text:'✅ APPROVED • '+p.target+'\\nPreview aprobat. Social publish rămâne OFF până validăm testul.'}}];\n}\nif(k==='vaira_reject'){\n  const p=V.pending?.[chatId]||null; delete V.pending[chatId];\n  return [{json:{action:'REPLY',chatId,menu:true,text:p?'❌ Preview respins. Nu se publică nimic.':'⚠️ Nu există preview pending.'}}];\n}\nif(k==='vaira_regenerate'){\n  const p=V.pending?.[chatId]||null;\n  if(!p)return [{json:{action:'REPLY',chatId,menu:true,text:'⚠️ Nu există preview pending.'}}];\n  return [{json:{action:'GENERATE',chatId,target:p.target,prompt:p.prompt,generationAttempt:Number(p.generationAttempt||1)+1,ack:'🔄 Regenerez '+p.target+'...'}}];\n}\nif(V.inputMode==='CREATE'&&raw){\n  V.inputMode=null;\n  return [{json:{action:'GENERATE',chatId,target:V.target,prompt:raw,generationAttempt:1,ack:'🧠 Pornesc generarea reală pentru '+V.target+'...'}}];\n}\nreturn [{json:{action:'REPLY',chatId,menu:true,text:'Folosește meniul VAIRA.'}}];"
+      },
+      "id": "vaira-node-2",
+      "name": "VAIRA • Controller",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json;return x.action==='REPLY'?[{json:x}]:[];"
+      },
+      "id": "vaira-node-3",
+      "name": "VAIRA • Reply Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1120,
+        -220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json;return x.action==='GENERATE'?[{json:x}]:[];"
+      },
+      "id": "vaira-node-4",
+      "name": "VAIRA • Generate Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1120,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.text }}",
+        "replyMarkup": "replyKeyboard",
+        "replyKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🌙 MONA",
+                    "additionalFields": {}
+                  },
+                  {
+                    "text": "🖤 NAYA",
+                    "additionalFields": {}
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "➕ CREATE",
+                    "additionalFields": {}
+                  },
+                  {
+                    "text": "📊 STATUS",
+                    "additionalFields": {}
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "🎛️ MENU",
+                    "additionalFields": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "id": "vaira-node-5",
+      "name": "VAIRA • Telegram Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -880,
+        -220
+      ],
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.ack }}",
+        "additionalFields": {}
+      },
+      "id": "vaira-node-6",
+      "name": "VAIRA • Generating ACK",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -880,
+        40
+      ],
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$('VAIRA • Generate Gate').item.json;\nconst isMona=x.target==='MONA';\nconst r=isMona?{\n face:'https://d2ol7oe51mr4n9.cloudfront.net/user_3IbQt5kDpDnK6Ec0xXtin2Yvkk5/48a13032-b0be-48aa-bdf6-2ea0400b5ac3.png',\n identity:'Mona Moon Ice Lady. Match the canonical face and body identity. Very long curly blue-black hair with icy gray-blue streak, brown eyes, light natural skin, slim-toned feminine body, preserve canonical tattoos, realistic skin and anatomy, no identity drift.'\n}:{\n face:'https://d2ol7oe51mr4n9.cloudfront.net/user_3IbQt5kDpDnK6Ec0xXtin2Yvkk5/716374a7-3cf5-479d-9fa1-8c9052d040ca.png',\n identity:'Naya Noire Fire Priestess. Match the canonical face and body identity. Very long dark hair with burgundy accents, hazel-brown eyes, beauty mark near upper lip, piercings and phoenix/fire tattoo identity, realistic skin and anatomy, no identity drift.'\n};\nconst requestBody={\n image_url:r.face,\n prompt:r.identity+' SCENE: '+String(x.prompt||'Natural premium Amsterdam lifestyle scene')+'. Exact same person. Photorealistic, tasteful, non-explicit, platform-safe.',\n batch_size:1,resolution:'720p',aspect_ratio:'3:4',enhance_prompt:true\n};\nreturn [{json:{...x,mediaType:'PHOTO',hfEndpoint:'https://api.higgsfield.ai/higgsfield-ai/soul/v2/image-to-image',requestBody}}];"
+      },
+      "id": "vaira-node-7",
+      "name": "VAIRA • Prepare Higgsfield",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.hfEndpoint }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.requestBody) }}",
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "vaira-node-8",
+      "name": "VAIRA • Higgsfield Submit",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -360,
+        180
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Higgsfield API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const p=$('VAIRA • Prepare Higgsfield').item.json; const b=r.body??r;\nconst requestId=b.request_id??b.requestId??b.id??null;\nconst statusUrl=b.status_url??b.statusUrl??(requestId?'https://api.higgsfield.ai/requests/'+requestId+'/status':null);\nif(!requestId&&!statusUrl)return [{json:{...p,hfStatus:'submit_failed',hfError:b.error||b.message||JSON.stringify(b),pollAgain:false}}];\nreturn [{json:{...p,requestId,statusUrl,pollCount:0}}];"
+      },
+      "id": "vaira-node-9",
+      "name": "VAIRA • Higgsfield Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 5
+      },
+      "id": "vaira-node-10",
+      "name": "VAIRA • Wait 5s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        180
+      ],
+      "webhookId": "vaira-hf-wait"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.statusUrl }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "id": "vaira-node-11",
+      "name": "VAIRA • Higgsfield Poll",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        180
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "Higgsfield API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first()?.json??{}; const p=$('VAIRA • Wait 5s').item.json; const b=r.body??r;\nconst st=String(b.status??b.state??'').toLowerCase();\nconst assetUrl=b.images?.[0]?.url||b.image?.url||b.output?.url||b.result?.url||b.result_url||b.url||null;\nconst pollCount=Number(p.pollCount||0)+1;\nconst terminal=['completed','failed','nsfw','canceled','cancelled','submit_failed'];\nreturn [{json:{...p,...b,hfStatus:st||'unknown',assetUrl,pollCount,pollAgain:!terminal.includes(st)&&pollCount<48}}];"
+      },
+      "id": "vaira-node-12",
+      "name": "VAIRA • Parse Higgsfield",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json;return x.pollAgain?[{json:x}]:[];"
+      },
+      "id": "vaira-node-13",
+      "name": "VAIRA • Pending Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json;return x.hfStatus==='completed'&&x.assetUrl?[{json:x}]:[];"
+      },
+      "id": "vaira-node-14",
+      "name": "VAIRA • Complete Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json;const f=['failed','nsfw','canceled','cancelled','submit_failed'].includes(x.hfStatus)||(!x.pollAgain&&x.hfStatus!=='completed');return f?[{json:x}]:[];"
+      },
+      "id": "vaira-node-15",
+      "name": "VAIRA • Failed Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        320
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json; const S=$getWorkflowStaticData('global'); S.vaira=S.vaira||{}; S.vaira.pending=S.vaira.pending||{};\nS.vaira.pending[String(x.chatId)]={target:x.target,prompt:x.prompt,assetUrl:x.assetUrl,requestId:x.requestId||null,generationAttempt:Number(x.generationAttempt||1),completedAt:new Date().toISOString()};\nreturn [{json:x}];"
+      },
+      "id": "vaira-node-16",
+      "name": "VAIRA • Save Pending Preview",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "={{ $json.chatId }}",
+        "file": "={{ $json.assetUrl }}",
+        "additionalFields": {
+          "caption": "={{ '🖼️ REAL HIGGSFIELD PREVIEW • '+$json.target+'\\nStatus: '+$json.hfStatus+'\\nAttempt: '+String($json.generationAttempt||1)+'\\n\\nVerifică imaginea înainte de aprobare. Social publish: OFF.' }}"
+        }
+      },
+      "id": "vaira-node-17",
+      "name": "VAIRA • Telegram Photo Preview",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1450,
+        180
+      ],
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const S=$getWorkflowStaticData('global');const V=S.vaira||{};const chatId=String(V.ownerChatId||'');const p=V.pending?.[chatId]||null;\nif(!chatId||!p)return [];return [{json:{chatId,text:'Alege pentru '+p.target+':'}}];"
+      },
+      "id": "vaira-node-18",
+      "name": "VAIRA • Approval Context",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1690,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.text }}",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "✅ APPROVE",
+                    "additionalFields": {
+                      "callback_data": "VAIRA_APPROVE"
+                    }
+                  },
+                  {
+                    "text": "🔄 REGENERATE",
+                    "additionalFields": {
+                      "callback_data": "VAIRA_REGENERATE"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "❌ REJECT",
+                    "additionalFields": {
+                      "callback_data": "VAIRA_REJECT"
+                    }
+                  },
+                  {
+                    "text": "🎛️ MENU",
+                    "additionalFields": {
+                      "callback_data": "/menu"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "id": "vaira-node-19",
+      "name": "VAIRA • Approval Buttons",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1930,
+        180
+      ],
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const x=$json;return [{json:{chatId:x.chatId,text:'❌ Higgsfield generation failed\\nTarget: '+x.target+'\\nStatus: '+(x.hfStatus||'unknown')+'\\nError: '+String(x.hfError||x.error||'No preview returned').slice(0,400)+'\\n\\nNu s-a publicat nimic.'}}];"
+      },
+      "id": "vaira-node-20",
+      "name": "VAIRA • Build Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "vaira-node-21",
+      "name": "VAIRA • Telegram Error",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1450,
+        340
+      ],
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## VAIRA TELEGRAM → HIGGSFIELD REAL PREVIEW v1.0\\n\\nFlow: Telegram → Mona/Naya → real Higgsfield PHOTO → Telegram preview → Approve / Regenerate / Reject.\\n\\nSocial publishing is OFF. First prove Mona and Naya generation/preview, then reconnect social publishing.\\n\\nOwner self-binds on first /start after activation.",
+        "height": 280,
+        "width": 620
+      },
+      "id": "vaira-node-22",
+      "name": "VAIRA • TEST SAFE NOTE",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        -520
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "VAIRA • Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Controller",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Controller": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Reply Gate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "VAIRA • Generate Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Reply Gate": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Telegram Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Generate Gate": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Generating ACK",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "VAIRA • Prepare Higgsfield",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Prepare Higgsfield": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Higgsfield Submit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Higgsfield Submit": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Higgsfield Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Higgsfield Context": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Wait 5s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Wait 5s": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Higgsfield Poll",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Higgsfield Poll": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Parse Higgsfield",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Parse Higgsfield": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Pending Gate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "VAIRA • Complete Gate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "VAIRA • Failed Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Pending Gate": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Wait 5s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Complete Gate": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Save Pending Preview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Save Pending Preview": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Telegram Photo Preview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Telegram Photo Preview": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Approval Context",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Approval Context": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Approval Buttons",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Failed Gate": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Build Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VAIRA • Build Error": {
+      "main": [
+        [
+          {
+            "node": "VAIRA • Telegram Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "tags": []
+}
