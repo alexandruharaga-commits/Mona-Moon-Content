@@ -1,0 +1,295 @@
+{
+  "name": "HUNTER v0.1 — Crypto Opportunity Watch",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1180,
+        -280
+      ],
+      "id": "hunter-1",
+      "name": "Every Hour"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=crypto%20airdrop%20OR%20launchpool%20OR%20learn-to-earn%20(site%3Abinance.com%20OR%20site%3Aokx.com%20OR%20site%3Acoinbase.com%20OR%20site%3Akraken.com)&hl=en&gl=NL&ceid=NL%3Aen",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -940,
+        -440
+      ],
+      "id": "hunter-2",
+      "name": "RSS Official Exchanges"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=crypto%20airdrop%20OR%20quest%20OR%20testnet%20rewards%20(site%3Agalxe.com%20OR%20site%3Alayer3.xyz%20OR%20site%3Azealy.io)&hl=en&gl=NL&ceid=NL%3Aen",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -940,
+        -280
+      ],
+      "id": "hunter-3",
+      "name": "RSS Quest Platforms"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=crypto%20airdrop%20OR%20launchpool%20OR%20testnet%20rewards%20(site%3Acoindesk.com%20OR%20site%3Adecrypt.co%20OR%20site%3Atheblock.co)&hl=en&gl=NL&ceid=NL%3Aen",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -940,
+        -120
+      ],
+      "id": "hunter-4",
+      "name": "RSS Reputable Crypto News"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -680,
+        -280
+      ],
+      "id": "hunter-5",
+      "name": "Merge Opportunities"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\ns.seen=s.seen||{};\nconst now=Date.now();\nconst DAY=86400000;\nconst trustedOfficial=['binance','okx','coinbase','kraken'];\nconst trustedQuest=['galxe','layer3','zealy'];\nconst trustedNews=['coindesk','decrypt','the block','theblock'];\nconst oppWords=['airdrop','giveaway','launchpool','launchpad','learn-to-earn','learn and earn','quest','testnet','reward','campaign','claim'];\nconst scamWords=['seed phrase','recovery phrase','private key','send funds first','double your','guaranteed profit','whatsapp support','telegram support','remote access','screen share'];\nconst out=[];\nfor(const item of $input.all()){\n  const x=item.json||{};\n  const title=String(x.title||'').trim();\n  const link=String(x.link||'').trim();\n  const body=[title,x.content,x.contentSnippet,x.creator,x.author,x.isoDate,x.pubDate].filter(Boolean).join(' ').toLowerCase();\n  if(!title||!link) continue;\n  const key=(link||title).toLowerCase();\n  if(s.seen[key]) continue;\n  let published=Date.parse(x.isoDate||x.pubDate||'');\n  if(Number.isFinite(published)&&now-published>7*DAY) continue;\n  let score=35;\n  let source='Discovery';\n  if(trustedOfficial.some(v=>body.includes(v))){score+=40;source='Official exchange';}\n  else if(trustedQuest.some(v=>body.includes(v))){score+=35;source='Quest platform';}\n  else if(trustedNews.some(v=>body.includes(v))){score+=22;source='Reputable crypto news';}\n  if(oppWords.some(v=>body.includes(v))) score+=15;\n  if(/free|no cost|zero cost|learn/.test(body)) score+=5;\n  if(/deadline|ends|until|claim|eligible/.test(body)) score+=3;\n  if(/connect wallet|wallet connection/.test(body)) score-=5;\n  const scamHit=scamWords.find(v=>body.includes(v));\n  if(scamHit) score-=80;\n  if(/send .*crypto|deposit .*to claim|pay .*fee .*claim/.test(body)) score-=45;\n  score=Math.max(0,Math.min(100,score));\n  s.seen[key]=now;\n  if(score<80) continue;\n  let cost=/free|no cost|zero cost|learn/.test(body)?'€0 indicated / verify':'Unknown — verify before action';\n  let effort=/learn|quiz/.test(body)?'5–20 min':(/quest|campaign|testnet/.test(body)?'10–60+ min':'Check details');\n  let risk=score>=90?'LOW':score>=80?'MEDIUM-LOW':'MEDIUM';\n  out.push({json:{title,link,score,source,risk,cost,effort,deadline:'Check official page',published:x.isoDate||x.pubDate||null,action:'Review only. Do not sign or transfer until verified.'}});\n}\nfor(const [k,v] of Object.entries(s.seen)){if(now-Number(v)>30*DAY)delete s.seen[k];}\nout.sort((a,b)=>b.json.score-a.json.score);\nconst top=out.slice(0,5);\ns.lastRunAt=new Date().toISOString();\ns.lastAlerts=top.map(i=>i.json);\nreturn top;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        -280
+      ],
+      "id": "hunter-6",
+      "name": "HUNTER Filter + Score"
+    },
+    {
+      "parameters": {
+        "chatId": "COPY_EXISTING_OWNER_CHAT_ID",
+        "text": "=🎯 HUNTER · oportunitate crypto\n\n{{ $json.title }}\n\nScor: {{ $json.score }}/100\nRisc: {{ $json.risk }}\nSursă: {{ $json.source }}\nCost: {{ $json.cost }}\nEfort: {{ $json.effort }}\nDeadline: {{ $json.deadline }}\n\nAcțiune: {{ $json.action }}\n\n{{ $json.link }}\n\n⚠️ Hunter NU conectează wallet-ul, NU semnează și NU transferă crypto.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        -280
+      ],
+      "id": "hunter-7",
+      "name": "Telegram HUNTER Alert",
+      "notes": "Map existing Telegram account and owner chat ID. Informational alerts only."
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "hunter/status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -680,
+        160
+      ],
+      "id": "hunter-8",
+      "name": "HUNTER Status API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\nreturn [{json:{ok:true,agent:'HUNTER',mode:'WATCH_ONLY',lastRunAt:s.lastRunAt||null,seenCount:Object.keys(s.seen||{}).length,lastAlerts:s.lastAlerts||[],safety:{walletAccess:false,signing:false,transfers:false,trading:false,telegramAlerts:true,minimumScore:80}}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -420,
+        160
+      ],
+      "id": "hunter-9",
+      "name": "HUNTER Status Compose"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -160,
+        160
+      ],
+      "id": "hunter-10",
+      "name": "Return HUNTER Status"
+    },
+    {
+      "parameters": {
+        "content": "## HUNTER v0.1 — WATCH ONLY\n\nSearches public crypto opportunity feeds hourly.\n\n- Airdrops / giveaways / launchpools / learn-to-earn / quests / testnets\n- Deduplicates for 30 days\n- Alerts only score ≥80\n- Max 5 alerts per run\n- Scam phrases heavily penalized\n- No wallet access\n- No signing\n- No trading\n- No transfers\n\nTelegram alert is informational only.",
+        "height": 320,
+        "width": 500,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        -760
+      ],
+      "id": "hunter-11",
+      "name": "HUNTER Safety Notes"
+    }
+  ],
+  "connections": {
+    "Every Hour": {
+      "main": [
+        [
+          {
+            "node": "RSS Official Exchanges",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Quest Platforms",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Reputable Crypto News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Official Exchanges": {
+      "main": [
+        [
+          {
+            "node": "Merge Opportunities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Quest Platforms": {
+      "main": [
+        [
+          {
+            "node": "Merge Opportunities",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "RSS Reputable Crypto News": {
+      "main": [
+        [
+          {
+            "node": "Merge Opportunities",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge Opportunities": {
+      "main": [
+        [
+          {
+            "node": "HUNTER Filter + Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Filter + Score": {
+      "main": [
+        [
+          {
+            "node": "Telegram HUNTER Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Status API": {
+      "main": [
+        [
+          {
+            "node": "HUNTER Status Compose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Status Compose": {
+      "main": [
+        [
+          {
+            "node": "Return HUNTER Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Amsterdam"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
