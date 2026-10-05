@@ -1,0 +1,630 @@
+{
+  "name": "JOHN LIVE ASSIST v1 — €5-€10 Confirmed",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        -300
+      ],
+      "id": "john-1",
+      "name": "Every 15 Minutes"
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "john-premium/status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        220
+      ],
+      "id": "john-2",
+      "name": "JOHN Status API"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "john-premium/decision",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        700
+      ],
+      "id": "john-3",
+      "name": "JOHN Decision API"
+    },
+    {
+      "parameters": {
+        "url": "https://eea.okx.com/api/v5/market/candles?instId=BTC-USDT&bar=15m&limit=50",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -960,
+        -300
+      ],
+      "id": "john-4",
+      "name": "BTC-USDT 15m Candles",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global'); const raw=Array.isArray($json.data)?$json.data:[];\nconst now=Date.now(); s.mode='LIVE_ASSIST'; s.lastScanAt=new Date().toISOString();\nif(raw.length<20) return [{json:{proposalCreated:false,reason:'NO_CANDLES'}}];\nconst c=raw.slice().reverse().map(x=>Number(x[4])).filter(x=>Number.isFinite(x)&&x>0);\nconst sma=n=>c.slice(-n).reduce((a,b)=>a+b,0)/n; const f=sma(5), slow=sma(20), last=c.at(-1), prev=c.at(-2);\nlet g=0,l=0; for(let i=Math.max(1,c.length-14);i<c.length;i++){let d=c[i]-c[i-1]; if(d>0)g+=d; else l-=d;}\nconst rs=l===0?100:(g/14)/(l/14); const rsi=100-(100/(1+rs)); const mom=(last-prev)/prev;\ns.lastMarket={at:s.lastScanAt,pair:'BTC-USDT',last,sma5:f,sma20:slow,rsi,momentum:mom,marketOk:true};\nif(s.pendingTrade?.status==='pending' && now<Number(s.pendingTrade.expiresAt||0)) return [{json:{proposalCreated:false,reason:'PENDING_EXISTS'}}];\nif(s.pendingTrade?.status==='pending') s.pendingTrade.status='expired';\nlet side=null, amount=5, reason='', confidence=.7;\nif(!s.position && f>slow*1.001 && mom>0.001 && rsi>=52 && rsi<=68){side='buy'; const conf=Math.min(.95,.66+(f/slow-1)*25+mom*18); amount=conf>=.80?10:5; reason='Bullish 15m · RSI '+rsi.toFixed(1)+' · momentum '+(mom*100).toFixed(2)+'%'; confidence=Number(conf.toFixed(2));}\nif(s.position && (last<=s.position.stopLoss || last>=s.position.takeProfit || f<slow*.999 || rsi<45)){side='sell'; amount=Number(s.position.amountQuote||5); reason=last<=s.position.stopLoss?'Stop loss':last>=s.position.takeProfit?'Take profit':'Exit signal · RSI '+rsi.toFixed(1); confidence=.78;}\nif(!side) return [{json:{proposalCreated:false,reason:'NO_SIGNAL',last,rsi,sma5:f,sma20:slow}}];\nconst p={id:'J'+now+(side==='buy'?'B':'S'),side,pair:'BTC-USDT',amountQuote:Math.min(10,Math.max(5,amount)),entry:last,stopLoss:side==='buy'?Number((last*.985).toFixed(2)):Number(s.position?.stopLoss||0),takeProfit:side==='buy'?Number((last*1.03).toFixed(2)):Number(s.position?.takeProfit||0),confidence,reason,createdAt:now,expiresAt:now+20*60*1000,status:'pending'};\ns.pendingTrade=p; s.lastEvent={at:new Date().toISOString(),message:side.toUpperCase()+' proposal BTC-USDT'};\nreturn [{json:{proposalCreated:true,proposal:p}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        -300
+      ],
+      "id": "john-5",
+      "name": "JOHN Signal + Proposal"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.proposalCreated }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -470,
+        -300
+      ],
+      "id": "john-6",
+      "name": "Has Proposal?"
+    },
+    {
+      "parameters": {
+        "chatId": "COPY_EXISTING_OWNER_CHAT_ID",
+        "text": "=🔔 JOHN LIVE ASSIST\\n\\n{{ $json.proposal.side.toUpperCase() }} • BTC-USDT\\nAmount: {{ $json.proposal.amountQuote }} USDT (max 10)\\nEntry: {{ $json.proposal.entry }}\\nStop loss: {{ $json.proposal.stopLoss }}\\nTake profit: {{ $json.proposal.takeProfit }}\\nConfidence: {{ Math.round($json.proposal.confidence*100) }}%\\nReason: {{ $json.proposal.reason }}\\n\\n⚠️ Nu se execută nimic fără confirmarea ta.\\nDeschide JOHN Executive:\\nhttps://alexandruharaga-commits.github.io/Mona-Moon-Content/john/",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        -430
+      ],
+      "id": "john-7",
+      "name": "Telegram Trade Notification",
+      "notes": "Reuse existing Telegram account credential and owner chat ID."
+    },
+    {
+      "parameters": {
+        "jsCode": "const timestamp=new Date().toISOString(); const requestPath='/api/v5/account/balance'; return [{json:{timestamp,requestPath,prehash:timestamp+'GET'+requestPath}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        220
+      ],
+      "id": "john-8",
+      "name": "Balance Sign Input"
+    },
+    {
+      "parameters": {
+        "action": "hmac",
+        "binaryData": false,
+        "type": "SHA256",
+        "value": "={{ $json.prehash }}",
+        "dataPropertyName": "okxSign",
+        "encoding": "base64"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        220
+      ],
+      "id": "john-9",
+      "name": "Balance HMAC",
+      "notes": "Map JOHN OKX HMAC"
+    },
+    {
+      "parameters": {
+        "url": "https://eea.okx.com/api/v5/account/balance",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "OK-ACCESS-SIGN",
+              "value": "={{ $json.okxSign }}"
+            },
+            {
+              "name": "OK-ACCESS-TIMESTAMP",
+              "value": "={{ $json.timestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -470,
+        220
+      ],
+      "id": "john-10",
+      "name": "OKX LIVE Balance",
+      "onError": "continueRegularOutput",
+      "notes": "Read-only. Map JOHN OKX LIVE."
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global'); const r=$json||{}; const ok=String(r.code??'')==='0'&&Array.isArray(r.data);\nconst a=ok?(r.data[0]||{}):{}; const d=Array.isArray(a.details)?a.details:[]; const usdt=d.find(x=>x.ccy==='USDT');\nconst p=s.pendingTrade?.status==='pending'&&Date.now()<Number(s.pendingTrade.expiresAt||0)?s.pendingTrade:null;\nreturn [{json:{ok:true,mode:'LIVE_ASSIST',market:{ok:!!s.lastMarket?.marketOk,pair:'BTC-USDT',last:s.lastMarket?.last||null},account:{ok,totalEq:a.totalEq||null,balance:usdt?.availBal||usdt?.cashBal||null,currency:'USDT',message:ok?'OK':(r.msg||r.message||r.error?.message||'Auth unavailable')},scanner:{state:s.lastMarket?.marketOk?'Active':'Standby',pair:'BTC-USDT',signal:p?p.reason:'Waiting for valid signal'},strategy:{mode:'Live Assist',confirmationRequired:true,minQuote:5,maxQuote:10},proposal:p,position:s.position||null,lastOrder:s.lastOrder||null,lastRun:{status:s.lastMarket?.marketOk?'Success':'Standby',at:s.lastMarket?.at||null},events:[s.lastEvent||{message:'JOHN ready',time:new Date().toLocaleTimeString()}]}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        220
+      ],
+      "id": "john-11",
+      "name": "JOHN Status Compose"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        20,
+        220
+      ],
+      "id": "john-12",
+      "name": "Return JOHN Status"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global'); const b=$json.body||$json; const p=s.pendingTrade; const id=String(b.proposalId||''); const dec=String(b.decision||'').toLowerCase();\nconst no=(m,ok=false)=>[{json:{execute:false,ok,message:m}}];\nif(!p||p.id!==id) return no('Proposal mismatch'); if(p.status!=='pending') return no('Proposal '+p.status); if(Date.now()>=Number(p.expiresAt||0)){p.status='expired';return no('Proposal expired');}\nif(dec==='reject'){p.status='rejected';s.lastEvent={at:new Date().toISOString(),message:'Trade rejected by user'};return no('Trade rejected',true);} if(dec!=='approve') return no('Decision must be approve or reject');\nconst amt=Number(p.amountQuote); if(!Number.isFinite(amt)||amt<5||amt>10) return no('Risk guard blocked amount');\np.status='approved'; p.confirmedAt=Date.now(); return [{json:{execute:true,ok:true,proposal:p}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -960,
+        700
+      ],
+      "id": "john-13",
+      "name": "Validate Human Decision"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.execute }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -720,
+        700
+      ],
+      "id": "john-14",
+      "name": "Execute Approved Trade?"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -470,
+        850
+      ],
+      "id": "john-15",
+      "name": "Return No Trade"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global'); const p=$json.proposal; const ts=new Date().toISOString(); const path='/api/v5/trade/order';\nlet bodyObj={instId:'BTC-USDT',tdMode:'cash',side:p.side,ordType:'market',clOrdId:String(p.id).replace(/[^A-Za-z0-9]/g,'').slice(0,32)};\nif(p.side==='buy'){bodyObj.sz=String(p.amountQuote);bodyObj.tgtCcy='quote_ccy';} else {const q=Number(s.position?.baseQty||0); if(!(q>0)) throw new Error('SELL_BASE_QTY_MISSING'); bodyObj.sz=String(q);bodyObj.tgtCcy='base_ccy';}\nconst body=JSON.stringify(bodyObj); return [{json:{timestamp:ts,requestPath:path,prehash:ts+'POST'+path+body,body,proposal:p}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -470,
+        620
+      ],
+      "id": "john-16",
+      "name": "Build Confirmed OKX Order"
+    },
+    {
+      "parameters": {
+        "action": "hmac",
+        "binaryData": false,
+        "type": "SHA256",
+        "value": "={{ $json.prehash }}",
+        "dataPropertyName": "okxSign",
+        "encoding": "base64"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        620
+      ],
+      "id": "john-17",
+      "name": "Order HMAC",
+      "notes": "Map JOHN OKX HMAC"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://eea.okx.com/api/v5/trade/order",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "OK-ACCESS-SIGN",
+              "value": "={{ $json.okxSign }}"
+            },
+            {
+              "name": "OK-ACCESS-TIMESTAMP",
+              "value": "={{ $json.timestamp }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        30,
+        620
+      ],
+      "id": "john-18",
+      "name": "OKX Place Confirmed Order",
+      "onError": "continueRegularOutput",
+      "notes": "REAL MONEY SPOT. Only after matching human approval. Max buy notional 10 USDT. No leverage."
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global'); const r=$json||{}; const p=s.pendingTrade; const ok=String(r.code??'')==='0'&&Array.isArray(r.data)&&String(r.data[0]?.sCode??'0')==='0';\nif(!ok){if(p)p.status='order_error'; s.lastOrder={ok:false,at:new Date().toISOString(),message:r.msg||r.data?.[0]?.sMsg||'Order rejected'}; return [{json:{ok:false,status:'order_error',message:s.lastOrder.message}}];}\nconst ordId=String(r.data[0].ordId||''); if(p){p.status='submitted';p.ordId=ordId;} if(p?.side==='buy'){const est=(Number(p.amountQuote)/Number(p.entry))*.995; s.position={status:'open',pair:'BTC-USDT',baseQty:String(Number(est.toFixed(8))),entry:p.entry,amountQuote:p.amountQuote,stopLoss:p.stopLoss,takeProfit:p.takeProfit,ordId};} if(p?.side==='sell') s.position=null;\ns.lastOrder={ok:true,at:new Date().toISOString(),ordId,pair:'BTC-USDT',side:p?.side,status:'submitted'}; s.lastEvent={at:new Date().toISOString(),message:String(p?.side||'trade').toUpperCase()+' order submitted'}; return [{json:{ok:true,status:'submitted',ordId,pair:'BTC-USDT',side:p?.side}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        620
+      ],
+      "id": "john-19",
+      "name": "Capture Live Order Result"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        530,
+        620
+      ],
+      "id": "john-20",
+      "name": "Return Trade Result"
+    },
+    {
+      "parameters": {
+        "content": "## JOHN LIVE ASSIST\\n\\nREAL MONEY only after human confirmation.\\n- SPOT cash only\\n- No leverage\\n- Buy exposure 5 or 10 USDT max\\n- One open position at a time\\n- Proposal expires after 20 min\\n- No transfer / withdrawal nodes\\n- Telegram = notification; approval = JOHN Executive app\\n\\nActivate only after Balance Read succeeds.",
+        "height": 300,
+        "width": 450,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1180,
+        -700
+      ],
+      "id": "john-21",
+      "name": "Safety Notes"
+    }
+  ],
+  "connections": {
+    "Every 15 Minutes": {
+      "main": [
+        [
+          {
+            "node": "BTC-USDT 15m Candles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BTC-USDT 15m Candles": {
+      "main": [
+        [
+          {
+            "node": "JOHN Signal + Proposal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Signal + Proposal": {
+      "main": [
+        [
+          {
+            "node": "Has Proposal?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Proposal?": {
+      "main": [
+        [
+          {
+            "node": "Telegram Trade Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "JOHN Status API": {
+      "main": [
+        [
+          {
+            "node": "Balance Sign Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Balance Sign Input": {
+      "main": [
+        [
+          {
+            "node": "Balance HMAC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Balance HMAC": {
+      "main": [
+        [
+          {
+            "node": "OKX LIVE Balance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OKX LIVE Balance": {
+      "main": [
+        [
+          {
+            "node": "JOHN Status Compose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Status Compose": {
+      "main": [
+        [
+          {
+            "node": "Return JOHN Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Decision API": {
+      "main": [
+        [
+          {
+            "node": "Validate Human Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Human Decision": {
+      "main": [
+        [
+          {
+            "node": "Execute Approved Trade?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Approved Trade?": {
+      "main": [
+        [
+          {
+            "node": "Build Confirmed OKX Order",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return No Trade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Confirmed OKX Order": {
+      "main": [
+        [
+          {
+            "node": "Order HMAC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Order HMAC": {
+      "main": [
+        [
+          {
+            "node": "OKX Place Confirmed Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OKX Place Confirmed Order": {
+      "main": [
+        [
+          {
+            "node": "Capture Live Order Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Capture Live Order Result": {
+      "main": [
+        [
+          {
+            "node": "Return Trade Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Amsterdam"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
