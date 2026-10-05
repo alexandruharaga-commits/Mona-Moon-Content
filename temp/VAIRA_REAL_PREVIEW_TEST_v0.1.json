@@ -1,0 +1,39 @@
+{"name":"VAIRA REAL PREVIEW TEST v0.1 • HIGGSFIELD • PUBLISH OFF","nodes":[{"parameters":{"httpMethod":"POST","path":"vaira-preview-test","responseMode":"lastNode","options":{}},"id":"576e284a-6d03-4489-81f9-86cce96cfc82","name":"VAIRA • WEBHOOK • POST","type":"n8n-nodes-base.webhook","typeVersion":2,"position":[-820,0],"webhookId":"1fa8e468-5f32-4e91-9a01-51d7e3304b0a","notes":"TEST SAFE ingress from VAIRA Android. No social publishing."},{"parameters":{"jsCode":"
+const b=$json.body??$json;
+const character=String(b.character||'MONA').toUpperCase();
+if(!['MONA','NAYA','BOTH','ALL'].includes(character)) throw new Error('CHARACTER_INVALID');
+const mode=String(b.mode||'PHOTO').toUpperCase();
+if(mode!=='PHOTO') throw new Error('PHOTO_ONLY_IN_REAL_PREVIEW_TEST_V01');
+const prompt=String(b.prompt||'').trim() || 'Premium photorealistic Amsterdam lifestyle portrait, natural light, realistic skin, elegant cinematic composition.';
+const location=String(b.location||'Amsterdam').trim();
+const MONA_URL='https://d2ol7oe51mr4n9.cloudfront.net/user_3IbQt5kDpDnK6Ec0xXtin2Yvkk5/033c8c57-49e5-49aa-a601-7e0a225ebb6d.jpg';
+const NAYA_URL='https://d2ol7oe51mr4n9.cloudfront.net/user_3IbQt5kDpDnK6Ec0xXtin2Yvkk5/6632cfdd-10ad-4c61-9c1c-36367332027b.jpg';
+let refs=[], identity='';
+if(character==='MONA'){refs=[MONA_URL];identity='Mona Moon Ice Lady. Preserve the exact same adult woman identity, face, hair and proportions from the reference. Elegant premium photorealistic styling.';}
+else if(character==='NAYA'){refs=[NAYA_URL];identity='Naya Noire. Preserve the exact same adult woman identity, face, hair and proportions from the reference. Dark-glam premium photorealistic styling.';}
+else {refs=[MONA_URL,NAYA_URL];identity='Mona Moon and Naya Noire together in one shared scene. Preserve both distinct adult identities exactly; do not blend faces or traits.';}
+return [{json:{source:'VAIRA_ANDROID',character,mode:'PHOTO',prompt,location,publish:false,refs,requestBody:{image_urls:refs,prompt:`${identity} LOCATION: ${location}. SCENE: ${prompt}. Natural anatomy and skin. No text or watermark. Platform-safe.`,resolution:'2k',aspect_ratio:'9:16',quality:'high',moderation:'auto',enhance_prompt:false}}}];
+"},"id":"a06ba4e7-7122-4d84-8d15-9a68c6620450","name":"VAIRA • NORMALIZE + CHARACTER REFERENCES","type":"n8n-nodes-base.code","typeVersion":2,"position":[-580,0]},{"parameters":{"method":"POST","url":"https://api.higgsfield.ai/marketing-studio/image","authentication":"genericCredentialType","genericAuthType":"httpHeaderAuth","sendHeaders":true,"headerParameters":{"parameters":[{"name":"Content-Type","value":"application/json"},{"name":"Accept","value":"application/json"}]},"sendBody":true,"specifyBody":"json","jsonBody":"={{ JSON.stringify($json.requestBody) }}","options":{"timeout":120000,"response":{"response":{"fullResponse":true,"neverError":true}}}},"id":"4272c3a7-a90d-4045-8ebc-2c34fb0d3293","name":"HF • SUBMIT REAL PHOTO","type":"n8n-nodes-base.httpRequest","typeVersion":4.5,"position":[-330,0],"credentials":{"httpHeaderAuth":{"id":"JFivVtnOkQ893KKS","name":"Higgsfield API"}},"notes":"Real Higgsfield generation. This may spend credits. Social publishing remains OFF."},{"parameters":{"jsCode":"
+const r=$json.body??$json;
+const ctx=$('VAIRA • NORMALIZE + CHARACTER REFERENCES').item.json;
+if(r.error) throw new Error('HIGGSFIELD_SUBMIT_FAILED:'+JSON.stringify(r.error));
+const requestId=r.request_id??r.requestId??r.id;
+const statusUrl=r.status_url??r.statusUrl??(requestId?`https://api.higgsfield.ai/requests/${requestId}/status`:null);
+if(!requestId||!statusUrl) throw new Error('HIGGSFIELD_REQUEST_ID_MISSING:'+JSON.stringify(r));
+return [{json:{...ctx,requestId,statusUrl,pollCount:0}}];
+"},"id":"d9d3df04-93a1-4f47-b5a1-f49d9bd10f67","name":"HF • PARSE SUBMIT","type":"n8n-nodes-base.code","typeVersion":2,"position":[-80,0]},{"parameters":{"amount":8,"unit":"seconds"},"id":"d24a1eed-261d-447e-ba13-ffb73c42d67d","name":"HF • WAIT 8s","type":"n8n-nodes-base.wait","typeVersion":1.1,"position":[160,0]},{"parameters":{"url":"={{ $json.statusUrl }}","authentication":"genericCredentialType","genericAuthType":"httpHeaderAuth","sendHeaders":true,"headerParameters":{"parameters":[{"name":"Accept","value":"application/json"}]},"options":{"timeout":120000,"response":{"response":{"fullResponse":true,"neverError":true}}}},"id":"221fd1c0-7360-4511-822a-35fe1c0e74be","name":"HF • POLL STATUS","type":"n8n-nodes-base.httpRequest","typeVersion":4.5,"position":[400,0],"credentials":{"httpHeaderAuth":{"id":"JFivVtnOkQ893KKS","name":"Higgsfield API"}}},{"parameters":{"jsCode":"
+const r=$json.body??$json;
+const p=$('HF • WAIT 8s').item.json;
+if(r.error) throw new Error('HIGGSFIELD_STATUS_ERROR:'+JSON.stringify(r.error));
+const status=String(r.status??r.state??'').toLowerCase();
+if(['failed','nsfw','canceled','cancelled'].includes(status)) throw new Error('HIGGSFIELD_TERMINAL_'+status.toUpperCase());
+const previewUrl=r.images?.[0]?.url??r.result?.images?.[0]?.url??r.output?.images?.[0]?.url??r.image?.url??r.result?.image?.url??r.video?.url??r.result?.video?.url??r.output?.video?.url??r.videos?.[0]?.url??r.result?.videos?.[0]?.url??null;
+const pollCount=Number(p.pollCount||0)+1;
+const ready=status==='completed'||Boolean(previewUrl);
+if(pollCount>45&&!ready) throw new Error('HIGGSFIELD_POLL_TIMEOUT');
+return [{json:{...p,status:status||'pending',previewUrl,pollCount,ready}}];
+"},"id":"f7969362-9108-49f2-b226-1348b477d3d6","name":"HF • CLASSIFY STATUS","type":"n8n-nodes-base.code","typeVersion":2,"position":[640,0]},{"parameters":{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict","version":2},"conditions":[{"leftValue":"={{ $json.ready }}","rightValue":true,"operator":{"type":"boolean","operation":"true","singleValue":true}}],"combinator":"and"},"options":{}},"id":"b5527a3c-cf76-45e9-8fca-789dbd3bcb78","name":"HF • READY?","type":"n8n-nodes-base.if","typeVersion":2.2,"position":[880,0]},{"parameters":{"jsCode":"
+const x=$json;
+if(!x.previewUrl) throw new Error('PREVIEW_URL_MISSING');
+return [{json:{accepted:true,status:'completed',character:x.character,mode:x.mode,previewUrl:x.previewUrl,publish:false,approvalRequired:true,requestId:x.requestId}}];
+"},"id":"073d9e32-c4af-44ce-b18c-61d875e4a6fd","name":"VAIRA • REAL PREVIEW RESPONSE","type":"n8n-nodes-base.code","typeVersion":2,"position":[1120,-100]}],"pinData":{},"connections":{"VAIRA • WEBHOOK • POST":{"main":[[{"node":"VAIRA • NORMALIZE + CHARACTER REFERENCES","type":"main","index":0}]]},"VAIRA • NORMALIZE + CHARACTER REFERENCES":{"main":[[{"node":"HF • SUBMIT REAL PHOTO","type":"main","index":0}]]},"HF • SUBMIT REAL PHOTO":{"main":[[{"node":"HF • PARSE SUBMIT","type":"main","index":0}]]},"HF • PARSE SUBMIT":{"main":[[{"node":"HF • WAIT 8s","type":"main","index":0}]]},"HF • WAIT 8s":{"main":[[{"node":"HF • POLL STATUS","type":"main","index":0}]]},"HF • POLL STATUS":{"main":[[{"node":"HF • CLASSIFY STATUS","type":"main","index":0}]]},"HF • CLASSIFY STATUS":{"main":[[{"node":"HF • READY?","type":"main","index":0}]]},"HF • READY?":{"main":[[{"node":"VAIRA • REAL PREVIEW RESPONSE","type":"main","index":0}],[{"node":"HF • WAIT 8s","type":"main","index":0}]]}},"active":false,"settings":{"executionOrder":"v1","timezone":"Europe/Amsterdam"},"versionId":"949dff8e-e925-4613-b898-e093140d0207","meta":{},"tags":[]}
