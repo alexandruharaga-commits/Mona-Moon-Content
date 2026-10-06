@@ -1,0 +1,343 @@
+{
+  "name": "JOHN v5.3 — CLEAN NEW WORKFLOW",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1200,
+        -260
+      ],
+      "name": "Every 15 Minutes"
+    },
+    {
+      "parameters": {
+        "url": "https://eea.okx.com/api/v5/market/tickers?instType=SPOT",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -980,
+        -260
+      ],
+      "name": "OKX ALL SPOT TICKERS",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows=Array.isArray($json.data)?$json.data:[];const stable=new Set(['USDT','USDC','DAI','FDUSD','TUSD','USDP','EURT']);const banned=/(3L|3S|5L|5S|UP|DOWN|BULL|BEAR)$/i;let list=rows.filter(t=>{const id=String(t.instId||'');if(!id.endsWith('-USDT'))return false;const base=id.split('-')[0];if(stable.has(base)||banned.test(base))return false;return Number(t.volCcy24h||0)>0&&Number(t.last||0)>0;});list.sort((a,b)=>Number(b.volCcy24h||0)-Number(a.volCcy24h||0));return list.slice(0,20).map(t=>({json:{instId:t.instId,last:Number(t.last),volCcy24h:Number(t.volCcy24h||0)}}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -760,
+        -260
+      ],
+      "name": "JOHN Top 20 Liquid"
+    },
+    {
+      "parameters": {
+        "url": "=https://eea.okx.com/api/v5/market/candles?instId={{ $json.instId }}&bar=15m&limit=50",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -540,
+        -260
+      ],
+      "name": "Top20 15m Candles",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');const now=Date.now();s.mode='LIVE_ASSIST_SAFE';s.lastScanAt=new Date().toISOString();if(s.pendingTrade?.status==='pending'&&now<Number(s.pendingTrade.expiresAt||0))return [{json:{proposalCreated:false,reason:'PENDING_EXISTS'}}];if(s.pendingTrade?.status==='pending')s.pendingTrade.status='expired';const inputs=$input.all();const meta=$('JOHN Top 20 Liquid').all();const candidates=[];function m(raw){const c=raw.slice().reverse().map(x=>Number(x[4])).filter(x=>Number.isFinite(x)&&x>0);if(c.length<20)return null;const sma=n=>c.slice(-n).reduce((a,b)=>a+b,0)/n;const f=sma(5),slow=sma(20),last=c.at(-1),prev=c.at(-2);let g=0,l=0;for(let i=Math.max(1,c.length-14);i<c.length;i++){const d=c[i]-c[i-1];if(d>0)g+=d;else l-=d;}const rs=l===0?100:(g/14)/(l/14);const rsi=100-(100/(1+rs));return {f,slow,last,rsi,mom:(last-prev)/prev};}for(let i=0;i<inputs.length;i++){const instId=meta[i]?.json?.instId,raw=inputs[i]?.json?.data;if(!instId||!Array.isArray(raw))continue;const x=m(raw);if(x&&x.f>x.slow*1.001&&x.mom>0.001&&x.rsi>=52&&x.rsi<=68){const conf=Math.min(.95,.66+(x.f/x.slow-1)*25+x.mom*18);candidates.push({instId,m:x,confidence:Number(conf.toFixed(2))});}}if(!candidates.length){s.lastMarket={at:s.lastScanAt,marketOk:true,universe:meta.length};return [{json:{proposalCreated:false,reason:'NO_SIGNAL',scanned:meta.length}}];}candidates.sort((a,b)=>b.confidence-a.confidence);const c=candidates[0],amount=c.confidence>=.80?10:5;const p={id:'J'+now+'B',side:'buy',pair:c.instId,amountQuote:amount,entry:c.m.last,stopLoss:Number((c.m.last*.985).toFixed(8)),takeProfit:Number((c.m.last*1.03).toFixed(8)),confidence:c.confidence,reason:'Bullish 15m · RSI '+c.m.rsi.toFixed(1)+' · momentum '+(c.m.mom*100).toFixed(2)+'%',createdAt:now,expiresAt:now+20*60*1000,status:'pending'};s.pendingTrade=p;s.lastMarket={at:s.lastScanAt,marketOk:true,universe:meta.length,pair:c.instId,last:c.m.last,rsi:c.m.rsi};return [{json:{proposalCreated:true,proposal:p}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        -260
+      ],
+      "name": "JOHN Signal + Proposal"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.proposalCreated }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -100,
+        -260
+      ],
+      "name": "Has Proposal?"
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "john-v53/status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -980,
+        180
+      ],
+      "name": "JOHN Status API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\nconst p=s.pendingTrade?.status==='pending'&&Date.now()<Number(s.pendingTrade.expiresAt||0)?s.pendingTrade:null;\nreturn [{json:{\n  ok:true,\n  mode:'LIVE_ASSIST_PUBLISH_SAFE',\n  market:{ok:!!s.lastMarket?.marketOk,pair:s.lastMarket?.pair||null,last:s.lastMarket?.last||null,universe:s.lastMarket?.universe||0},\n  account:{ok:false,totalEq:null,balance:null,currency:'USDT',message:'Private OKX balance disabled in publish-safe build'},\n  scanner:{state:s.lastMarket?.marketOk?'Active':'Standby',pair:s.lastMarket?.pair||null,signal:p?p.reason:'Waiting for valid signal'},\n  strategy:{mode:'Live Assist Publish Safe',confirmationRequired:true,finalSubmit:'MANUAL_IN_OKX',approvalChannel:'JOHN_APP',minQuote:5,maxQuote:10},\n  proposal:p,\n  lastRun:{status:s.lastMarket?.marketOk?'Success':'Standby',at:s.lastMarket?.at||null}\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -100,
+        180
+      ],
+      "name": "JOHN Status Compose"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        120,
+        180
+      ],
+      "name": "Return JOHN Status"
+    },
+    {
+      "parameters": {
+        "content": "## JOHN v5.3 — CLEAN NEW WORKFLOW\n\nFresh import with no saved node IDs, no credential references, and fresh webhook paths.\nCreate a NEW blank workflow in Personal, then import this JSON into that blank workflow.\nThis avoids stale workflow ownership/version state.\n\nPublic OKX market scan + proposal + JOHN app approval.\nFinal Submit remains manual in OKX.\nNo leverage. No transfer/withdrawal.",
+        "height": 300,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1200,
+        -680
+      ],
+      "name": "Safety Notes"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "john-v53/decision",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -980,
+        620
+      ],
+      "name": "JOHN Decision API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s=$getWorkflowStaticData('global');\nconst b=$json.body||$json;\nconst p=s.pendingTrade;\nconst id=String(b.proposalId||'');\nconst dec=String(b.decision||'').toLowerCase();\nconst no=(message,ok=false)=>[{json:{ok,approved:false,message}}];\nif(!p||p.id!==id)return no('Proposal mismatch');\nif(p.status!=='pending')return no('Proposal '+p.status);\nif(Date.now()>=Number(p.expiresAt||0)){p.status='expired';return no('Proposal expired');}\nif(dec==='reject'){p.status='rejected';return [{json:{ok:true,approved:false,status:'rejected'}}];}\nif(dec!=='approve')return no('Decision must be approve or reject');\nconst amt=Number(p.amountQuote);\nif(![5,10].includes(amt))return no('Risk guard blocked amount');\np.status='approved_for_handoff';\np.confirmedAt=Date.now();\nconst pair=String(p.pair||'BTC-USDT').toLowerCase();\nreturn [{json:{ok:true,approved:true,status:'approved_for_manual_submit',pair:p.pair,side:p.side,amountQuote:p.amountQuote,entry:p.entry,stopLoss:p.stopLoss,takeProfit:p.takeProfit,openUrl:'https://www.okx.com/trade-spot/'+pair,message:'Aprobat. Verifică ordinul și apasă manual Submit în OKX.'}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -760,
+        620
+      ],
+      "name": "Validate App Decision"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -540,
+        620
+      ],
+      "name": "Return App Decision"
+    }
+  ],
+  "connections": {
+    "Every 15 Minutes": {
+      "main": [
+        [
+          {
+            "node": "OKX ALL SPOT TICKERS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OKX ALL SPOT TICKERS": {
+      "main": [
+        [
+          {
+            "node": "JOHN Top 20 Liquid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Top 20 Liquid": {
+      "main": [
+        [
+          {
+            "node": "Top20 15m Candles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Top20 15m Candles": {
+      "main": [
+        [
+          {
+            "node": "JOHN Signal + Proposal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Signal + Proposal": {
+      "main": [
+        [
+          {
+            "node": "Has Proposal?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Proposal?": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "JOHN Status API": {
+      "main": [
+        [
+          {
+            "node": "JOHN Status Compose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Status Compose": {
+      "main": [
+        [
+          {
+            "node": "Return JOHN Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JOHN Decision API": {
+      "main": [
+        [
+          {
+            "node": "Validate App Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate App Decision": {
+      "main": [
+        [
+          {
+            "node": "Return App Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Amsterdam"
+  }
+}
