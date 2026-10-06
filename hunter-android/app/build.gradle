@@ -1,0 +1,22 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.friendshipglobaldesign.hunter'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.friendshipglobaldesign.hunter"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
