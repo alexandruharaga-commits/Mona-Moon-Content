@@ -1,0 +1,199 @@
+{
+  "name": "JOHN BALANCE READ v1 — READ ONLY",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "john-balance/status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -700,
+        0
+      ],
+      "name": "JOHN Balance API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const timestamp=new Date().toISOString();const requestPath='/api/v5/account/balance';return [{json:{timestamp,requestPath,prehash:timestamp+'GET'+requestPath}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        0
+      ],
+      "name": "Balance Sign Input"
+    },
+    {
+      "parameters": {
+        "action": "hmac",
+        "binaryData": false,
+        "type": "SHA256",
+        "value": "={{ $json.prehash }}",
+        "dataPropertyName": "okxSign",
+        "encoding": "base64"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 2,
+      "position": [
+        -260,
+        0
+      ],
+      "name": "Balance HMAC",
+      "notes": "SELECT EXISTING CREDENTIAL: JOHN OKX HMAC"
+    },
+    {
+      "parameters": {
+        "url": "https://eea.okx.com/api/v5/account/balance",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "OK-ACCESS-SIGN",
+              "value": "={{ $json.okxSign }}"
+            },
+            {
+              "name": "OK-ACCESS-TIMESTAMP",
+              "value": "={{ $json.timestamp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -40,
+        0
+      ],
+      "name": "OKX LIVE Balance",
+      "onError": "continueRegularOutput",
+      "notes": "READ ONLY. SELECT EXISTING CREDENTIAL: JOHN OKX LIVE"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$json||{};const ok=String(r.code??'')==='0'&&Array.isArray(r.data);const a=ok?(r.data[0]||{}):{};const d=Array.isArray(a.details)?a.details:[];const usdt=d.find(x=>x.ccy==='USDT');return [{json:{ok:true,account:{ok,totalEq:a.totalEq||null,balance:usdt?.availBal||usdt?.cashBal||null,currency:'USDT',message:ok?'OK':(r.msg||r.message||r.error?.message||'Auth unavailable')}}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        180,
+        0
+      ],
+      "name": "Compose Balance"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        400,
+        0
+      ],
+      "name": "Return Balance"
+    },
+    {
+      "parameters": {
+        "content": "## JOHN BALANCE READ v1 — READ ONLY\n\nSeparate from the working JOHN scanner.\n\nAfter import select:\n- Balance HMAC → JOHN OKX HMAC\n- OKX LIVE Balance → JOHN OKX LIVE\n\nThen Save → Publish.\n\nThis workflow only reads /api/v5/account/balance. It has no trade, transfer, or withdrawal endpoint.",
+        "height": 260,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -700,
+        -340
+      ],
+      "name": "Read Only Notes"
+    }
+  ],
+  "connections": {
+    "JOHN Balance API": {
+      "main": [
+        [
+          {
+            "node": "Balance Sign Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Balance Sign Input": {
+      "main": [
+        [
+          {
+            "node": "Balance HMAC",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Balance HMAC": {
+      "main": [
+        [
+          {
+            "node": "OKX LIVE Balance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OKX LIVE Balance": {
+      "main": [
+        [
+          {
+            "node": "Compose Balance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compose Balance": {
+      "main": [
+        [
+          {
+            "node": "Return Balance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Amsterdam"
+  }
+}
