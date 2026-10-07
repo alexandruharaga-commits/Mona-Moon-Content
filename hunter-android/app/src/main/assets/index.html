@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HUNTER Premium</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#050908;--panel:#0b1410;--panel2:#0f1b16;--line:#1d3c2e;--green:#21d07a;--gold:#d6b45e;--text:#eff7f3;--muted:#83998e;--red:#ff8896}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100%}
+body{padding:18px 18px 102px}
+header{padding:8px 4px 16px}.brand{font-size:28px;font-weight:950;letter-spacing:.01em}.gold{color:var(--gold)}.green{color:var(--green)}
+.sub{color:var(--muted);font-size:13px;line-height:1.45}.ey{font-size:10px;letter-spacing:.15em;color:var(--gold);font-weight:900}
+.hero,.card,.op{background:linear-gradient(145deg,#0c1b14,#09110e);border:1px solid var(--line);border-radius:24px;padding:19px}
+.hero h1{font-size:31px;line-height:1.05;margin:10px 0 8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.card{border-radius:18px;min-height:96px}.wide{grid-column:1/-1}.k{font-size:10px;color:#71877c;letter-spacing:.1em;font-weight:900}.v{font-size:21px;font-weight:950;margin-top:6px}
+.pill{display:inline-block;border:1px solid #22573d;background:#0d2418;color:#4de093;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;margin:5px 5px 0 0}
+button{border:0;border-radius:15px;padding:14px 16px;font-weight:950;font-size:13px;background:var(--green);color:#031008}
+button.secondary{background:#17241e;color:#eef5f1;border:1px solid #2c483a}button.danger{background:#36171c;color:#ffb5be;border:1px solid #71333c}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.op{border-radius:17px;margin-top:10px}.score{font-size:22px;font-weight:950;color:var(--green)}
+input{width:100%;background:#07100c;color:#eaf3ee;border:1px solid #254535;border-radius:13px;padding:13px;margin-top:8px}
+.screen{display:none}.screen.active{display:block}
+.statusline{margin-top:12px}.ok{color:var(--green)}.warn{color:var(--gold)}.bad{color:var(--red)}
+.walletBox{margin-top:12px;background:#0b1410;border:1px solid #1e4432;border-radius:18px;padding:16px}.mono{font-family:ui-monospace,monospace;font-size:11px;word-break:break-all;color:#a4b8ae}
+nav{position:fixed;left:10px;right:10px;bottom:10px;background:#0b1210;border:1px solid #1d3c2e;border-radius:20px;padding:7px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;z-index:99}
+nav button{background:#0f1a15;border:1px solid #294a38;color:#dce8e1;padding:10px 3px;font-size:9px;border-radius:14px}nav button.active{color:var(--green);border-color:#2f7652}
+.small{font-size:11px;color:var(--muted);line-height:1.45}.lock{color:var(--gold);font-weight:900}
+.loader{display:none;margin-top:10px;color:var(--gold);font-weight:800}.loader.on{display:block}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">HUNTER <span class="gold">PREMIUM</span> <span class="green" style="font-size:11px">● SCOUT</span></div>
+  <div class="sub">Crypto Opportunity Command Center • Approval-only v0.2</div>
+</header>
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="ey">HUNTER • CRYPTO OPPORTUNITY INTELLIGENCE</div>
+    <h1>Find first.<br>Verify twice.</h1>
+    <div class="sub">Hunter caută oportunități crypto, le filtrează și îți pregătește pașii. Wallet-ul rămâne sub controlul tău.</div>
+    <div><span class="pill">SCORE ≥ 80</span><span class="pill">APPROVAL ONLY</span><span class="pill">NO PRIVATE KEYS</span></div>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="k">MODE</div><div class="v green">SCOUT</div><div class="sub">Search + filter.</div></div>
+    <div class="card"><div class="k">WALLET</div><div class="v gold">APPROVAL</div><div class="sub">Tu confirmi în wallet.</div></div>
+    <div class="card"><div class="k">MIN SCORE</div><div class="v">80/100</div><div class="sub">Filtru strict.</div></div>
+    <div class="card"><div class="k">AUTOSIGN</div><div class="v bad">OFF</div><div class="sub">Nu poate semna singur.</div></div>
+    <div class="card wide"><div class="k">v0.2</div><div class="sub">Conectare OKX Wallet pentru identificarea adresei publice. Hunter nu citește și nu salvează seed phrase/private key și nu transmite tranzacții fără confirmare în wallet.</div></div>
+  </div>
+</section>
+
+<section id="hunt" class="screen">
+  <div class="hero">
+    <div class="ey">LIVE HUNT</div><h1>Opportunities</h1>
+    <div class="sub">Statusul real din n8n și ultimele oportunități acceptate de filtrul Hunter.</div>
+    <div class="row"><button onclick="refreshHunter()">↻ REFRESH</button></div>
+  </div>
+  <div id="huntStatus" class="card statusline"><div class="k">STATUS</div><div class="v warn">READY</div></div>
+  <div id="ops"></div>
+</section>
+
+<section id="wallets" class="screen">
+  <div class="hero">
+    <div class="ey">WALLET CONTROL</div><h1>Connect safely.</h1>
+    <div class="sub">Conectarea se aprobă în OKX Wallet. Hunter salvează local doar adresa publică și chain-ul returnat de wallet.</div>
+    <div class="row"><button onclick="connectOkx()">CONNECT OKX WALLET</button></div>
+    <div id="connectLoader" class="loader">Se încarcă OKX Connect…</div>
+  </div>
+  <div id="connected"></div>
+
+  <div class="card statusline">
+    <div class="k">MANUAL WATCH-ONLY</div>
+    <input id="label" placeholder="Nume, ex. Main Wallet">
+    <input id="address" placeholder="Adresă publică wallet">
+    <div class="row"><button class="secondary" onclick="addWatch()">+ ADD WATCH ADDRESS</button></div>
+  </div>
+  <div id="watchList"></div>
+</section>
+
+<section id="execute" class="screen">
+  <div class="hero">
+    <div class="ey">EXECUTION CONTROL</div><h1>Prepare. Review. Approve.</h1>
+    <div class="sub">v0.2 poate identifica wallet-ul conectat. Nu poate semna sau trimite tranzacții autonom.</div>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="k">CONNECTION</div><div id="execConn" class="v warn">CHECK</div><div class="sub">OKX Wallet session.</div></div>
+    <div class="card"><div class="k">AUTO SIGN</div><div class="v bad">OFF</div><div class="sub">Permanent pentru v0.2.</div></div>
+    <div class="card"><div class="k">TRANSFER</div><div class="v bad">LOCKED</div><div class="sub">Nu există auto-transfer.</div></div>
+    <div class="card"><div class="k">KILL SWITCH</div><div class="v green">ARMED</div><div class="sub">Design obligatoriu.</div></div>
+    <div class="card wide"><div class="k">NEXT</div><div class="sub">v0.3: Hunter va putea pregăti un claim/swap și va trimite cererea către wallet. Tranzacția pleacă numai după confirmarea ta în OKX Wallet.</div></div>
+  </div>
+  <div class="row"><button onclick="approvalTest()">TEST APPROVAL FLOW</button></div>
+</section>
+
+<section id="more" class="screen">
+  <div class="hero"><div class="ey">HUNTER PREMIUM</div><h1>System</h1><div class="sub">Build v0.2 • Friendship Global Design</div></div>
+  <div class="grid">
+    <div class="card wide"><div class="k">STATUS API</div><div class="small">https://alalex.app.n8n.cloud/webhook/hunter/status</div></div>
+    <div class="card"><div class="k">PRIVATE KEYS</div><div class="v green">NONE</div></div>
+    <div class="card"><div class="k">SIGNING</div><div class="v gold">USER</div></div>
+    <div class="card wide"><div class="k">SECURITY</div><div class="small">Nu introduce niciodată seed phrase, recovery phrase sau private key în Hunter. Connect OKX Wallet trebuie să deschidă wallet-ul oficial pentru aprobare.</div></div>
+  </div>
+</section>
+
+<nav>
+  <button data-screen="home" class="active" onclick="show('home',this)">⌂<br>HOME</button>
+  <button data-screen="hunt" onclick="show('hunt',this)">◎<br>HUNT</button>
+  <button data-screen="wallets" onclick="show('wallets',this)">◇<br>WALLETS</button>
+  <button data-screen="execute" onclick="show('execute',this)">⚡<br>EXECUTE</button>
+  <button data-screen="more" onclick="show('more',this)">⋯<br>MORE</button>
+</nav>
+
+<script>
+const HUNTER_STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
+const HUNTER_ICON='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-premium-v0.2/hunter-connect/hunter-icon.png';
+let current='home';
+let okxUi=null;
+
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function show(id,btn){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  current=id;
+  if(id==='wallets') renderWallets();
+  if(id==='execute') renderExecute();
+  if(id==='hunt') refreshHunter();
+  scrollTo(0,0);
+}
+window.hunterBack=function(){
+  if(current!=='home'){
+    show('home',document.querySelector('nav button[data-screen="home"]'));
+  } else {
+    HunterNative.notice('HUNTER','Folosește butonul Home al telefonului pentru a ieși.');
+  }
+}
+window.hunterReturned=function(){
+  HunterNative.toast('Ai revenit în HUNTER. Finalizez conexiunea dacă OKX a aprobat-o.');
+  setTimeout(renderWallets,500);
+}
+
+async function refreshHunter(){
+  const st=document.getElementById('huntStatus'), ops=document.getElementById('ops');
+  st.innerHTML='<div class="k">STATUS</div><div class="v warn">CHECKING…</div>'; ops.innerHTML='';
+  try{
+    const r=await fetch(HUNTER_STATUS,{cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const j=await r.json();
+    st.innerHTML='<div class="k">HUNTER</div><div class="v green">'+esc(j.mode||'ONLINE')+'</div><div class="sub">Seen: '+esc(j.seenCount||0)+' • Last run: '+esc(j.lastRunAt||'—')+'</div>';
+    const alerts=Array.isArray(j.lastAlerts)?j.lastAlerts:[];
+    if(!alerts.length){
+      ops.innerHTML='<div class="card statusline"><div class="k">NO ACTIVE ALERTS</div><div class="sub">Nicio oportunitate ≥80 în status acum.</div></div>';
+      return;
+    }
+    ops.innerHTML=alerts.map(a=>'<div class="op"><div class="score">'+esc(a.score||'—')+'/100</div><b>'+esc(a.title||'Opportunity')+'</b><div class="sub">'+esc(a.source||'')+' • Risk '+esc(a.risk||'—')+'<br>Cost: '+esc(a.cost||'—')+'<br>'+esc(a.action||'Review official source')+'</div>'+(a.link?'<div class="row"><button class="secondary" onclick="location.href=\''+esc(a.link)+'\'">OPEN SOURCE</button></div>':'')+'</div>').join('');
+  }catch(e){
+    st.innerHTML='<div class="k">HUNTER</div><div class="v bad">OFFLINE</div><div class="sub">'+esc(e.message)+'</div>';
+  }
+}
+
+function normalizeAccount(a){
+  if(!a) return {account:'',chain:''};
+  const parts=String(a).split(':');
+  if(parts.length>=3) return {account:parts.slice(2).join(':'),chain:parts.slice(0,2).join(':')};
+  return {account:String(a),chain:''};
+}
+
+async function connectOkx(){
+  const loader=document.getElementById('connectLoader');
+  loader.classList.add('on');
+  loader.textContent='Se încarcă OKX Connect…';
+  try{
+    if(!okxUi){
+      const mod=await import('https://cdn.jsdelivr.net/npm/@okxconnect/ui@1.9.1/+esm');
+      const UI=mod.OKXUniversalConnectUI || (mod.default && mod.default.OKXUniversalConnectUI) || mod.default;
+      if(!UI || !UI.init) throw new Error('OKX Connect SDK indisponibil');
+      const theme=(mod.THEME && mod.THEME.DARK) ? mod.THEME.DARK : 'DARK';
+      okxUi=await UI.init({
+        dappMetaData:{name:'HUNTER Premium',icon:HUNTER_ICON},
+        actionsConfiguration:{returnStrategy:'hunter://wallet',modals:'all'},
+        language:'ro_RO',
+        uiPreferences:{theme:theme},
+        restoreConnection:true
+      });
+      if(okxUi && okxUi.on){
+        okxUi.on('accountChanged',session=>saveSession(session));
+      }
+    }
+    loader.textContent='Deschid OKX Wallet pentru aprobare…';
+    const session=await okxUi.openModal({
+      namespaces:{
+        eip155:{
+          chains:['eip155:1'],
+          defaultChain:'eip155:1'
+        }
+      },
+      optionalNamespaces:{
+        eip155:{
+          chains:['eip155:8453','eip155:42161','eip155:137']
+        }
+      }
+    });
+    if(session) saveSession(session);
+    else loader.textContent='Aștept aprobarea din OKX Wallet…';
+  }catch(e){
+    loader.textContent='Conectarea OKX nu a reușit: '+e.message;
+    HunterNative.notice('OKX CONNECT','Conectarea automată nu a reușit. Poți folosi în continuare adresa publică în modul watch-only.\n\n'+e.message);
+  }
+}
+
+function saveSession(session){
+  try{
+    const ns=session && session.namespaces && session.namespaces.eip155;
+    const accounts=ns && Array.isArray(ns.accounts) ? ns.accounts : [];
+    if(!accounts.length) return false;
+    const n=normalizeAccount(accounts[0]);
+    if(!n.account) return false;
+    HunterNative.saveConnectedWallet('OKX Wallet',n.account,n.chain || (ns.defaultChain||''));
+    document.getElementById('connectLoader').classList.remove('on');
+    renderWallets();
+    renderExecute();
+    return true;
+  }catch(e){return false}
+}
+
+function renderWallets(){
+  let c={}; try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){}
+  const box=document.getElementById('connected');
+  if(c && c.account){
+    box.innerHTML='<div class="walletBox"><div class="k">CONNECTED WALLET</div><div class="v green">OKX • APPROVAL ONLY</div><div class="mono">'+esc(c.account)+'</div><div class="small">Chain: '+esc(c.chain||'EVM')+'</div><div class="row"><button class="danger" onclick="disconnectWallet()">DISCONNECT</button></div></div>';
+  }else{
+    box.innerHTML='<div class="walletBox"><div class="k">CONNECTED WALLET</div><div class="v warn">NONE</div><div class="small">Apasă CONNECT OKX WALLET sau adaugă manual o adresă publică watch-only.</div></div>';
+  }
+  let a=[]; try{a=JSON.parse(HunterNative.listWallets())}catch(e){}
+  document.getElementById('watchList').innerHTML=a.length?a.map((w,i)=>'<div class="op"><b>'+esc(w.label)+'</b><div class="mono">'+esc(w.address)+'</div><div class="row"><button class="secondary" onclick="HunterNative.removeWallet('+i+');renderWallets()">REMOVE</button></div></div>').join(''):'';
+}
+
+function addWatch(){
+  const l=document.getElementById('label').value.trim();
+  const a=document.getElementById('address').value.trim();
+  if(HunterNative.addWallet(l,a)){
+    document.getElementById('label').value='';
+    document.getElementById('address').value='';
+    renderWallets();
+  }
+}
+function disconnectWallet(){
+  HunterNative.clearConnectedWallet();
+  renderWallets(); renderExecute();
+}
+function renderExecute(){
+  let c={}; try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){}
+  const el=document.getElementById('execConn');
+  if(c && c.account){el.textContent='CONNECTED'; el.className='v green';}
+  else {el.textContent='NO WALLET'; el.className='v warn';}
+}
+function approvalTest(){
+  let c={}; try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){}
+  if(!c.account){
+    HunterNative.notice('APPROVAL TEST','Conectează mai întâi un wallet în secțiunea WALLETS.');
+    return;
+  }
+  HunterNative.notice('APPROVAL TEST','PASS: Hunter vede doar adresa publică '+c.account.slice(0,6)+'…'+c.account.slice(-4)+'.\n\nNu s-a creat, semnat sau trimis nicio tranzacție.');
+}
+
+renderWallets();
+renderExecute();
+</script>
+</body>
+</html>
