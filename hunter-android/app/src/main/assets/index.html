@@ -3,270 +3,165 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>HUNTER Premium</title>
+<title>HUNTER ALPHA</title>
 <style>
-*{box-sizing:border-box}
-:root{--bg:#050908;--panel:#0b1410;--panel2:#0f1b16;--line:#1d3c2e;--green:#21d07a;--gold:#d6b45e;--text:#eff7f3;--muted:#83998e;--red:#ff8896}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100%}
-body{padding:18px 18px 102px}
-header{padding:8px 4px 16px}.brand{font-size:28px;font-weight:950;letter-spacing:.01em}.gold{color:var(--gold)}.green{color:var(--green)}
-.sub{color:var(--muted);font-size:13px;line-height:1.45}.ey{font-size:10px;letter-spacing:.15em;color:var(--gold);font-weight:900}
-.hero,.card,.op{background:linear-gradient(145deg,#0c1b14,#09110e);border:1px solid var(--line);border-radius:24px;padding:19px}
-.hero h1{font-size:31px;line-height:1.05;margin:10px 0 8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.card{border-radius:18px;min-height:96px}.wide{grid-column:1/-1}.k{font-size:10px;color:#71877c;letter-spacing:.1em;font-weight:900}.v{font-size:21px;font-weight:950;margin-top:6px}
-.pill{display:inline-block;border:1px solid #22573d;background:#0d2418;color:#4de093;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;margin:5px 5px 0 0}
-button{border:0;border-radius:15px;padding:14px 16px;font-weight:950;font-size:13px;background:var(--green);color:#031008}
-button.secondary{background:#17241e;color:#eef5f1;border:1px solid #2c483a}button.danger{background:#36171c;color:#ffb5be;border:1px solid #71333c}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.op{border-radius:17px;margin-top:10px}.score{font-size:22px;font-weight:950;color:var(--green)}
-input{width:100%;background:#07100c;color:#eaf3ee;border:1px solid #254535;border-radius:13px;padding:13px;margin-top:8px}
-.screen{display:none}.screen.active{display:block}
-.statusline{margin-top:12px}.ok{color:var(--green)}.warn{color:var(--gold)}.bad{color:var(--red)}
-.walletBox{margin-top:12px;background:#0b1410;border:1px solid #1e4432;border-radius:18px;padding:16px}.mono{font-family:ui-monospace,monospace;font-size:11px;word-break:break-all;color:#a4b8ae}
-nav{position:fixed;left:10px;right:10px;bottom:10px;background:#0b1210;border:1px solid #1d3c2e;border-radius:20px;padding:7px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;z-index:99}
-nav button{background:#0f1a15;border:1px solid #294a38;color:#dce8e1;padding:10px 3px;font-size:9px;border-radius:14px}nav button.active{color:var(--green);border-color:#2f7652}
-.small{font-size:11px;color:var(--muted);line-height:1.45}.lock{color:var(--gold);font-weight:900}
-.loader{display:none;margin-top:10px;color:var(--gold);font-weight:800}.loader.on{display:block}
+*{box-sizing:border-box} :root{--bg:#030506;--p:#0b0f11;--p2:#11171a;--line:#263036;--gold:#d5ad55;--gold2:#f5d789;--text:#f5f7f7;--muted:#899399;--green:#28da83;--red:#ff5668;--blue:#5a88ff}
+html,body{margin:0;background:radial-gradient(circle at 50% -10%,#1b160c 0,#07090a 28%,#030506 68%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100%}
+body{padding:18px 16px 92px}.hide{display:none!important}.screen{display:none}.screen.active{display:block}
+.brand{font-weight:1000;letter-spacing:.08em;font-size:24px}.brand b{color:var(--gold)}.tag{font-size:9px;letter-spacing:.22em;color:#b4bcc0;margin-top:3px}
+.hero{border:1px solid #3b3220;background:linear-gradient(150deg,#11110d,#080b0c);border-radius:26px;padding:20px;box-shadow:0 12px 45px #0008}
+.hero h1{font-size:31px;line-height:1.02;margin:11px 0}.sub{color:var(--muted);font-size:13px;line-height:1.45}.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}
+.logo{width:118px;height:118px;margin:8px auto 13px;border-radius:28px;background:radial-gradient(circle,#25231b,#090b0c 70%);border:1px solid #574a2d;display:grid;place-items:center;font-size:58px;box-shadow:0 0 45px #d5ad5524}
+.logo:before{content:"◆";color:#d7d9db;text-shadow:0 0 14px #fff6}.wolf{font-size:11px;color:var(--gold);letter-spacing:.18em;text-align:center;margin-top:-7px}
+.btn{width:100%;border:0;border-radius:16px;padding:15px 17px;font-weight:900;font-size:14px;margin-top:10px;background:linear-gradient(90deg,#c6922d,#f1d27e,#b77c1f);color:#090806}
+.btn.dark{background:#11171a;color:#eef2f2;border:1px solid #313b40}.btn.red{background:#281115;color:#ff8791;border:1px solid #63313a}
+input{width:100%;background:#090d0f;border:1px solid #30393e;border-radius:14px;padding:14px;color:white;margin-top:10px;font-size:14px}
+.note{font-size:10px;color:#707a80;line-height:1.45;margin-top:11px}.card{background:linear-gradient(150deg,#0c1113,#080b0d);border:1px solid #273238;border-radius:19px;padding:15px;margin-top:11px}
+.row{display:flex;gap:9px;align-items:center}.between{justify-content:space-between}.pill{display:inline-block;border:1px solid #3a4449;border-radius:999px;padding:6px 10px;font-size:10px;color:#c5cdd0;margin:4px 4px 0 0}.pill.gold{border-color:#79622f;color:#f2cf76}.pill.green{border-color:#236841;color:#45dd8d}.pill.red{border-color:#71323b;color:#ff7d89}
+.k{font-size:9px;letter-spacing:.14em;color:#738086;font-weight:900}.v{font-weight:950;font-size:21px;margin-top:4px}.small{font-size:11px;color:#8d989d}.mono{font-family:ui-monospace,monospace;font-size:11px;color:#a7b0b4;word-break:break-all}
+.top{display:flex;align-items:center;justify-content:space-between;margin:6px 3px 15px}.top .mini{font-size:11px;color:#7f8a8f}
+.scanring{width:150px;height:150px;border-radius:50%;border:2px solid #876c2f;margin:22px auto;display:grid;place-items:center;box-shadow:inset 0 0 40px #d5ad5524,0 0 35px #d5ad5518;position:relative}
+.scanring:after{content:"";position:absolute;inset:9px;border-radius:50%;border:1px dashed #725d2d;animation:spin 8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{padding:12px 9px;border:1px solid #273238;background:#0b1012;border-radius:16px;text-align:center}.stat b{font-size:22px}
+.filters{display:flex;overflow:auto;gap:7px;margin:12px 0;padding-bottom:3px}.filter{white-space:nowrap;border:1px solid #2d383e;background:#0a0e10;color:#a8b1b5;border-radius:999px;padding:8px 12px;font-size:11px}.filter.on{border-color:#80682f;color:#f4ce70;background:#171308}
+.op{position:relative}.score{font-weight:1000;font-size:19px;color:var(--green)}.title{font-weight:900;font-size:16px;margin:5px 0}.source{font-size:11px;color:#89959b}.opactions{display:flex;gap:8px;margin-top:12px}.opactions button{flex:1;margin:0;padding:11px;border-radius:12px;border:1px solid #354147;background:#11171a;color:white;font-weight:800}.opactions .primary{background:#d4aa51;color:#090806;border-color:#d4aa51}
+.empty{text-align:center;padding:28px 12px;color:#7d888e}.sectiontitle{font-size:17px;font-weight:950;margin:18px 2px 6px}.check{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid #1f282c}.circle{min-width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#171d20;border:1px solid #394349;color:#cbd2d5;font-weight:900}.check.done .circle{background:#153d29;color:#55e596;border-color:#286944}
+.nav{position:fixed;left:9px;right:9px;bottom:8px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px;background:#080c0eeb;border:1px solid #273238;border-radius:21px;backdrop-filter:blur(14px);z-index:30}.nav button{border:0;background:transparent;color:#7c878c;padding:8px 1px;font-size:9px}.nav button.on{color:#f0c765}.nav span{font-size:19px;display:block;margin-bottom:2px}
+#gate,#walletGate{max-width:520px;margin:auto;padding-top:13px}.gateTitle{text-align:center;font-size:34px;font-weight:1000;letter-spacing:.04em}.gateTitle b{color:var(--gold)}
+.security{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}.security div{border:1px solid #292f32;border-radius:14px;padding:11px 5px;text-align:center;font-size:10px;color:#a3acb0}
+.badge{font-size:10px;padding:5px 8px;border-radius:999px;background:#112719;color:#4ee28e;border:1px solid #235d3a}.back{background:none;border:0;color:white;font-size:24px;padding:3px}
+.detailhero{padding:18px;border:1px solid #2b3438;border-radius:20px;background:linear-gradient(150deg,#101519,#090c0e)}.detailhero h2{margin:7px 0}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 </style>
 </head>
 <body>
-<header>
-  <div class="brand">HUNTER <span class="gold">PREMIUM</span> <span class="green" style="font-size:11px">● SCOUT</span></div>
-  <div class="sub">Crypto Opportunity Command Center • Approval-only v0.2</div>
-</header>
+<div id="gate">
+  <div class="logo"></div><div class="wolf">TITANIUM WOLF EDITION</div>
+  <div class="gateTitle">HUNTER <b>ALPHA</b></div>
+  <div class="tag" style="text-align:center">CRYPTO OPPORTUNITY INTELLIGENCE</div>
+  <div class="hero" style="margin-top:22px">
+    <div class="k">BETA ACCESS</div><h1>Real opportunities.<br><span class="gold">Less noise.</span></h1>
+    <div class="sub">Hunter searches for legitimate crypto airdrops, giveaways, whitelists, quests and learn-to-earn rewards. It filters risk and keeps the wallet under your control.</div>
+    <input id="email" type="email" placeholder="Email for local beta profile">
+    <button class="btn" onclick="enterBeta()">CONTINUE</button>
+    <button class="btn dark" onclick="enterDemo()">TRY DEMO FIRST</button>
+    <div class="note">This beta build creates only a local profile on this phone. Google/email cloud authentication is not enabled yet.</div>
+  </div>
+  <div class="security"><div>◈<br>NON-CUSTODIAL</div><div>✓<br>RISK FILTER</div><div>◎<br>YOU CONTROL</div></div>
+</div>
 
-<section id="home" class="screen active">
-  <div class="hero">
-    <div class="ey">HUNTER • CRYPTO OPPORTUNITY INTELLIGENCE</div>
-    <h1>Find first.<br>Verify twice.</h1>
-    <div class="sub">Hunter caută oportunități crypto, le filtrează și îți pregătește pașii. Wallet-ul rămâne sub controlul tău.</div>
-    <div><span class="pill">SCORE ≥ 80</span><span class="pill">APPROVAL ONLY</span><span class="pill">NO PRIVATE KEYS</span></div>
+<div id="walletGate" class="hide">
+  <div class="top"><button class="back" onclick="showGate()">‹</button><div class="brand">HUNTER <b>ALPHA</b></div><div></div></div>
+  <div class="hero"><div class="k">OPTIONAL SETUP</div><h1>Connect your wallet.</h1>
+    <div class="sub">Wallet connection is optional. Hunter can hunt opportunities without it. A connected public address can later help with eligibility checks. Never enter seed phrases or private keys.</div>
+    <button class="btn" onclick="connectOkx()">CONNECT OKX WALLET</button>
+    <button class="btn dark" onclick="skipWallet()">SKIP FOR NOW</button>
+    <div id="connectLoader" class="note"></div>
   </div>
-  <div class="grid">
-    <div class="card"><div class="k">MODE</div><div class="v green">SCOUT</div><div class="sub">Search + filter.</div></div>
-    <div class="card"><div class="k">WALLET</div><div class="v gold">APPROVAL</div><div class="sub">Tu confirmi în wallet.</div></div>
-    <div class="card"><div class="k">MIN SCORE</div><div class="v">80/100</div><div class="sub">Filtru strict.</div></div>
-    <div class="card"><div class="k">AUTOSIGN</div><div class="v bad">OFF</div><div class="sub">Nu poate semna singur.</div></div>
-    <div class="card wide"><div class="k">v0.2</div><div class="sub">Conectare OKX Wallet pentru identificarea adresei publice. Hunter nu citește și nu salvează seed phrase/private key și nu transmite tranzacții fără confirmare în wallet.</div></div>
-  </div>
-</section>
+  <div id="walletGateState"></div>
+</div>
 
-<section id="hunt" class="screen">
-  <div class="hero">
-    <div class="ey">LIVE HUNT</div><h1>Opportunities</h1>
-    <div class="sub">Statusul real din n8n și ultimele oportunități acceptate de filtrul Hunter.</div>
-    <div class="row"><button onclick="refreshHunter()">↻ REFRESH</button></div>
-  </div>
-  <div id="huntStatus" class="card statusline"><div class="k">STATUS</div><div class="v warn">READY</div></div>
-  <div id="ops"></div>
-</section>
+<div id="app" class="hide">
+  <section id="home" class="screen active">
+    <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">OPPORTUNITY HUNTER</div></div><div class="mini" id="topMode">WATCH_ONLY</div></div>
+    <div class="hero">
+      <div class="k">LIVE HUNT</div><h1>Find it before<br><span class="gold">the crowd.</span></h1>
+      <div class="sub">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
+      <button class="btn" onclick="scanNow()">REFRESH HUNT</button>
+    </div>
+    <div class="statgrid" style="margin-top:11px">
+      <div class="stat"><b id="seen">0</b><div class="k">SEEN</div></div>
+      <div class="stat"><b id="accepted">0</b><div class="k">ACTIVE</div></div>
+      <div class="stat"><b id="minScore">80</b><div class="k">MIN SCORE</div></div>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div id="homeOps"></div>
+  </section>
 
-<section id="wallets" class="screen">
-  <div class="hero">
-    <div class="ey">WALLET CONTROL</div><h1>Connect safely.</h1>
-    <div class="sub">Conectarea se aprobă în OKX Wallet. Hunter salvează local doar adresa publică și chain-ul returnat de wallet.</div>
-    <div class="row"><button onclick="connectOkx()">CONNECT OKX WALLET</button></div>
-    <div id="connectLoader" class="loader">Se încarcă OKX Connect…</div>
-  </div>
-  <div id="connected"></div>
+  <section id="hunt" class="screen">
+    <div class="top"><div class="brand">HUNT <b>STATUS</b></div><div class="mini" id="lastRun">—</div></div>
+    <div class="scanring"><div style="text-align:center"><div class="v" id="ringCount">0</div><div class="small">opportunities</div></div></div>
+    <div class="card"><div class="k">AGENT</div><div class="v green" id="agentMode">WATCH_ONLY</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
+    <div class="sectiontitle">Sources Hunter monitors</div>
+    <div class="card"><div class="small">Official exchange announcements • project channels • quest platforms • reputable crypto news • public web sources</div></div>
+    <button class="btn" onclick="scanNow()">REFRESH STATUS</button>
+  </section>
 
-  <div class="card statusline">
-    <div class="k">MANUAL WATCH-ONLY</div>
-    <input id="label" placeholder="Nume, ex. Main Wallet">
-    <input id="address" placeholder="Adresă publică wallet">
-    <div class="row"><button class="secondary" onclick="addWatch()">+ ADD WATCH ADDRESS</button></div>
-  </div>
-  <div id="watchList"></div>
-</section>
+  <section id="watch" class="screen">
+    <div class="top"><div class="brand">MY <b>WATCHLIST</b></div><div class="mini" id="watchCount">0 saved</div></div>
+    <div id="watchOps"></div>
+  </section>
 
-<section id="execute" class="screen">
-  <div class="hero">
-    <div class="ey">EXECUTION CONTROL</div><h1>Prepare. Review. Approve.</h1>
-    <div class="sub">v0.2 poate identifica wallet-ul conectat. Nu poate semna sau trimite tranzacții autonom.</div>
-  </div>
-  <div class="grid">
-    <div class="card"><div class="k">CONNECTION</div><div id="execConn" class="v warn">CHECK</div><div class="sub">OKX Wallet session.</div></div>
-    <div class="card"><div class="k">AUTO SIGN</div><div class="v bad">OFF</div><div class="sub">Permanent pentru v0.2.</div></div>
-    <div class="card"><div class="k">TRANSFER</div><div class="v bad">LOCKED</div><div class="sub">Nu există auto-transfer.</div></div>
-    <div class="card"><div class="k">KILL SWITCH</div><div class="v green">ARMED</div><div class="sub">Design obligatoriu.</div></div>
-    <div class="card wide"><div class="k">NEXT</div><div class="sub">v0.3: Hunter va putea pregăti un claim/swap și va trimite cererea către wallet. Tranzacția pleacă numai după confirmarea ta în OKX Wallet.</div></div>
-  </div>
-  <div class="row"><button onclick="approvalTest()">TEST APPROVAL FLOW</button></div>
-</section>
+  <section id="tasks" class="screen">
+    <div class="top"><div class="brand">TASK <b>GUIDE</b></div><div class="mini">SAFE FLOW</div></div>
+    <div id="taskBody" class="empty">Open an opportunity and tap “Guide” to prepare its steps.</div>
+  </section>
 
-<section id="more" class="screen">
-  <div class="hero"><div class="ey">HUNTER PREMIUM</div><h1>System</h1><div class="sub">Build v0.2 • Friendship Global Design</div></div>
-  <div class="grid">
-    <div class="card wide"><div class="k">STATUS API</div><div class="small">https://alalex.app.n8n.cloud/webhook/hunter/status</div></div>
-    <div class="card"><div class="k">PRIVATE KEYS</div><div class="v green">NONE</div></div>
-    <div class="card"><div class="k">SIGNING</div><div class="v gold">USER</div></div>
-    <div class="card wide"><div class="k">SECURITY</div><div class="small">Nu introduce niciodată seed phrase, recovery phrase sau private key în Hunter. Connect OKX Wallet trebuie să deschidă wallet-ul oficial pentru aprobare.</div></div>
-  </div>
-</section>
+  <section id="profile" class="screen">
+    <div class="top"><div class="brand">HUNTER <b>ALPHA</b></div><div class="mini">v0.3</div></div>
+    <div class="card"><div class="k">PROFILE</div><div class="v" id="profileEmail">Local beta</div><div class="small">This build keeps profile data locally.</div></div>
+    <div class="sectiontitle">Wallet</div><div id="walletProfile"></div>
+    <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades. Open official sources and approve sensitive actions yourself.</div></div>
+    <button class="btn dark" onclick="showWalletSettings()">WALLET SETTINGS</button>
+    <button class="btn red" onclick="resetOnboarding()">RESET LOCAL PROFILE</button>
+  </section>
 
-<nav>
-  <button data-screen="home" class="active" onclick="show('home',this)">⌂<br>HOME</button>
-  <button data-screen="hunt" onclick="show('hunt',this)">◎<br>HUNT</button>
-  <button data-screen="wallets" onclick="show('wallets',this)">◇<br>WALLETS</button>
-  <button data-screen="execute" onclick="show('execute',this)">⚡<br>EXECUTE</button>
-  <button data-screen="more" onclick="show('more',this)">⋯<br>MORE</button>
-</nav>
+  <nav class="nav">
+    <button id="n-home" class="on" onclick="go('home')"><span>⌂</span>HOME</button>
+    <button id="n-hunt" onclick="go('hunt')"><span>◎</span>HUNT</button>
+    <button id="n-watch" onclick="go('watch')"><span>☆</span>WATCHLIST</button>
+    <button id="n-tasks" onclick="go('tasks')"><span>☑</span>TASKS</button>
+    <button id="n-profile" onclick="go('profile')"><span>●</span>PROFILE</button>
+  </nav>
+</div>
+
+<div id="detail" class="hide">
+  <div class="top"><button class="back" onclick="closeDetail()">‹</button><div class="brand">OPPORTUNITY <b>DETAILS</b></div><div></div></div>
+  <div id="detailBody"></div>
+</div>
 
 <script>
-const HUNTER_STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
-const HUNTER_ICON='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-premium-v0.2/hunter-connect/hunter-icon.png';
-let current='home';
-let okxUi=null;
+const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
+const HUNTER_ICON='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.3/hunter-connect/hunter-icon.png';
+let okxUi=null, state={alerts:[],raw:null,filter:'All'}, selected=null;
 
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function show(id,btn){
-  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  current=id;
-  if(id==='wallets') renderWallets();
-  if(id==='execute') renderExecute();
-  if(id==='hunt') refreshHunter();
-  scrollTo(0,0);
-}
-window.hunterBack=function(){
-  if(current!=='home'){
-    show('home',document.querySelector('nav button[data-screen="home"]'));
-  } else {
-    HunterNative.notice('HUNTER','Folosește butonul Home al telefonului pentru a ieși.');
-  }
-}
-window.hunterReturned=function(){
-  HunterNative.toast('Ai revenit în HUNTER. Finalizez conexiunea dacă OKX a aprobat-o.');
-  setTimeout(renderWallets,500);
-}
-
-async function refreshHunter(){
-  const st=document.getElementById('huntStatus'), ops=document.getElementById('ops');
-  st.innerHTML='<div class="k">STATUS</div><div class="v warn">CHECKING…</div>'; ops.innerHTML='';
-  try{
-    const r=await fetch(HUNTER_STATUS,{cache:'no-store'});
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    const j=await r.json();
-    st.innerHTML='<div class="k">HUNTER</div><div class="v green">'+esc(j.mode||'ONLINE')+'</div><div class="sub">Seen: '+esc(j.seenCount||0)+' • Last run: '+esc(j.lastRunAt||'—')+'</div>';
-    const alerts=Array.isArray(j.lastAlerts)?j.lastAlerts:[];
-    if(!alerts.length){
-      ops.innerHTML='<div class="card statusline"><div class="k">NO ACTIVE ALERTS</div><div class="sub">Nicio oportunitate ≥80 în status acum.</div></div>';
-      return;
-    }
-    ops.innerHTML=alerts.map(a=>'<div class="op"><div class="score">'+esc(a.score||'—')+'/100</div><b>'+esc(a.title||'Opportunity')+'</b><div class="sub">'+esc(a.source||'')+' • Risk '+esc(a.risk||'—')+'<br>Cost: '+esc(a.cost||'—')+'<br>'+esc(a.action||'Review official source')+'</div>'+(a.link?'<div class="row"><button class="secondary" onclick="location.href=\''+esc(a.link)+'\'">OPEN SOURCE</button></div>':'')+'</div>').join('');
-  }catch(e){
-    st.innerHTML='<div class="k">HUNTER</div><div class="v bad">OFFLINE</div><div class="sub">'+esc(e.message)+'</div>';
-  }
-}
-
-function normalizeAccount(a){
-  if(!a) return {account:'',chain:''};
-  const parts=String(a).split(':');
-  if(parts.length>=3) return {account:parts.slice(2).join(':'),chain:parts.slice(0,2).join(':')};
-  return {account:String(a),chain:''};
-}
-
-async function connectOkx(){
-  const loader=document.getElementById('connectLoader');
-  loader.classList.add('on');
-  loader.textContent='Se încarcă OKX Connect…';
-  try{
-    if(!okxUi){
-      const mod=await import('https://cdn.jsdelivr.net/npm/@okxconnect/ui@1.9.1/+esm');
-      const UI=mod.OKXUniversalConnectUI || (mod.default && mod.default.OKXUniversalConnectUI) || mod.default;
-      if(!UI || !UI.init) throw new Error('OKX Connect SDK indisponibil');
-      const theme=(mod.THEME && mod.THEME.DARK) ? mod.THEME.DARK : 'DARK';
-      okxUi=await UI.init({
-        dappMetaData:{name:'HUNTER Premium',icon:HUNTER_ICON},
-        actionsConfiguration:{returnStrategy:'hunter://wallet',modals:'all'},
-        language:'ro_RO',
-        uiPreferences:{theme:theme},
-        restoreConnection:true
-      });
-      if(okxUi && okxUi.on){
-        okxUi.on('accountChanged',session=>saveSession(session));
-      }
-    }
-    loader.textContent='Deschid OKX Wallet pentru aprobare…';
-    const session=await okxUi.openModal({
-      namespaces:{
-        eip155:{
-          chains:['eip155:1'],
-          defaultChain:'eip155:1'
-        }
-      },
-      optionalNamespaces:{
-        eip155:{
-          chains:['eip155:8453','eip155:42161','eip155:137']
-        }
-      }
-    });
-    if(session) saveSession(session);
-    else loader.textContent='Aștept aprobarea din OKX Wallet…';
-  }catch(e){
-    loader.textContent='Conectarea OKX nu a reușit: '+e.message;
-    HunterNative.notice('OKX CONNECT','Conectarea automată nu a reușit. Poți folosi în continuare adresa publică în modul watch-only.\n\n'+e.message);
-  }
-}
-
-function saveSession(session){
-  try{
-    const ns=session && session.namespaces && session.namespaces.eip155;
-    const accounts=ns && Array.isArray(ns.accounts) ? ns.accounts : [];
-    if(!accounts.length) return false;
-    const n=normalizeAccount(accounts[0]);
-    if(!n.account) return false;
-    HunterNative.saveConnectedWallet('OKX Wallet',n.account,n.chain || (ns.defaultChain||''));
-    document.getElementById('connectLoader').classList.remove('on');
-    renderWallets();
-    renderExecute();
-    return true;
-  }catch(e){return false}
-}
-
-function renderWallets(){
-  let c={}; try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){}
-  const box=document.getElementById('connected');
-  if(c && c.account){
-    box.innerHTML='<div class="walletBox"><div class="k">CONNECTED WALLET</div><div class="v green">OKX • APPROVAL ONLY</div><div class="mono">'+esc(c.account)+'</div><div class="small">Chain: '+esc(c.chain||'EVM')+'</div><div class="row"><button class="danger" onclick="disconnectWallet()">DISCONNECT</button></div></div>';
-  }else{
-    box.innerHTML='<div class="walletBox"><div class="k">CONNECTED WALLET</div><div class="v warn">NONE</div><div class="small">Apasă CONNECT OKX WALLET sau adaugă manual o adresă publică watch-only.</div></div>';
-  }
-  let a=[]; try{a=JSON.parse(HunterNative.listWallets())}catch(e){}
-  document.getElementById('watchList').innerHTML=a.length?a.map((w,i)=>'<div class="op"><b>'+esc(w.label)+'</b><div class="mono">'+esc(w.address)+'</div><div class="row"><button class="secondary" onclick="HunterNative.removeWallet('+i+');renderWallets()">REMOVE</button></div></div>').join(''):'';
-}
-
-function addWatch(){
-  const l=document.getElementById('label').value.trim();
-  const a=document.getElementById('address').value.trim();
-  if(HunterNative.addWallet(l,a)){
-    document.getElementById('label').value='';
-    document.getElementById('address').value='';
-    renderWallets();
-  }
-}
-function disconnectWallet(){
-  HunterNative.clearConnectedWallet();
-  renderWallets(); renderExecute();
-}
-function renderExecute(){
-  let c={}; try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){}
-  const el=document.getElementById('execConn');
-  if(c && c.account){el.textContent='CONNECTED'; el.className='v green';}
-  else {el.textContent='NO WALLET'; el.className='v warn';}
-}
-function approvalTest(){
-  let c={}; try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){}
-  if(!c.account){
-    HunterNative.notice('APPROVAL TEST','Conectează mai întâi un wallet în secțiunea WALLETS.');
-    return;
-  }
-  HunterNative.notice('APPROVAL TEST','PASS: Hunter vede doar adresa publică '+c.account.slice(0,6)+'…'+c.account.slice(-4)+'.\n\nNu s-a creat, semnat sau trimis nicio tranzacție.');
-}
-
-renderWallets();
-renderExecute();
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+function cat(a){let t=(String(a.title||'')+' '+String(a.source||'')).toLowerCase();if(t.includes('whitelist')||t.includes('allowlist'))return'Whitelist';if(t.includes('giveaway'))return'Giveaway';if(t.includes('learn')||t.includes('earn'))return'Learn';if(t.includes('quest')||t.includes('galxe')||t.includes('layer3')||t.includes('zealy'))return'Quest';return'Airdrop'}
+function risk(a){let s=Number(a.score||0);return s>=90?'High confidence':s>=80?'Verified filter':'Review'}
+function enterBeta(){let e=document.getElementById('email').value.trim();if(!/^\S+@\S+\.\S+$/.test(e)){HunterNative.toast('Introdu un email valid pentru profilul beta.');return}localStorage.hunterEmail=e;showWalletGate()}
+function enterDemo(){localStorage.hunterEmail='Demo profile';showWalletGate()}
+function showGate(){document.getElementById('gate').classList.remove('hide');document.getElementById('walletGate').classList.add('hide')}
+function showWalletGate(){document.getElementById('gate').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
+function skipWallet(){localStorage.hunterReady='1';bootApp()}
+function bootApp(){document.getElementById('gate').classList.add('hide');document.getElementById('walletGate').classList.add('hide');document.getElementById('detail').classList.add('hide');document.getElementById('app').classList.remove('hide');document.getElementById('profileEmail').textContent=localStorage.hunterEmail||'Local beta';renderWalletProfile();refreshStatus()}
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));document.getElementById('n-'+id).classList.add('on');if(id==='watch')renderWatch();if(id==='profile')renderWalletProfile();scrollTo(0,0)}
+function scanNow(){go('hunt');document.getElementById('agentMode').textContent='CHECKING…';refreshStatus()}
+async function refreshStatus(){try{let r=await fetch(STATUS,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);let j=await r.json();state.raw=j;state.alerts=Array.isArray(j.lastAlerts)?j.lastAlerts:[];document.getElementById('seen').textContent=j.seenCount||0;document.getElementById('accepted').textContent=state.alerts.length;document.getElementById('minScore').textContent=j.minScore||80;document.getElementById('ringCount').textContent=state.alerts.length;document.getElementById('agentMode').textContent=j.mode||'WATCH_ONLY';document.getElementById('topMode').textContent=j.mode||'WATCH_ONLY';document.getElementById('lastRun').textContent=j.lastRunAt?new Date(j.lastRunAt).toLocaleString():'—';let s=j.lastRunSummary||{};document.getElementById('huntSummary').textContent='Seen '+(j.seenCount||0)+' • New alerts '+(s.newAlertCount!=null?s.newAlertCount:(s.alertCount||0))+' • Filter ≥ '+(j.minScore||80);renderFilters();renderHome()}catch(e){document.getElementById('agentMode').textContent='OFFLINE';document.getElementById('huntSummary').textContent='Status endpoint: '+e.message;renderFilters();renderHome()}}
+function renderFilters(){let cats=['All','Airdrop','Giveaway','Whitelist','Quest','Learn'];document.getElementById('filters').innerHTML=cats.map(c=>'<button class="filter '+(state.filter===c?'on':'')+'" onclick="setFilter(\''+c+'\')">'+c+'</button>').join('')}
+function setFilter(c){state.filter=c;renderFilters();renderHome()}
+function filtered(){return state.alerts.filter(a=>state.filter==='All'||cat(a)===state.filter)}
+function renderHome(){let box=document.getElementById('homeOps'),arr=filtered();if(!arr.length){box.innerHTML='<div class="card empty"><b>No active ≥80 opportunities</b><br><span class="small">Hunter will show only opportunities that pass the current filter.</span></div>';return}box.innerHTML=arr.map((a,i)=>'<div class="card op"><div class="row between"><span class="pill gold">'+cat(a)+'</span><span class="score">'+esc(a.score||'—')+'/100</span></div><div class="title">'+esc(a.title||'Crypto opportunity')+'</div><div class="source">'+esc(a.source||'Public source')+'</div><div><span class="pill green">'+risk(a)+'</span>'+(a.cost?'<span class="pill">Cost: '+esc(a.cost)+'</span>':'')+'</div><div class="opactions"><button onclick="toggleWatch('+i+')">☆ SAVE</button><button class="primary" onclick="openDetail('+i+')">VIEW</button></div></div>').join('')}
+function openDetail(i){selected=filtered()[i];if(!selected)return;document.getElementById('app').classList.add('hide');document.getElementById('detail').classList.remove('hide');let a=selected;document.getElementById('detailBody').innerHTML='<div class="detailhero"><span class="pill gold">'+cat(a)+'</span><h2>'+esc(a.title||'Opportunity')+'</h2><div class="source">'+esc(a.source||'')+'</div><div class="detailgrid" style="margin-top:13px"><div class="card"><div class="k">HUNTER SCORE</div><div class="v green">'+esc(a.score||'—')+'/100</div></div><div class="card"><div class="k">FILTER</div><div class="v">'+risk(a)+'</div></div></div><div class="sectiontitle">Hunter notes</div><div class="card"><div class="small">'+esc(a.action||'Review requirements only on the official source. Verify the domain before connecting a wallet.')+'</div></div>'+(a.link?'<button class="btn" onclick="openOfficial()">OPEN OFFICIAL SOURCE</button>':'')+'<button class="btn dark" onclick="saveSelected()">☆ SAVE TO WATCHLIST</button><button class="btn dark" onclick="makeGuide()">VIEW SAFE GUIDE</button><div class="note">Hunter never needs your seed phrase or private key. Do not send funds just to unlock a giveaway unless the verified official rules clearly require an on-chain action you understand.</div></div>';scrollTo(0,0)}
+function closeDetail(){document.getElementById('detail').classList.add('hide');document.getElementById('app').classList.remove('hide')}
+function openOfficial(){if(selected&&selected.link)HunterNative.openExternal(selected.link)}
+function watchList(){try{return JSON.parse(localStorage.hunterWatch||'[]')}catch(e){return[]}}
+function writeWatch(a){localStorage.hunterWatch=JSON.stringify(a)}
+function keyOf(a){return String(a.link||a.title||'')}
+function saveSelected(){if(!selected)return;let w=watchList();if(!w.some(x=>keyOf(x)===keyOf(selected)))w.unshift(selected);writeWatch(w);HunterNative.toast('Saved to Watchlist.')}
+function toggleWatch(i){selected=filtered()[i];saveSelected();renderWatch()}
+function renderWatch(){let w=watchList();document.getElementById('watchCount').textContent=w.length+' saved';let b=document.getElementById('watchOps');if(!w.length){b.innerHTML='<div class="card empty">Nothing saved yet.</div>';return}b.innerHTML=w.map((a,i)=>'<div class="card"><div class="row between"><span class="pill gold">'+cat(a)+'</span><span class="score">'+esc(a.score||'—')+'</span></div><div class="title">'+esc(a.title||'Opportunity')+'</div><div class="opactions"><button onclick="removeWatch('+i+')">REMOVE</button><button class="primary" onclick="openWatch('+i+')">VIEW</button></div></div>').join('')}
+function removeWatch(i){let w=watchList();w.splice(i,1);writeWatch(w);renderWatch()}
+function openWatch(i){selected=watchList()[i];document.getElementById('app').classList.add('hide');document.getElementById('detail').classList.remove('hide');document.getElementById('detailBody').innerHTML='<div class="detailhero"><span class="pill gold">'+cat(selected)+'</span><h2>'+esc(selected.title||'Opportunity')+'</h2><div class="source">'+esc(selected.source||'')+'</div>'+(selected.link?'<button class="btn" onclick="openOfficial()">OPEN OFFICIAL SOURCE</button>':'')+'<button class="btn dark" onclick="makeGuide()">VIEW SAFE GUIDE</button></div>'}
+function makeGuide(){if(!selected)return;localStorage.hunterTask=JSON.stringify(selected);closeDetail();go('tasks');renderTasks()}
+function renderTasks(){let a;try{a=JSON.parse(localStorage.hunterTask||'null')}catch(e){a=null}let b=document.getElementById('taskBody');if(!a){b.innerHTML='Open an opportunity and tap “Guide” to prepare its steps.';return}let steps=['Open the official source and verify the domain','Read eligibility, dates and reward conditions','Connect only a public wallet if the official campaign requires it','Complete tasks only on the official project / trusted quest platform','Mark complete and wait for the official distribution or claim window'];b.innerHTML='<div class="hero"><div class="k">SAFE PARTICIPATION GUIDE</div><h1>'+esc(a.title||'Opportunity')+'</h1><div class="sub">Hunter prepares the checklist. You remain responsible for every wallet approval or transaction.</div></div><div class="card">'+steps.map((s,i)=>'<div class="check"><div class="circle">'+(i+1)+'</div><div><b>'+esc(s)+'</b></div></div>').join('')+'</div>'+(a.link?'<button class="btn" onclick="selected=JSON.parse(localStorage.hunterTask);openOfficial()">OPEN OFFICIAL SOURCE</button>':'')}
+function renderWalletGate(){let c={};try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){};document.getElementById('walletGateState').innerHTML=c.account?'<div class="card"><span class="badge">CONNECTED</span><div class="title">'+esc(c.label||'Wallet')+'</div><div class="mono">'+esc(c.account)+'</div><button class="btn" onclick="skipWallet()">CONTINUE</button></div>':''}
+function normalizeAccount(a){if(!a)return{account:'',chain:''};let p=String(a).split(':');return p.length>=3?{account:p.slice(2).join(':'),chain:p.slice(0,2).join(':')}:{account:String(a),chain:''}}
+async function connectOkx(){let l=document.getElementById('connectLoader');l.textContent='Loading OKX Connect…';try{if(!okxUi){let m=await import('https://cdn.jsdelivr.net/npm/@okxconnect/ui@1.9.1/+esm');let UI=m.OKXUniversalConnectUI||(m.default&&m.default.OKXUniversalConnectUI)||m.default;if(!UI||!UI.init)throw Error('SDK unavailable');okxUi=await UI.init({dappMetaData:{name:'HUNTER ALPHA',icon:HUNTER_ICON},actionsConfiguration:{returnStrategy:'hunter://wallet',modals:'all'},language:'en_US',uiPreferences:{theme:'DARK'},restoreConnection:true})}l.textContent='Approve the connection in OKX Wallet…';let session=await okxUi.openModal({namespaces:{eip155:{chains:['eip155:1'],defaultChain:'eip155:1'}},optionalNamespaces:{eip155:{chains:['eip155:8453','eip155:42161','eip155:137']}}});if(session)saveSession(session)}catch(e){l.textContent='Wallet connect unavailable: '+e.message+' — you can skip and use Hunter without a wallet.'}}
+function saveSession(s){try{let ns=s&&s.namespaces&&s.namespaces.eip155,acs=ns&&Array.isArray(ns.accounts)?ns.accounts:[];if(!acs.length)return;let n=normalizeAccount(acs[0]);HunterNative.saveConnectedWallet('OKX Wallet',n.account,n.chain||(ns.defaultChain||''));renderWalletGate();renderWalletProfile()}catch(e){}}
+window.hunterReturned=function(){setTimeout(function(){renderWalletGate();renderWalletProfile()},500)}
+function renderWalletProfile(){let c={};try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){};document.getElementById('walletProfile').innerHTML=c.account?'<div class="card"><span class="badge">CONNECTED</span><div class="title">'+esc(c.label||'Wallet')+'</div><div class="mono">'+esc(c.account)+'</div><div class="small">Chain: '+esc(c.chain||'EVM')+'</div><button class="btn red" onclick="HunterNative.clearConnectedWallet();renderWalletProfile()">DISCONNECT</button></div>':'<div class="card"><div class="v gold">Not connected</div><div class="small">Wallet is optional for hunting.</div></div>'}
+function showWalletSettings(){document.getElementById('app').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
+function resetOnboarding(){localStorage.clear();location.reload()}
+window.hunterBack=function(){if(!document.getElementById('detail').classList.contains('hide')){closeDetail();return}if(!document.getElementById('walletGate').classList.contains('hide')){if(localStorage.hunterReady==='1')bootApp();else showGate();return}go('home')}
+if(localStorage.hunterReady==='1')bootApp();else showGate();renderTasks();
 </script>
-</body>
-</html>
+</body></html>
