@@ -1,89 +1,89 @@
 <!doctype html>
-<html lang="ro">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>HUNTER ALPHA</title>
 <style>
-*{box-sizing:border-box} :root{--bg:#030506;--p:#0b0f11;--p2:#11171a;--line:#263036;--gold:#d5ad55;--gold2:#f5d789;--text:#f5f7f7;--muted:#899399;--green:#28da83;--red:#ff5668;--blue:#5a88ff}
-html,body{margin:0;background:radial-gradient(circle at 50% -10%,#1b160c 0,#07090a 28%,#030506 68%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif;min-height:100%}
-body{padding:18px 16px 92px}.hide{display:none!important}.screen{display:none}.screen.active{display:block}
-.brand{font-weight:1000;letter-spacing:.08em;font-size:24px}.brand b{color:var(--gold)}.tag{font-size:9px;letter-spacing:.22em;color:#b4bcc0;margin-top:3px}
-.hero{border:1px solid #3b3220;background:linear-gradient(150deg,#11110d,#080b0c);border-radius:26px;padding:20px;box-shadow:0 12px 45px #0008}
-.hero h1{font-size:31px;line-height:1.02;margin:11px 0}.sub{color:var(--muted);font-size:13px;line-height:1.45}.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}
-.logo{width:118px;height:118px;margin:8px auto 13px;border-radius:28px;background:radial-gradient(circle,#25231b,#090b0c 70%);border:1px solid #574a2d;display:grid;place-items:center;font-size:58px;box-shadow:0 0 45px #d5ad5524}
-.logo img{width:100%;height:100%;display:block}.wolf{font-size:11px;color:var(--gold);letter-spacing:.18em;text-align:center;margin-top:-7px}
-.btn{width:100%;border:0;border-radius:16px;padding:15px 17px;font-weight:900;font-size:14px;margin-top:10px;background:linear-gradient(90deg,#c6922d,#f1d27e,#b77c1f);color:#090806}
-.btn.dark{background:#11171a;color:#eef2f2;border:1px solid #313b40}.btn.red{background:#281115;color:#ff8791;border:1px solid #63313a}
-input{width:100%;background:#090d0f;border:1px solid #30393e;border-radius:14px;padding:14px;color:white;margin-top:10px;font-size:14px}
-.note{font-size:10px;color:#707a80;line-height:1.45;margin-top:11px}.card{background:linear-gradient(150deg,#0c1113,#080b0d);border:1px solid #273238;border-radius:19px;padding:15px;margin-top:11px}
-.row{display:flex;gap:9px;align-items:center}.between{justify-content:space-between}.pill{display:inline-block;border:1px solid #3a4449;border-radius:999px;padding:6px 10px;font-size:10px;color:#c5cdd0;margin:4px 4px 0 0}.pill.gold{border-color:#79622f;color:#f2cf76}.pill.green{border-color:#236841;color:#45dd8d}.pill.red{border-color:#71323b;color:#ff7d89}
-.k{font-size:9px;letter-spacing:.14em;color:#738086;font-weight:900}.v{font-weight:950;font-size:21px;margin-top:4px}.small{font-size:11px;color:#8d989d}.mono{font-family:ui-monospace,monospace;font-size:11px;color:#a7b0b4;word-break:break-all}
-.top{display:flex;align-items:center;justify-content:space-between;margin:6px 3px 15px}.top .mini{font-size:11px;color:#7f8a8f}
-.scanring{width:150px;height:150px;border-radius:50%;border:2px solid #876c2f;margin:22px auto;display:grid;place-items:center;box-shadow:inset 0 0 40px #d5ad5524,0 0 35px #d5ad5518;position:relative}
-.scanring:after{content:"";position:absolute;inset:9px;border-radius:50%;border:1px dashed #725d2d;animation:spin 8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{padding:12px 9px;border:1px solid #273238;background:#0b1012;border-radius:16px;text-align:center}.stat b{font-size:22px}
-.filters{display:flex;overflow:auto;gap:7px;margin:12px 0;padding-bottom:3px}.filter{white-space:nowrap;border:1px solid #2d383e;background:#0a0e10;color:#a8b1b5;border-radius:999px;padding:8px 12px;font-size:11px}.filter.on{border-color:#80682f;color:#f4ce70;background:#171308}
-.op{position:relative}.score{font-weight:1000;font-size:19px;color:var(--green)}.title{font-weight:900;font-size:16px;margin:5px 0}.source{font-size:11px;color:#89959b}.opactions{display:flex;gap:8px;margin-top:12px}.opactions button{flex:1;margin:0;padding:11px;border-radius:12px;border:1px solid #354147;background:#11171a;color:white;font-weight:800}.opactions .primary{background:#d4aa51;color:#090806;border-color:#d4aa51}
-.empty{text-align:center;padding:28px 12px;color:#7d888e}.sectiontitle{font-size:17px;font-weight:950;margin:18px 2px 6px}.check{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid #1f282c}.circle{min-width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#171d20;border:1px solid #394349;color:#cbd2d5;font-weight:900}.check.done .circle{background:#153d29;color:#55e596;border-color:#286944}
-.nav{position:fixed;left:9px;right:9px;bottom:8px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px;background:#080c0eeb;border:1px solid #273238;border-radius:21px;backdrop-filter:blur(14px);z-index:30}.nav button{border:0;background:transparent;color:#7c878c;padding:8px 1px;font-size:9px}.nav button.on{color:#f0c765}.nav span{font-size:19px;display:block;margin-bottom:2px}
-#gate,#walletGate{max-width:520px;margin:auto;padding-top:13px}.gateTitle{text-align:center;font-size:34px;font-weight:1000;letter-spacing:.04em}.gateTitle b{color:var(--gold)}
-.security{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}.security div{border:1px solid #292f32;border-radius:14px;padding:11px 5px;text-align:center;font-size:10px;color:#a3acb0}
-.badge{font-size:10px;padding:5px 8px;border-radius:999px;background:#112719;color:#4ee28e;border:1px solid #235d3a}.back{background:none;border:0;color:white;font-size:24px;padding:3px}
-.detailhero{padding:18px;border:1px solid #2b3438;border-radius:20px;background:linear-gradient(150deg,#101519,#090c0e)}.detailhero h2{margin:7px 0}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+*{box-sizing:border-box}
+:root{--bg:#030506;--panel:#0a0f11;--line:#283238;--gold:#d4a94d;--gold2:#f3d17a;--text:#f5f7f7;--muted:#89949a;--green:#27d981;--red:#ff6473;--amber:#f1b94b}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -8%,#20190c 0,#07090a 28%,#030506 68%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+body{padding:18px 16px 104px}.hide{display:none!important}.screen{display:none}.screen.active{display:block}
+.top{display:flex;align-items:center;justify-content:space-between;margin:5px 3px 15px}.brand{font-size:23px;font-weight:1000;letter-spacing:.07em}.brand b{color:var(--gold)}.mini{font-size:10px;color:#879297}.tag{font-size:9px;letter-spacing:.2em;color:#b4bdc1;margin-top:3px}
+.hero,.card{border:1px solid var(--line);background:linear-gradient(150deg,#0d1214,#070a0c);border-radius:21px;padding:16px;margin-top:11px}.hero{border-color:#4a3a1e;box-shadow:0 12px 42px #0009}.hero h1{font-size:30px;line-height:1.04;margin:9px 0}.sub,.small{color:var(--muted);font-size:12px;line-height:1.45}.small{font-size:11px}.k{font-size:9px;letter-spacing:.14em;color:#738087;font-weight:900}.v{font-size:20px;font-weight:950;margin-top:4px}.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}
+.logo{width:152px;height:152px;margin:8px auto 12px;border-radius:31px;overflow:hidden;box-shadow:0 0 50px #d5ad5528;border:1px solid #68542a;background:#050607}.logo img{width:100%;height:100%;object-fit:cover}.wolf{text-align:center;color:var(--gold);font-size:10px;letter-spacing:.18em;margin-top:-4px}.gateTitle{text-align:center;font-size:34px;font-weight:1000}.gateTitle b{color:var(--gold)}
+.btn{width:100%;border:0;border-radius:15px;padding:14px 16px;margin-top:10px;font-size:13px;font-weight:950;background:linear-gradient(90deg,#b77b20,#f0cf77,#bd8528);color:#080806}.btn.dark{background:#11171a;color:#edf2f2;border:1px solid #344046}.btn.red{background:#281116;color:#ff9aa3;border:1px solid #63313b}
+input{width:100%;background:#090d0f;border:1px solid #313b40;color:#fff;border-radius:14px;padding:14px;margin-top:10px}.security{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.security div{border:1px solid #293236;border-radius:14px;padding:10px 4px;text-align:center;font-size:9px;color:#a6afb3}
+.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.stat{background:#0b1012;border:1px solid #273137;border-radius:14px;text-align:center;padding:10px 5px}.stat b{font-size:20px}.filters{display:flex;gap:7px;overflow:auto;margin:12px 0;padding-bottom:3px}.filter{white-space:nowrap;border:1px solid #313b40;background:#090d0f;color:#aab3b7;padding:8px 11px;border-radius:999px;font-size:10px}.filter.on{border-color:#7f682f;color:#f2cf73;background:#181309}
+.pill{display:inline-block;border:1px solid #39444a;border-radius:999px;padding:5px 8px;font-size:9px;color:#c6cdd1;margin:3px 3px 0 0}.pill.gold{border-color:#7d6730;color:#f1cd72}.pill.green{border-color:#246841;color:#49e08e}.pill.red{border-color:#71333c;color:#ff8893}.pill.amber{border-color:#795b28;color:#ffc765}.title{font-weight:900;font-size:16px;margin:6px 0}.score{font-size:19px;font-weight:1000;color:var(--green)}.source{font-size:11px;color:#8c989d}.opactions{display:flex;gap:8px;margin-top:12px}.opactions button{flex:1;border:1px solid #344047;border-radius:12px;padding:11px;background:#11171a;color:#fff;font-weight:850}.opactions .primary{background:#d2a84f;border-color:#d2a84f;color:#090806}
+.sectiontitle{font-size:17px;font-weight:950;margin:18px 2px 6px}.mono{font-family:ui-monospace,monospace;font-size:11px;word-break:break-all;color:#aeb7bb}.empty{text-align:center;padding:27px 12px;color:#808b90}.scanring{width:148px;height:148px;border-radius:50%;border:2px solid #866c30;margin:22px auto;display:grid;place-items:center;box-shadow:inset 0 0 35px #d4a94d22,0 0 32px #d4a94d18;position:relative}.scanring:after{content:"";position:absolute;inset:9px;border:1px dashed #725d2b;border-radius:50%;animation:spin 8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid #20282d}.circle{min-width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#171d20;border:1px solid #3a4449;color:#d1d7da;font-weight:900}.back{background:none;border:0;color:white;font-size:25px}.notice{border-left:3px solid var(--gold);padding:10px 12px;background:#121008;border-radius:8px;margin-top:11px;color:#d6d0bd;font-size:11px;line-height:1.45}
+.nav{position:fixed;left:9px;right:9px;bottom:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px;background:#080c0ef2;border:1px solid #273238;border-radius:21px;backdrop-filter:blur(14px);z-index:30}.nav button{border:0;background:transparent;color:#7d888d;padding:8px 1px;font-size:9px}.nav button.on{color:#efc866}.nav span{font-size:19px;display:block}#gate,#walletGate{max-width:520px;margin:auto}
+.progress{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.progress .pill.active{background:#1a160c;border-color:#7d6730;color:#f1cd72}
 </style>
 </head>
 <body>
+
 <div id="gate">
-  <div class="logo"><img src="hunter_alpha_wolf.svg" alt="Hunter Alpha wolf"></div><div class="wolf">TITANIUM WOLF EDITION</div>
+  <div class="logo"><img src="hunter_alpha_official.webp" alt="Hunter Alpha"></div>
+  <div class="wolf">OFFICIAL TITANIUM WOLF</div>
   <div class="gateTitle">HUNTER <b>ALPHA</b></div>
   <div class="tag" style="text-align:center">CRYPTO OPPORTUNITY INTELLIGENCE</div>
-  <div class="hero" style="margin-top:22px">
-    <div class="k">BETA ACCESS</div><h1>Real opportunities.<br><span class="gold">Less noise.</span></h1>
-    <div class="sub">Hunter searches for legitimate crypto airdrops, giveaways, whitelists, quests and learn-to-earn rewards. It filters risk and keeps the wallet under your control.</div>
+  <div class="hero">
+    <div class="k">BETA ACCESS</div>
+    <h1>Real opportunities.<br><span class="gold">Less noise.</span></h1>
+    <div class="sub">Hunter hunts airdrops, giveaways, whitelists, quests and learn-to-earn rewards. Source trust and Hunter Score are shown separately.</div>
     <input id="email" type="email" placeholder="Email for local beta profile">
     <button class="btn" onclick="enterBeta()">CONTINUE</button>
     <button class="btn dark" onclick="enterDemo()">TRY DEMO FIRST</button>
-    <div class="note">This beta build creates only a local profile on this phone. Google/email cloud authentication is not enabled yet.</div>
+    <div class="small" style="margin-top:10px">Beta login is local on this device. Cloud authentication is not enabled yet.</div>
   </div>
-  <div class="security"><div>◈<br>NON-CUSTODIAL</div><div>✓<br>RISK FILTER</div><div>◎<br>YOU CONTROL</div></div>
+  <div class="security"><div>◈<br>NON-CUSTODIAL</div><div>✓<br>SOURCE CHECK</div><div>◎<br>YOU CONTROL</div></div>
 </div>
 
 <div id="walletGate" class="hide">
   <div class="top"><button class="back" onclick="showGate()">‹</button><div class="brand">HUNTER <b>ALPHA</b></div><div></div></div>
-  <div class="hero"><div class="k">OPTIONAL SETUP</div><h1>Connect your wallet.</h1>
-    <div class="sub">Wallet connection is optional. Hunter can hunt opportunities without it. A connected public address can later help with eligibility checks. Never enter seed phrases or private keys.</div>
-    <button class="btn" onclick="connectOkx()">CONNECT OKX WALLET</button>
+  <div class="hero">
+    <div class="k">OPTIONAL WALLET</div>
+    <h1>Watch-only by default.</h1>
+    <div class="sub">Hunter works without a wallet. For future eligibility checks you may save a public address only. Never enter a seed phrase, recovery phrase or private key.</div>
+    <input id="walletLabel" placeholder="Label, e.g. OKX Wallet">
+    <input id="walletAddress" placeholder="Public wallet address only">
+    <button class="btn" onclick="saveWallet()">SAVE PUBLIC ADDRESS</button>
     <button class="btn dark" onclick="skipWallet()">SKIP FOR NOW</button>
-    <div id="connectLoader" class="note"></div>
   </div>
   <div id="walletGateState"></div>
 </div>
 
 <div id="app" class="hide">
   <section id="home" class="screen active">
-    <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">OPPORTUNITY HUNTER</div></div><div class="mini" id="topMode">WATCH_ONLY</div></div>
+    <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">OPPORTUNITY HUNTER</div></div><div class="mini" id="topMode">CHECKING</div></div>
     <div class="hero">
-      <div class="k">LIVE HUNT</div><h1>Find it before<br><span class="gold">the crowd.</span></h1>
+      <div class="k">HUNTER CORE v0.4</div>
+      <h1>Hunt. Verify.<br><span class="gold">You decide.</span></h1>
       <div class="sub">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
-      <button class="btn" onclick="scanNow()">REFRESH HUNT</button>
+      <button class="btn" onclick="startHunt()">START HUNT</button>
+      <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
+      <div id="huntMessage" class="small" style="margin-top:9px"></div>
     </div>
-    <div class="statgrid" style="margin-top:11px">
-      <div class="stat"><b id="seen">0</b><div class="k">SEEN</div></div>
-      <div class="stat"><b id="accepted">0</b><div class="k">ACTIVE</div></div>
+
+    <div class="statgrid">
+      <div class="stat"><b id="scanned">0</b><div class="k">SCANNED</div></div>
+      <div class="stat"><b id="active">0</b><div class="k">ACTIVE</div></div>
+      <div class="stat"><b id="rejected">0</b><div class="k">REJECTED</div></div>
       <div class="stat"><b id="minScore">80</b><div class="k">MIN SCORE</div></div>
     </div>
+
     <div class="filters" id="filters"></div>
     <div id="homeOps"></div>
   </section>
 
   <section id="hunt" class="screen">
     <div class="top"><div class="brand">HUNT <b>STATUS</b></div><div class="mini" id="lastRun">—</div></div>
-    <div class="scanring"><div style="text-align:center"><div class="v" id="ringCount">0</div><div class="small">opportunities</div></div></div>
-    <div class="card"><div class="k">AGENT</div><div class="v green" id="agentMode">WATCH_ONLY</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
-    <div class="sectiontitle">Sources Hunter monitors</div>
-    <div class="card"><div class="small">Official exchange announcements • project channels • quest platforms • reputable crypto news • public web sources</div></div>
-    <button class="btn" onclick="scanNow()">REFRESH STATUS</button>
+    <div class="scanring"><div style="text-align:center"><div class="v" id="ringCount">0</div><div class="small">active alerts</div></div></div>
+    <div class="card"><div class="k">AGENT</div><div class="v green" id="agentMode">CHECKING</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
+    <div class="card"><div class="k">SOURCE POLICY</div><div class="small">Hunter Score is not proof of legitimacy. Source status is displayed separately: Official, Known Platform, Reputable Media, Mention Only or Unverified.</div></div>
+    <button class="btn" onclick="startHunt()">START HUNT</button>
+    <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
   </section>
 
   <section id="watch" class="screen">
@@ -92,15 +92,18 @@ input{width:100%;background:#090d0f;border:1px solid #30393e;border-radius:14px;
   </section>
 
   <section id="tasks" class="screen">
-    <div class="top"><div class="brand">TASK <b>GUIDE</b></div><div class="mini">SAFE FLOW</div></div>
-    <div id="taskBody" class="empty">Open an opportunity and tap “Guide” to prepare its steps.</div>
+    <div class="top"><div class="brand">SAFE <b>GUIDE</b></div><div class="mini">NO INVENTED TASKS</div></div>
+    <div id="taskBody" class="empty">Open an opportunity and tap SAFE GUIDE.</div>
   </section>
 
   <section id="profile" class="screen">
-    <div class="top"><div class="brand">HUNTER <b>ALPHA</b></div><div class="mini">v0.3</div></div>
-    <div class="card"><div class="k">PROFILE</div><div class="v" id="profileEmail">Local beta</div><div class="small">This build keeps profile data locally.</div></div>
-    <div class="sectiontitle">Wallet</div><div id="walletProfile"></div>
-    <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades. Open official sources and approve sensitive actions yourself.</div></div>
+    <div class="top"><div class="brand">HUNTER <b>ALPHA</b></div><div class="mini">v0.4</div></div>
+    <div class="card"><div class="k">PROFILE</div><div class="v" id="profileEmail">Local beta</div><div class="small">Local beta profile on this phone.</div></div>
+    <div class="sectiontitle">Background alerts</div>
+    <div id="alertsCard"></div>
+    <div class="sectiontitle">Public wallet</div>
+    <div id="walletProfile"></div>
+    <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades • External link domains are shown before opening.</div></div>
     <button class="btn dark" onclick="showWalletSettings()">WALLET SETTINGS</button>
     <button class="btn red" onclick="resetOnboarding()">RESET LOCAL PROFILE</button>
   </section>
@@ -109,7 +112,7 @@ input{width:100%;background:#090d0f;border:1px solid #30393e;border-radius:14px;
     <button id="n-home" class="on" onclick="go('home')"><span>⌂</span>HOME</button>
     <button id="n-hunt" onclick="go('hunt')"><span>◎</span>HUNT</button>
     <button id="n-watch" onclick="go('watch')"><span>☆</span>WATCHLIST</button>
-    <button id="n-tasks" onclick="go('tasks')"><span>☑</span>TASKS</button>
+    <button id="n-tasks" onclick="go('tasks')"><span>☑</span>GUIDE</button>
     <button id="n-profile" onclick="go('profile')"><span>●</span>PROFILE</button>
   </nav>
 </div>
@@ -121,47 +124,283 @@ input{width:100%;background:#090d0f;border:1px solid #30393e;border-radius:14px;
 
 <script>
 const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
-const HUNTER_ICON='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.3/hunter-connect/hunter-icon.png';
-let okxUi=null, state={alerts:[],raw:null,filter:'All'}, selected=null;
+let state={alerts:[],raw:null,filter:'All'};
+let selected=null;
 
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
-function cat(a){let t=(String(a.title||'')+' '+String(a.source||'')).toLowerCase();if(t.includes('whitelist')||t.includes('allowlist'))return'Whitelist';if(t.includes('giveaway'))return'Giveaway';if(t.includes('learn')||t.includes('earn'))return'Learn';if(t.includes('quest')||t.includes('galxe')||t.includes('layer3')||t.includes('zealy'))return'Quest';return'Airdrop'}
-function risk(a){let s=Number(a.score||0);return s>=90?'High confidence':s>=80?'Verified filter':'Review'}
-function enterBeta(){let e=document.getElementById('email').value.trim();if(!/^\S+@\S+\.\S+$/.test(e)){HunterNative.toast('Introdu un email valid pentru profilul beta.');return}localStorage.hunterEmail=e;showWalletGate()}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function domainOf(u){try{return new URL(String(u||'')).hostname.replace(/^www\./,'')}catch(e){return''}}
+function category(a){
+  if(a.category)return a.category;
+  let t=(String(a.title||'')+' '+String(a.source||'')).toLowerCase();
+  if(t.includes('whitelist')||t.includes('allowlist'))return'Whitelist';
+  if(t.includes('giveaway'))return'Giveaway';
+  if(t.includes('learn')||t.includes('earn'))return'Learn';
+  if(t.includes('quest')||t.includes('galxe')||t.includes('layer3')||t.includes('zealy'))return'Quest';
+  return'Airdrop';
+}
+function verification(a){
+  let t=String(a.sourceVerification||a.trust||'').toUpperCase();
+  if(t==='OFFICIAL_EXCHANGE'||t==='OFFICIAL_PROJECT')return{label:'OFFICIAL SOURCE',cls:'green'};
+  if(t==='KNOWN_QUEST_PLATFORM')return{label:'KNOWN PLATFORM',cls:'green'};
+  if(t==='REPUTABLE_MEDIA'||t==='REPUTABLE_NEWS')return{label:'REPUTABLE MEDIA',cls:'gold'};
+  if(t.includes('MENTION'))return{label:'MENTION ONLY',cls:'amber'};
+  return{label:'UNVERIFIED',cls:'red'};
+}
+function sourceDomain(a){return a.sourceHost||domainOf(a.sourceUrl)||'unknown'}
+function linkDomain(a){return domainOf(a.link)||'unknown'}
+
+function enterBeta(){
+  let e=document.getElementById('email').value.trim();
+  if(!/^\S+@\S+\.\S+$/.test(e)){HunterNative.toast('Enter a valid email for the beta profile.');return}
+  localStorage.hunterEmail=e;showWalletGate()
+}
 function enterDemo(){localStorage.hunterEmail='Demo profile';showWalletGate()}
 function showGate(){document.getElementById('gate').classList.remove('hide');document.getElementById('walletGate').classList.add('hide')}
 function showWalletGate(){document.getElementById('gate').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
 function skipWallet(){localStorage.hunterReady='1';bootApp()}
-function bootApp(){document.getElementById('gate').classList.add('hide');document.getElementById('walletGate').classList.add('hide');document.getElementById('detail').classList.add('hide');document.getElementById('app').classList.remove('hide');document.getElementById('profileEmail').textContent=localStorage.hunterEmail||'Local beta';renderWalletProfile();refreshStatus()}
-function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));document.getElementById('n-'+id).classList.add('on');if(id==='watch')renderWatch();if(id==='profile')renderWalletProfile();scrollTo(0,0)}
-function scanNow(){go('hunt');document.getElementById('agentMode').textContent='CHECKING…';refreshStatus()}
-async function refreshStatus(){try{let r=await fetch(STATUS,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);let j=await r.json();state.raw=j;state.alerts=Array.isArray(j.lastAlerts)?j.lastAlerts:[];document.getElementById('seen').textContent=j.seenCount||0;document.getElementById('accepted').textContent=state.alerts.length;document.getElementById('minScore').textContent=j.minScore||80;document.getElementById('ringCount').textContent=state.alerts.length;document.getElementById('agentMode').textContent=j.mode||'WATCH_ONLY';document.getElementById('topMode').textContent=j.mode||'WATCH_ONLY';document.getElementById('lastRun').textContent=j.lastRunAt?new Date(j.lastRunAt).toLocaleString():'—';let s=j.lastRunSummary||{};document.getElementById('huntSummary').textContent='Seen '+(j.seenCount||0)+' • New alerts '+(s.newAlertCount!=null?s.newAlertCount:(s.alertCount||0))+' • Filter ≥ '+(j.minScore||80);renderFilters();renderHome()}catch(e){document.getElementById('agentMode').textContent='OFFLINE';document.getElementById('huntSummary').textContent='Status endpoint: '+e.message;renderFilters();renderHome()}}
-function renderFilters(){let cats=['All','Airdrop','Giveaway','Whitelist','Quest','Learn'];document.getElementById('filters').innerHTML=cats.map(c=>'<button class="filter '+(state.filter===c?'on':'')+'" onclick="setFilter(\''+c+'\')">'+c+'</button>').join('')}
+function bootApp(){
+  document.getElementById('gate').classList.add('hide');
+  document.getElementById('walletGate').classList.add('hide');
+  document.getElementById('detail').classList.add('hide');
+  document.getElementById('app').classList.remove('hide');
+  document.getElementById('profileEmail').textContent=localStorage.hunterEmail||'Local beta';
+  renderWalletProfile();renderAlerts();refreshStatus()
+}
+function go(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));
+  document.getElementById('n-'+id).classList.add('on');
+  if(id==='watch')renderWatch();
+  if(id==='tasks')renderTasks();
+  if(id==='profile'){renderWalletProfile();renderAlerts()}
+  scrollTo(0,0)
+}
+
+function startHunt(){
+  document.getElementById('huntMessage').textContent='Starting on-demand hunt…';
+  document.getElementById('agentMode').textContent='STARTING…';
+  HunterNative.triggerScan();
+}
+window.hunterScanResult=function(ok,msg){
+  document.getElementById('huntMessage').textContent=msg;
+  if(ok){
+    go('hunt');
+    document.getElementById('agentMode').textContent='SCANNING…';
+    setTimeout(refreshStatus,5000);
+    setTimeout(refreshStatus,12000);
+  }else{
+    refreshStatus();
+  }
+}
+
+async function refreshStatus(){
+  try{
+    let r=await fetch(STATUS,{cache:'no-store'});
+    if(!r.ok)throw Error('HTTP '+r.status);
+    let j=await r.json();
+    state.raw=j;
+    state.alerts=Array.isArray(j.lastAlerts)?j.lastAlerts:[];
+    let s=j.lastRunSummary||{};
+    let rejected=(s.scamRejectedCount||0)+(s.belowThresholdCount||0)+(s.invalidCount||0)+(s.staleCount||0);
+
+    document.getElementById('scanned').textContent=s.inputCount||j.seenCount||0;
+    document.getElementById('active').textContent=state.alerts.length;
+    document.getElementById('rejected').textContent=rejected;
+    document.getElementById('minScore').textContent=j.minScore||80;
+    document.getElementById('ringCount').textContent=state.alerts.length;
+    document.getElementById('agentMode').textContent='ONLINE · '+(j.mode||'WATCH_ONLY');
+    document.getElementById('topMode').textContent='HUNTER ONLINE';
+    document.getElementById('topMode').className='mini green';
+    document.getElementById('lastRun').textContent=j.lastRunAt?new Date(j.lastRunAt).toLocaleString():'—';
+    document.getElementById('huntSummary').textContent=
+      'Scanned '+(s.inputCount||0)+
+      ' • Qualified '+(s.newAlertCount!=null?s.newAlertCount:(s.alertCount||0))+
+      ' • Scam '+(s.scamRejectedCount||0)+
+      ' • Below score '+(s.belowThresholdCount||0)+
+      ' • Source errors '+(s.sourceErrorCount||0);
+
+    renderFilters();renderHome();
+  }catch(e){
+    document.getElementById('agentMode').textContent='OFFLINE';
+    document.getElementById('topMode').textContent='HUNTER OFFLINE';
+    document.getElementById('topMode').className='mini red';
+    document.getElementById('huntSummary').textContent='Status endpoint: '+e.message;
+    renderFilters();renderHome();
+  }
+}
+
+function renderFilters(){
+  let cats=['All','Airdrop','Giveaway','Whitelist','Quest','Learn'];
+  document.getElementById('filters').innerHTML=cats.map(c=>
+    '<button class="filter '+(state.filter===c?'on':'')+'" onclick="setFilter(\''+c+'\')">'+c+'</button>'
+  ).join('')
+}
 function setFilter(c){state.filter=c;renderFilters();renderHome()}
-function filtered(){return state.alerts.filter(a=>state.filter==='All'||cat(a)===state.filter)}
-function renderHome(){let box=document.getElementById('homeOps'),arr=filtered();if(!arr.length){box.innerHTML='<div class="card empty"><b>No active ≥80 opportunities</b><br><span class="small">Hunter will show only opportunities that pass the current filter.</span></div>';return}box.innerHTML=arr.map((a,i)=>'<div class="card op"><div class="row between"><span class="pill gold">'+cat(a)+'</span><span class="score">'+esc(a.score||'—')+'/100</span></div><div class="title">'+esc(a.title||'Crypto opportunity')+'</div><div class="source">'+esc(a.source||'Public source')+'</div><div><span class="pill green">'+risk(a)+'</span>'+(a.cost?'<span class="pill">Cost: '+esc(a.cost)+'</span>':'')+'</div><div class="opactions"><button onclick="toggleWatch('+i+')">☆ SAVE</button><button class="primary" onclick="openDetail('+i+')">VIEW</button></div></div>').join('')}
-function openDetail(i){selected=filtered()[i];if(!selected)return;document.getElementById('app').classList.add('hide');document.getElementById('detail').classList.remove('hide');let a=selected;document.getElementById('detailBody').innerHTML='<div class="detailhero"><span class="pill gold">'+cat(a)+'</span><h2>'+esc(a.title||'Opportunity')+'</h2><div class="source">'+esc(a.source||'')+'</div><div class="detailgrid" style="margin-top:13px"><div class="card"><div class="k">HUNTER SCORE</div><div class="v green">'+esc(a.score||'—')+'/100</div></div><div class="card"><div class="k">FILTER</div><div class="v">'+risk(a)+'</div></div></div><div class="sectiontitle">Hunter notes</div><div class="card"><div class="small">'+esc(a.action||'Review requirements only on the official source. Verify the domain before connecting a wallet.')+'</div></div>'+(a.link?'<button class="btn" onclick="openOfficial()">OPEN OFFICIAL SOURCE</button>':'')+'<button class="btn dark" onclick="saveSelected()">☆ SAVE TO WATCHLIST</button><button class="btn dark" onclick="makeGuide()">VIEW SAFE GUIDE</button><div class="note">Hunter never needs your seed phrase or private key. Do not send funds just to unlock a giveaway unless the verified official rules clearly require an on-chain action you understand.</div></div>';scrollTo(0,0)}
+function filtered(){return state.alerts.filter(a=>state.filter==='All'||category(a)===state.filter)}
+
+function renderHome(){
+  let box=document.getElementById('homeOps'),arr=filtered();
+  if(!arr.length){
+    let s=state.raw&&state.raw.lastRunSummary?state.raw.lastRunSummary:{};
+    let when=state.raw&&state.raw.lastRunAt?new Date(state.raw.lastRunAt).toLocaleString():'No completed scan yet';
+    box.innerHTML='<div class="card empty"><b>No qualified opportunity right now</b><br><span class="small">Last scan: '+esc(when)+'<br>Checked '+esc(s.inputCount||0)+' • Scam rejected '+esc(s.scamRejectedCount||0)+' • Below score '+esc(s.belowThresholdCount||0)+'</span></div>';
+    return
+  }
+  box.innerHTML=arr.map((a,i)=>{
+    let v=verification(a);
+    return '<div class="card">'+
+      '<div class="row between"><span class="pill gold">'+esc(category(a))+'</span><span class="score">'+esc(a.score||'—')+'/100</span></div>'+
+      '<div class="title">'+esc(a.title||'Crypto opportunity')+'</div>'+
+      '<div class="source">'+esc(sourceDomain(a))+'</div>'+
+      '<div><span class="pill '+v.cls+'">'+v.label+'</span><span class="pill">Risk: '+esc(a.risk||'review')+'</span></div>'+
+      '<div class="opactions"><button onclick="toggleWatch('+i+')">☆ SAVE</button><button class="primary" onclick="openDetail('+i+')">VIEW</button></div>'+
+      '</div>'
+  }).join('')
+}
+
+function openDetail(i){selected=filtered()[i];renderDetail()}
+function renderDetail(){
+  if(!selected)return;
+  document.getElementById('app').classList.add('hide');
+  document.getElementById('detail').classList.remove('hide');
+
+  let a=selected,v=verification(a),sourceHost=sourceDomain(a),actualLink=linkDomain(a);
+  let published=a.published?new Date(a.published).toLocaleString():'Unknown';
+  let found=a.foundAt?new Date(a.foundAt).toLocaleString():'Unknown';
+  let reasons=Array.isArray(a.scoreReasons)?a.scoreReasons:[];
+  let risks=Array.isArray(a.riskFlags)?a.riskFlags:[];
+
+  document.getElementById('detailBody').innerHTML=
+    '<div class="hero"><span class="pill gold">'+esc(category(a))+'</span><h1>'+esc(a.title||'Opportunity')+'</h1><div class="source">'+esc(sourceHost)+'</div></div>'+
+    '<div class="detailgrid">'+
+      '<div class="card"><div class="k">HUNTER SCORE</div><div class="v green">'+esc(a.score||'—')+'/100</div></div>'+
+      '<div class="card"><div class="k">SOURCE STATUS</div><div class="v '+v.cls+'">'+v.label+'</div></div>'+
+      '<div class="card"><div class="k">RISK</div><div class="v">'+esc(a.risk||'Review')+'</div></div>'+
+      '<div class="card"><div class="k">COST</div><div class="small">'+esc(a.cost||'Unknown — verify')+'</div></div>'+
+      '<div class="card"><div class="k">EFFORT</div><div class="small">'+esc(a.effort||'Check official details')+'</div></div>'+
+      '<div class="card"><div class="k">DEADLINE</div><div class="small">'+esc(a.deadline||'Check official page')+'</div></div>'+
+    '</div>'+
+    '<div class="card"><div class="k">SOURCE HOST</div><div class="mono">'+esc(sourceHost)+'</div><div class="k" style="margin-top:10px">LINK DOMAIN</div><div class="mono">'+esc(actualLink)+'</div><div class="small">Published: '+esc(published)+'<br>Found by Hunter: '+esc(found)+'</div></div>'+
+    (reasons.length?'<div class="card"><div class="k">WHY THIS SCORE</div><div class="small">'+reasons.map(x=>'• '+esc(x)).join('<br>')+'</div></div>':'')+
+    (risks.length?'<div class="card"><div class="k">RISK FLAGS</div><div class="small red">'+risks.map(x=>'• '+esc(x)).join('<br>')+'</div></div>':'')+
+    '<div class="card"><div class="k">HUNTER NOTES</div><div class="small">'+esc(a.action||'Verify the source, eligibility and campaign terms before taking action.')+'</div></div>'+
+    '<div class="notice">Hunter Score measures filtering confidence. It does not guarantee legitimacy, eligibility, reward value or payout. Source status is shown separately.</div>'+
+    (a.link?'<button class="btn" onclick="openOfficial()">OPEN SOURCE LINK</button>':'')+
+    '<button class="btn dark" onclick="saveSelected()">☆ SAVE TO WATCHLIST</button>'+
+    '<button class="btn dark" onclick="makeGuide()">SAFE GUIDE</button>';
+
+  scrollTo(0,0)
+}
 function closeDetail(){document.getElementById('detail').classList.add('hide');document.getElementById('app').classList.remove('hide')}
-function openOfficial(){if(selected&&selected.link)HunterNative.openExternal(selected.link)}
+function openOfficial(){if(!selected||!selected.link)return;HunterNative.openExternalChecked(selected.link,verification(selected).label)}
+
+const progressStages=['Saved','Started','Eligible','Waiting','Claim available','Completed','Expired'];
 function watchList(){try{return JSON.parse(localStorage.hunterWatch||'[]')}catch(e){return[]}}
 function writeWatch(a){localStorage.hunterWatch=JSON.stringify(a)}
 function keyOf(a){return String(a.link||a.title||'')}
-function saveSelected(){if(!selected)return;let w=watchList();if(!w.some(x=>keyOf(x)===keyOf(selected)))w.unshift(selected);writeWatch(w);HunterNative.toast('Saved to Watchlist.')}
+function saveSelected(){
+  if(!selected)return;
+  let w=watchList();
+  if(!w.some(x=>keyOf(x)===keyOf(selected))){
+    let copy=JSON.parse(JSON.stringify(selected));
+    copy._progress='Saved';
+    w.unshift(copy);
+  }
+  writeWatch(w);
+  HunterNative.toast('Saved to Watchlist.');
+}
 function toggleWatch(i){selected=filtered()[i];saveSelected();renderWatch()}
-function renderWatch(){let w=watchList();document.getElementById('watchCount').textContent=w.length+' saved';let b=document.getElementById('watchOps');if(!w.length){b.innerHTML='<div class="card empty">Nothing saved yet.</div>';return}b.innerHTML=w.map((a,i)=>'<div class="card"><div class="row between"><span class="pill gold">'+cat(a)+'</span><span class="score">'+esc(a.score||'—')+'</span></div><div class="title">'+esc(a.title||'Opportunity')+'</div><div class="opactions"><button onclick="removeWatch('+i+')">REMOVE</button><button class="primary" onclick="openWatch('+i+')">VIEW</button></div></div>').join('')}
-function removeWatch(i){let w=watchList();w.splice(i,1);writeWatch(w);renderWatch()}
-function openWatch(i){selected=watchList()[i];document.getElementById('app').classList.add('hide');document.getElementById('detail').classList.remove('hide');document.getElementById('detailBody').innerHTML='<div class="detailhero"><span class="pill gold">'+cat(selected)+'</span><h2>'+esc(selected.title||'Opportunity')+'</h2><div class="source">'+esc(selected.source||'')+'</div>'+(selected.link?'<button class="btn" onclick="openOfficial()">OPEN OFFICIAL SOURCE</button>':'')+'<button class="btn dark" onclick="makeGuide()">VIEW SAFE GUIDE</button></div>'}
-function makeGuide(){if(!selected)return;localStorage.hunterTask=JSON.stringify(selected);closeDetail();go('tasks');renderTasks()}
-function renderTasks(){let a;try{a=JSON.parse(localStorage.hunterTask||'null')}catch(e){a=null}let b=document.getElementById('taskBody');if(!a){b.innerHTML='Open an opportunity and tap “Guide” to prepare its steps.';return}let steps=['Open the official source and verify the domain','Read eligibility, dates and reward conditions','Connect only a public wallet if the official campaign requires it','Complete tasks only on the official project / trusted quest platform','Mark complete and wait for the official distribution or claim window'];b.innerHTML='<div class="hero"><div class="k">SAFE PARTICIPATION GUIDE</div><h1>'+esc(a.title||'Opportunity')+'</h1><div class="sub">Hunter prepares the checklist. You remain responsible for every wallet approval or transaction.</div></div><div class="card">'+steps.map((s,i)=>'<div class="check"><div class="circle">'+(i+1)+'</div><div><b>'+esc(s)+'</b></div></div>').join('')+'</div>'+(a.link?'<button class="btn" onclick="selected=JSON.parse(localStorage.hunterTask);openOfficial()">OPEN OFFICIAL SOURCE</button>':'')}
-function renderWalletGate(){let c={};try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){};document.getElementById('walletGateState').innerHTML=c.account?'<div class="card"><span class="badge">CONNECTED</span><div class="title">'+esc(c.label||'Wallet')+'</div><div class="mono">'+esc(c.account)+'</div><button class="btn" onclick="skipWallet()">CONTINUE</button></div>':''}
-function normalizeAccount(a){if(!a)return{account:'',chain:''};let p=String(a).split(':');return p.length>=3?{account:p.slice(2).join(':'),chain:p.slice(0,2).join(':')}:{account:String(a),chain:''}}
-async function connectOkx(){let l=document.getElementById('connectLoader');l.textContent='Loading OKX Connect…';try{if(!okxUi){let m=await import('https://cdn.jsdelivr.net/npm/@okxconnect/ui@1.9.1/+esm');let UI=m.OKXUniversalConnectUI||(m.default&&m.default.OKXUniversalConnectUI)||m.default;if(!UI||!UI.init)throw Error('SDK unavailable');okxUi=await UI.init({dappMetaData:{name:'HUNTER ALPHA',icon:HUNTER_ICON},actionsConfiguration:{returnStrategy:'hunter://wallet',modals:'all'},language:'en_US',uiPreferences:{theme:'DARK'},restoreConnection:true})}l.textContent='Approve the connection in OKX Wallet…';let session=await okxUi.openModal({namespaces:{eip155:{chains:['eip155:1'],defaultChain:'eip155:1'}},optionalNamespaces:{eip155:{chains:['eip155:8453','eip155:42161','eip155:137']}}});if(session)saveSession(session)}catch(e){l.textContent='Wallet connect unavailable: '+e.message+' — you can skip and use Hunter without a wallet.'}}
-function saveSession(s){try{let ns=s&&s.namespaces&&s.namespaces.eip155,acs=ns&&Array.isArray(ns.accounts)?ns.accounts:[];if(!acs.length)return;let n=normalizeAccount(acs[0]);HunterNative.saveConnectedWallet('OKX Wallet',n.account,n.chain||(ns.defaultChain||''));renderWalletGate();renderWalletProfile()}catch(e){}}
-window.hunterReturned=function(){setTimeout(function(){renderWalletGate();renderWalletProfile()},500)}
-function renderWalletProfile(){let c={};try{c=JSON.parse(HunterNative.getConnectedWallet())}catch(e){};document.getElementById('walletProfile').innerHTML=c.account?'<div class="card"><span class="badge">CONNECTED</span><div class="title">'+esc(c.label||'Wallet')+'</div><div class="mono">'+esc(c.account)+'</div><div class="small">Chain: '+esc(c.chain||'EVM')+'</div><button class="btn red" onclick="HunterNative.clearConnectedWallet();renderWalletProfile()">DISCONNECT</button></div>':'<div class="card"><div class="v gold">Not connected</div><div class="small">Wallet is optional for hunting.</div></div>'}
+function advanceWatch(i){
+  let w=watchList(),a=w[i];if(!a)return;
+  let idx=progressStages.indexOf(a._progress||'Saved');
+  a._progress=progressStages[Math.min(idx+1,progressStages.length-2)];
+  writeWatch(w);renderWatch()
+}
+function expireWatch(i){let w=watchList();if(w[i])w[i]._progress='Expired';writeWatch(w);renderWatch()}
+function renderWatch(){
+  let w=watchList();
+  document.getElementById('watchCount').textContent=w.length+' saved';
+  let b=document.getElementById('watchOps');
+  if(!w.length){b.innerHTML='<div class="card empty">Nothing saved yet.</div>';return}
+  b.innerHTML=w.map((a,i)=>{
+    let v=verification(a),p=a._progress||'Saved';
+    return '<div class="card">'+
+      '<div class="row between"><span class="pill gold">'+esc(category(a))+'</span><span class="score">'+esc(a.score||'—')+'</span></div>'+
+      '<div class="title">'+esc(a.title||'Opportunity')+'</div>'+
+      '<span class="pill '+v.cls+'">'+v.label+'</span>'+
+      '<div class="progress">'+progressStages.map(x=>'<span class="pill '+(x===p?'active':'')+'">'+esc(x)+'</span>').join('')+'</div>'+
+      '<div class="opactions"><button onclick="advanceWatch('+i+')">ADVANCE</button><button onclick="expireWatch('+i+')">EXPIRE</button><button class="primary" onclick="openWatch('+i+')">VIEW</button></div>'+
+      '</div>'
+  }).join('')
+}
+function openWatch(i){selected=watchList()[i];renderDetail()}
+
+function makeGuide(){
+  if(!selected)return;
+  localStorage.hunterTask=JSON.stringify(selected);
+  closeDetail();go('tasks');renderTasks()
+}
+function renderTasks(){
+  let a;try{a=JSON.parse(localStorage.hunterTask||'null')}catch(e){a=null}
+  let b=document.getElementById('taskBody');
+  if(!a){b.innerHTML='Open an opportunity and tap SAFE GUIDE.';return}
+
+  let host=sourceDomain(a),v=verification(a);
+  let exact=Array.isArray(a.requirements)&&a.requirements.length?a.requirements:null;
+  let steps=exact||[
+    'Verify the displayed source host: '+host,
+    'Read the campaign eligibility rules, dates and exclusions on the official source',
+    'Confirm the real cost before connecting a wallet or signing anything',
+    'Complete only tasks explicitly listed by the verified campaign',
+    'Never enter a seed phrase, recovery phrase or private key',
+    'Ignore unsolicited DMs and track the official distribution or claim window'
+  ];
+
+  b.innerHTML=
+    '<div class="hero"><div class="k">SAFE GUIDE</div><h1>'+esc(a.title||'Opportunity')+'</h1>'+
+    '<div class="sub">Source status: '+esc(v.label)+'. Hunter does not invent campaign tasks. Exact requirements are shown only when they were extracted from the source.</div></div>'+
+    '<div class="card">'+steps.map((s,i)=>'<div class="check"><div class="circle">'+(i+1)+'</div><div><b>'+esc(s)+'</b></div></div>').join('')+'</div>'+
+    (a.link?'<button class="btn" onclick="selected=JSON.parse(localStorage.hunterTask);openOfficial()">OPEN SOURCE LINK</button>':'')
+}
+
+function saveWallet(){
+  let label=document.getElementById('walletLabel').value.trim();
+  let address=document.getElementById('walletAddress').value.trim();
+  if(HunterNative.savePublicWallet(label,address)){renderWalletGate();renderWalletProfile()}
+}
+function renderWalletGate(){
+  let c={};try{c=JSON.parse(HunterNative.getPublicWallet())}catch(e){}
+  document.getElementById('walletGateState').innerHTML=c.address?
+    '<div class="card"><span class="pill green">WATCH-ONLY</span><div class="title">'+esc(c.label||'Public wallet')+'</div><div class="mono">'+esc(c.address)+'</div><button class="btn" onclick="skipWallet()">CONTINUE</button></div>':''
+}
+function renderWalletProfile(){
+  let c={};try{c=JSON.parse(HunterNative.getPublicWallet())}catch(e){}
+  document.getElementById('walletProfile').innerHTML=c.address?
+    '<div class="card"><span class="pill green">WATCH-ONLY</span><div class="title">'+esc(c.label||'Public wallet')+'</div><div class="mono">'+esc(c.address)+'</div><button class="btn red" onclick="HunterNative.clearPublicWallet();renderWalletProfile()">REMOVE ADDRESS</button></div>':
+    '<div class="card"><div class="v gold">Not configured</div><div class="small">Wallet is optional. Add a public address only if you want future eligibility checks.</div></div>'
+}
 function showWalletSettings(){document.getElementById('app').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
+
+function renderAlerts(){
+  let on=false;try{on=HunterNative.alertsEnabled()}catch(e){}
+  document.getElementById('alertsCard').innerHTML=on?
+    '<div class="card"><div class="row between"><div><div class="v green">ENABLED</div><div class="small">Android checks the backend about every 15 minutes and alerts only on new opportunities.</div></div><span class="pill green">ON</span></div><button class="btn dark" onclick="HunterNative.disableAlerts();setTimeout(renderAlerts,200)">DISABLE ALERTS</button></div>':
+    '<div class="card"><div class="v gold">OFF</div><div class="small">Enable local Android notifications for new HUNTER opportunities.</div><button class="btn" onclick="HunterNative.enableAlerts();setTimeout(renderAlerts,500)">ENABLE ALERTS</button></div>'
+}
+
 function resetOnboarding(){localStorage.clear();location.reload()}
-window.hunterBack=function(){if(!document.getElementById('detail').classList.contains('hide')){closeDetail();return}if(!document.getElementById('walletGate').classList.contains('hide')){if(localStorage.hunterReady==='1')bootApp();else showGate();return}go('home')}
-if(localStorage.hunterReady==='1')bootApp();else showGate();renderTasks();
+window.hunterBack=function(){
+  if(!document.getElementById('detail').classList.contains('hide')){closeDetail();return}
+  if(!document.getElementById('walletGate').classList.contains('hide')){
+    if(localStorage.hunterReady==='1')bootApp();else showGate();
+    return
+  }
+  go('home')
+}
+
+if(localStorage.hunterReady==='1')bootApp();else showGate();
+renderTasks();
 </script>
-</body></html>
+</body>
+</html>

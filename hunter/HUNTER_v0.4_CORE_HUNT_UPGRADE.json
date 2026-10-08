@@ -1,0 +1,377 @@
+{
+  "name": "HUNTER v0.4 — Core Hunt Upgrade + On-demand Scan",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1420,
+        -380
+      ],
+      "id": "hunter-schedule-hourly",
+      "name": "Every Hour"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1420,
+        -180
+      ],
+      "id": "hunter-manual-test",
+      "name": "Manual Test"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hunter/scan",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1420,
+        20
+      ],
+      "id": "hunter-scan-api",
+      "name": "HUNTER Scan API"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=(airdrop%20OR%20launchpool%20OR%20learn-to-earn%20OR%20rewards)%20(site%3Abinance.com%20OR%20site%3Aokx.com%20OR%20site%3Acoinbase.com%20OR%20site%3Akraken.com)&hl=en&gl=NL&ceid=NL%3Aen",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -1080,
+        -500
+      ],
+      "id": "hunter-rss-official",
+      "name": "RSS Official Exchanges",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=(airdrop%20OR%20quest%20OR%20testnet%20OR%20rewards)%20(site%3Agalxe.com%20OR%20site%3Alayer3.xyz%20OR%20site%3Azealy.io)&hl=en&gl=NL&ceid=NL%3Aen",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -1080,
+        -320
+      ],
+      "id": "hunter-rss-quests",
+      "name": "RSS Quest Platforms",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=(airdrop%20OR%20launchpool%20OR%20testnet%20OR%20rewards)%20(site%3Acoindesk.com%20OR%20site%3Adecrypt.co%20OR%20site%3Atheblock.co)&hl=en&gl=NL&ceid=NL%3Aen",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -1080,
+        -140
+      ],
+      "id": "hunter-rss-news",
+      "name": "RSS Reputable Crypto News",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -760,
+        -320
+      ],
+      "id": "hunter-merge-opportunities",
+      "name": "Merge Opportunities"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s = $getWorkflowStaticData('global');\n\ns.seen = s.seen && typeof s.seen === 'object' ? s.seen : {};\ns.recentAlerts = Array.isArray(s.recentAlerts) ? s.recentAlerts : [];\n\nconst now = Date.now();\nconst DAY = 24 * 60 * 60 * 1000;\nconst ACCEPTED_TTL = 30 * DAY;\nconst NON_ACCEPTED_TTL = 24 * 60 * 60 * 1000;\nconst ALERT_TTL = 7 * DAY;\nconst MIN_SCORE = 80;\n\nconst officialExchangeDomains = ['binance.com','okx.com','coinbase.com','kraken.com'];\nconst questDomains = ['galxe.com','layer3.xyz','zealy.io'];\nconst reputableMediaDomains = ['coindesk.com','decrypt.co','theblock.co'];\nconst shortenerDomains = ['bit.ly','tinyurl.com','t.co','cutt.ly','shorturl.at'];\n\nconst opportunityWords = [\n  'airdrop','giveaway','launchpool','launchpad','learn-to-earn',\n  'learn and earn','quest','testnet','reward','rewards','campaign','whitelist','allowlist'\n];\n\nconst scamWords = [\n  'seed phrase','recovery phrase','private key','send funds first',\n  'double your','guaranteed profit','guaranteed return','remote access',\n  'screen share','send crypto to','pay fee to claim','deposit to claim'\n];\n\nfunction str(v) {\n  if (v === null || v === undefined) return '';\n  if (typeof v === 'string') return v;\n  if (typeof v === 'number' || typeof v === 'boolean') return String(v);\n  try { return JSON.stringify(v); } catch { return ''; }\n}\n\nfunction host(url) {\n  try { return new URL(String(url)).hostname.toLowerCase().replace(/^www\\./,''); }\n  catch { return ''; }\n}\n\nfunction matches(h, domains) {\n  return domains.some(d => h === d || h.endsWith('.' + d));\n}\n\nfunction categoryOf(text) {\n  if (/whitelist|allowlist/.test(text)) return 'Whitelist';\n  if (/giveaway/.test(text)) return 'Giveaway';\n  if (/learn-to-earn|learn and earn|\\blearn\\b/.test(text)) return 'Learn';\n  if (/quest|galxe|layer3|zealy/.test(text)) return 'Quest';\n  return 'Airdrop';\n}\n\nfunction uniq(items) {\n  const out = [];\n  const used = new Set();\n  for (const item of items) {\n    const k = String(item.link || item.title || '').toLowerCase();\n    if (!k || used.has(k)) continue;\n    used.add(k);\n    out.push(item);\n  }\n  return out;\n}\n\nconst input = $input.all();\nconst accepted = [];\n\nlet invalidCount = 0;\nlet staleCount = 0;\nlet duplicateCount = 0;\nlet scamRejectedCount = 0;\nlet belowThresholdCount = 0;\nlet sourceErrorCount = 0;\nlet officialSourceCount = 0;\n\nfor (const item of input) {\n  const x = item.json || {};\n\n  if (x.error || x.errorMessage) {\n    sourceErrorCount++;\n    continue;\n  }\n\n  const title = str(x.title).trim();\n  const link = str(x.link).trim();\n  if (!title || !link) {\n    invalidCount++;\n    continue;\n  }\n\n  const sourceObj = x.source && typeof x.source === 'object' ? x.source : null;\n  const sourceName = sourceObj\n    ? str(sourceObj.title || sourceObj.name).trim()\n    : str(x.source).trim();\n  const sourceUrl = sourceObj ? str(sourceObj.url).trim() : '';\n  const sourceHost = host(sourceUrl);\n  const linkHost = host(link);\n\n  const textBlob = [\n    title,\n    sourceName,\n    str(x.content),\n    str(x.contentSnippet),\n    str(x.creator),\n    str(x.author)\n  ].filter(Boolean).join(' ').toLowerCase();\n\n  const dedupeKey = link.toLowerCase();\n  const prev = s.seen[dedupeKey];\n  if (prev && typeof prev === 'object') {\n    const ttl = prev.accepted ? ACCEPTED_TTL : NON_ACCEPTED_TTL;\n    if (Number(prev.at) && now - Number(prev.at) < ttl) {\n      duplicateCount++;\n      continue;\n    }\n  }\n\n  const publishedRaw = x.isoDate || x.pubDate || x.published || '';\n  const published = Date.parse(publishedRaw);\n  if (Number.isFinite(published) && now - published > 7 * DAY) {\n    staleCount++;\n    s.seen[dedupeKey] = { at: now, accepted: false, score: 0 };\n    continue;\n  }\n\n  let score = 20;\n  let sourceVerification = 'UNVERIFIED';\n  const scoreReasons = [];\n  const riskFlags = [];\n\n  if (matches(sourceHost, officialExchangeDomains)) {\n    score += 55;\n    sourceVerification = 'OFFICIAL_EXCHANGE';\n    scoreReasons.push('Publisher domain matches a supported official exchange.');\n    officialSourceCount++;\n  } else if (matches(sourceHost, questDomains)) {\n    score += 50;\n    sourceVerification = 'KNOWN_QUEST_PLATFORM';\n    scoreReasons.push('Publisher domain matches a supported quest platform.');\n  } else if (matches(sourceHost, reputableMediaDomains)) {\n    score += 30;\n    sourceVerification = 'REPUTABLE_MEDIA';\n    scoreReasons.push('Publisher domain matches a supported crypto media source.');\n  } else {\n    const lowerSource = sourceName.toLowerCase();\n    if (officialExchangeDomains.some(d => lowerSource.includes(d.split('.')[0]))) {\n      score += 25;\n      sourceVerification = 'EXCHANGE_MENTION';\n      scoreReasons.push('Official exchange is mentioned, but publisher domain is not confirmed as official.');\n    } else if (questDomains.some(d => lowerSource.includes(d.split('.')[0]))) {\n      score += 20;\n      sourceVerification = 'QUEST_MENTION';\n      scoreReasons.push('Known quest platform is mentioned, but publisher domain is not confirmed.');\n    } else if (reputableMediaDomains.some(d => lowerSource.includes(d.split('.')[0]))) {\n      score += 15;\n      sourceVerification = 'MEDIA_MENTION';\n      scoreReasons.push('Known media brand is mentioned, but publisher domain is not confirmed.');\n    }\n  }\n\n  if (opportunityWords.some(v => textBlob.includes(v))) {\n    score += 20;\n    scoreReasons.push('Opportunity keywords detected.');\n  }\n\n  if (/\\bfree\\b|no cost|zero cost|learn/.test(textBlob)) {\n    score += 5;\n    scoreReasons.push('Low/no-cost wording detected.');\n  }\n\n  if (/deadline|ends|until|eligible|eligibility|claim/.test(textBlob)) {\n    score += 5;\n    scoreReasons.push('Eligibility/deadline/claim wording detected.');\n  }\n\n  if (/connect wallet|wallet connection|sign message/.test(textBlob)) {\n    score -= 5;\n    riskFlags.push('Wallet connection or signing may be requested.');\n  }\n\n  if (matches(linkHost, shortenerDomains)) {\n    score -= 15;\n    riskFlags.push('Shortened link detected.');\n  }\n\n  const scamHit = scamWords.find(v => textBlob.includes(v));\n  if (scamHit) {\n    score -= 100;\n    scamRejectedCount++;\n    riskFlags.push('High-risk phrase: ' + scamHit);\n  }\n\n  if (/send\\s+.*crypto|deposit\\s+.*claim|pay\\s+.*claim/.test(textBlob)) {\n    score -= 60;\n    riskFlags.push('Potential pay/send-to-claim pattern.');\n  }\n\n  score = Math.max(0, Math.min(100, score));\n\n  const acceptedNow = score >= MIN_SCORE;\n  s.seen[dedupeKey] = {\n    at: now,\n    accepted: acceptedNow,\n    score\n  };\n\n  if (!acceptedNow) {\n    belowThresholdCount++;\n    continue;\n  }\n\n  const cost = /\\bfree\\b|no cost|zero cost|learn/.test(textBlob)\n    ? '€0 indicated — verify source'\n    : 'Unknown — verify before action';\n\n  const effort = /learn|quiz/.test(textBlob)\n    ? '5–20 min'\n    : (/quest|campaign|testnet/.test(textBlob) ? '10–60+ min' : 'Check source');\n\n  let risk = 'MEDIUM';\n  if (sourceVerification === 'OFFICIAL_EXCHANGE' && riskFlags.length === 0 && score >= 90) {\n    risk = 'LOWER';\n  } else if (\n    ['KNOWN_QUEST_PLATFORM','REPUTABLE_MEDIA'].includes(sourceVerification)\n    && riskFlags.length <= 1\n  ) {\n    risk = 'LOW-MEDIUM';\n  }\n\n  accepted.push({\n    title,\n    link,\n    category: categoryOf(textBlob),\n    score,\n    source: sourceName || sourceHost || 'Discovery',\n    sourceUrl: sourceUrl || null,\n    sourceHost: sourceHost || null,\n    linkHost: linkHost || null,\n    sourceVerification,\n    risk,\n    riskFlags,\n    scoreReasons,\n    cost,\n    effort,\n    deadline: 'Check official source',\n    network: null,\n    estimatedReward: null,\n    walletRequired: /connect wallet|wallet connection|sign message/.test(textBlob) ? 'Possibly' : 'Unknown',\n    requirements: [],\n    published: publishedRaw || null,\n    foundAt: new Date(now).toISOString(),\n    action: 'Open the source, verify the final domain, eligibility and terms. Never enter seed/private keys or send crypto just to qualify.'\n  });\n}\n\naccepted.sort((a,b) => b.score - a.score);\nconst top = accepted.slice(0, 5);\n\nconst retained = s.recentAlerts.filter(a => {\n  const t = Date.parse(a.foundAt || '');\n  return Number.isFinite(t) && now - t < ALERT_TTL;\n});\n\ns.recentAlerts = uniq([...top, ...retained]).slice(0, 10);\n\nfor (const [k,v] of Object.entries(s.seen)) {\n  const at = v && typeof v === 'object' ? Number(v.at) : Number(v);\n  if (!Number.isFinite(at) || now - at > ACCEPTED_TTL) delete s.seen[k];\n}\n\ns.lastRunAt = new Date(now).toISOString();\ns.lastRunSummary = {\n  inputCount: input.length,\n  newAlertCount: top.length,\n  recentAlertCount: s.recentAlerts.length,\n  minScore: MIN_SCORE,\n  invalidCount,\n  staleCount,\n  duplicateCount,\n  scamRejectedCount,\n  belowThresholdCount,\n  sourceErrorCount,\n  officialSourceCount\n};\n\nreturn top.map(json => ({ json }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        -320
+      ],
+      "id": "hunter-filter-score",
+      "name": "HUNTER Filter + Score"
+    },
+    {
+      "parameters": {
+        "chatId": "SET_OWNER_CHAT_ID",
+        "text": "=🎯 HUNTER ALPHA · new crypto opportunity\\n\\n{{ $json.title }}\\n\\nHunter Score: {{ $json.score }}/100\\nSource status: {{ $json.sourceVerification }}\\nRisk: {{ $json.risk }}\\nSource host: {{ $json.sourceHost }}\\nCost: {{ $json.cost }}\\nEffort: {{ $json.effort }}\\n\\n{{ $json.action }}\\n\\n{{ $json.link }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        -320
+      ],
+      "id": "hunter-telegram-alert",
+      "name": "Telegram HUNTER Alert",
+      "disabled": true,
+      "notes": "Optional. Keep disabled until Telegram credential/chat ID are configured."
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "hunter/status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -760,
+        160
+      ],
+      "id": "hunter-status-api",
+      "name": "HUNTER Status API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const s = $getWorkflowStaticData('global');\nconst recentAlerts = Array.isArray(s.recentAlerts) ? s.recentAlerts : [];\nconst seen = s.seen && typeof s.seen === 'object' ? s.seen : {};\n\nreturn [{\n  json: {\n    ok: true,\n    agent: 'HUNTER',\n    version: '0.4',\n    mode: 'WATCH_ONLY',\n    minScore: 80,\n    lastRunAt: s.lastRunAt || null,\n    seenCount: Object.keys(seen).length,\n    lastRunSummary: s.lastRunSummary || {\n      inputCount: 0,\n      newAlertCount: 0,\n      recentAlertCount: recentAlerts.length,\n      minScore: 80,\n      invalidCount: 0,\n      staleCount: 0,\n      duplicateCount: 0,\n      scamRejectedCount: 0,\n      belowThresholdCount: 0,\n      sourceErrorCount: 0,\n      officialSourceCount: 0\n    },\n    lastAlerts: recentAlerts,\n    safety: {\n      walletMode: 'WATCH_ONLY_PUBLIC_ADDRESS',\n      walletAccess: false,\n      signing: false,\n      transfers: false,\n      trading: false,\n      privateKeysStored: false\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        160
+      ],
+      "id": "hunter-status-compose",
+      "name": "HUNTER Status Compose"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "GET, OPTIONS"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store, no-cache, must-revalidate"
+              },
+              {
+                "name": "Pragma",
+                "value": "no-cache"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -180,
+        160
+      ],
+      "id": "hunter-status-return",
+      "name": "Return HUNTER Status"
+    },
+    {
+      "parameters": {
+        "content": "## HUNTER v0.4 — Core Hunt Upgrade\\n\\nProduction: hourly + manual + POST /webhook/hunter/scan → 3 RSS sources → merge → score/filter.\\n\\nApp status: GET /webhook/hunter/status.\\n\\nChanges: source trust separated from Hunter Score; risk flags; shortened-link penalty; 24h re-check for non-qualified items; 30d dedupe for qualified items; on-demand scan endpoint.\\n\\nSafety: watch-only public wallet address only; no seed/private keys; no signing; no trading; no transfers.\\n\\nIMPORTANT: deactivate the older HUNTER workflow before publishing because /hunter/status uses the same production path.",
+        "height": 460,
+        "width": 650,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1420,
+        -780
+      ],
+      "id": "hunter-audit-notes",
+      "name": "HUNTER v0.4 Notes"
+    }
+  ],
+  "connections": {
+    "Every Hour": {
+      "main": [
+        [
+          {
+            "node": "RSS Official Exchanges",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Quest Platforms",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Reputable Crypto News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Test": {
+      "main": [
+        [
+          {
+            "node": "RSS Official Exchanges",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Quest Platforms",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Reputable Crypto News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Scan API": {
+      "main": [
+        [
+          {
+            "node": "RSS Official Exchanges",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Quest Platforms",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Reputable Crypto News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Official Exchanges": {
+      "main": [
+        [
+          {
+            "node": "Merge Opportunities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Quest Platforms": {
+      "main": [
+        [
+          {
+            "node": "Merge Opportunities",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "RSS Reputable Crypto News": {
+      "main": [
+        [
+          {
+            "node": "Merge Opportunities",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge Opportunities": {
+      "main": [
+        [
+          {
+            "node": "HUNTER Filter + Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Filter + Score": {
+      "main": [
+        [
+          {
+            "node": "Telegram HUNTER Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Status API": {
+      "main": [
+        [
+          {
+            "node": "HUNTER Status Compose",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HUNTER Status Compose": {
+      "main": [
+        [
+          {
+            "node": "Return HUNTER Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Amsterdam"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
