@@ -1,1 +1,1 @@
-{"name":"AURON","short_name":"AURON","start_url":"./","display":"standalone","background_color":"#060606","theme_color":"#060606","description":"Secure Crypto Assistant","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{"name":"AURON","short_name":"AURON","start_url":"./","display":"standalone","background_color":"#060606","theme_color":"#060606","description":"Secure Crypto Assistant","icons":[{"src":"icon-exact.jpg","sizes":"any","type":"image/jpeg","purpose":"any maskable"}]}
