@@ -12,6 +12,9 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
 
 public class MainActivity extends Activity {
     private static final String HOME =
@@ -39,7 +42,7 @@ public class MainActivity extends Activity {
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setMediaPlaybackRequiresUserGesture(true);
-        settings.setUserAgentString(settings.getUserAgentString() + " AURON-Android/0.9");
+        settings.setUserAgentString(settings.getUserAgentString() + " AURON-Android/0.9.1-TestSafe");
 
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
@@ -55,8 +58,28 @@ public class MainActivity extends Activity {
             }
         });
 
-        if (savedInstanceState == null) webView.loadUrl(HOME);
-        else webView.restoreState(savedInstanceState);
+        // The test APK always loads its own audited v0.9.1 interface.
+        // Never fall back to the remotely hosted v0.9 UI, whose trade buttons can post decisions.
+        loadBundledTestInterface();
+    }
+
+    private void loadBundledTestInterface() {
+        try (InputStream in = getAssets().open("auron_v091.html");
+             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[8192];
+            int count;
+            while ((count = in.read(buffer)) != -1) {
+                out.write(buffer, 0, count);
+            }
+            String html = out.toString("UTF-8");
+            webView.loadDataWithBaseURL(HOME, html, "text/html", "UTF-8", null);
+        } catch (IOException e) {
+            // Fail closed: do not load the public build if our bundled safety rules are missing.
+            webView.loadDataWithBaseURL(
+                HOME,
+                "<html><body style='background:#060606;color:#f3cd81;padding:24px'>AURON TEST SAFE: local interface unavailable. Trading is disabled.</body></html>",
+                "text/html", "UTF-8", null);
+        }
     }
 
     private boolean handleUrl(Uri uri) {
