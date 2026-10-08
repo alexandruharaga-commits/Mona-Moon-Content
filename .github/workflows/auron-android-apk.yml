@@ -39,6 +39,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: AURON_v0_9_1_TEST_SAFE_APK
-          path: AURON_v0_1.apk
+          path: AURON_v0_9_1_TEST_SAFE.apk
           if-no-files-found: error
           retention-days: 30
