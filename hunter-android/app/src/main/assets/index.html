@@ -5,20 +5,206 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>HUNTER ALPHA</title>
 <style>
-*{box-sizing:border-box}
-:root{--bg:#030506;--panel:#0a0f11;--line:#283238;--gold:#d4a94d;--gold2:#f3d17a;--text:#f5f7f7;--muted:#89949a;--green:#27d981;--red:#ff6473;--amber:#f1b94b}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -8%,#20190c 0,#07090a 28%,#030506 68%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-body{padding:18px 16px 104px}.hide{display:none!important}.screen{display:none}.screen.active{display:block}
-.top{display:flex;align-items:center;justify-content:space-between;margin:5px 3px 15px}.brand{font-size:23px;font-weight:1000;letter-spacing:.07em}.brand b{color:var(--gold)}.mini{font-size:10px;color:#879297}.tag{font-size:9px;letter-spacing:.2em;color:#b4bdc1;margin-top:3px}
-.hero,.card{border:1px solid var(--line);background:linear-gradient(150deg,#0d1214,#070a0c);border-radius:21px;padding:16px;margin-top:11px}.hero{border-color:#4a3a1e;box-shadow:0 12px 42px #0009}.hero h1{font-size:30px;line-height:1.04;margin:9px 0}.sub,.small{color:var(--muted);font-size:12px;line-height:1.45}.small{font-size:11px}.k{font-size:9px;letter-spacing:.14em;color:#738087;font-weight:900}.v{font-size:20px;font-weight:950;margin-top:4px}.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}
-.logo{width:152px;height:152px;margin:8px auto 12px;border-radius:31px;overflow:hidden;box-shadow:0 0 50px #d5ad5528;border:1px solid #68542a;background:#050607}.logo img{width:100%;height:100%;object-fit:cover}.wolf{text-align:center;color:var(--gold);font-size:10px;letter-spacing:.18em;margin-top:-4px}.gateTitle{text-align:center;font-size:34px;font-weight:1000}.gateTitle b{color:var(--gold)}
-.btn{width:100%;border:0;border-radius:15px;padding:14px 16px;margin-top:10px;font-size:13px;font-weight:950;background:linear-gradient(90deg,#b77b20,#f0cf77,#bd8528);color:#080806}.btn.dark{background:#11171a;color:#edf2f2;border:1px solid #344046}.btn.red{background:#281116;color:#ff9aa3;border:1px solid #63313b}
-input{width:100%;background:#090d0f;border:1px solid #313b40;color:#fff;border-radius:14px;padding:14px;margin-top:10px}.security{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.security div{border:1px solid #293236;border-radius:14px;padding:10px 4px;text-align:center;font-size:9px;color:#a6afb3}
-.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}.stat{background:#0b1012;border:1px solid #273137;border-radius:14px;text-align:center;padding:10px 5px}.stat b{font-size:20px}.filters{display:flex;gap:7px;overflow:auto;margin:12px 0;padding-bottom:3px}.filter{white-space:nowrap;border:1px solid #313b40;background:#090d0f;color:#aab3b7;padding:8px 11px;border-radius:999px;font-size:10px}.filter.on{border-color:#7f682f;color:#f2cf73;background:#181309}
-.pill{display:inline-block;border:1px solid #39444a;border-radius:999px;padding:5px 8px;font-size:9px;color:#c6cdd1;margin:3px 3px 0 0}.pill.gold{border-color:#7d6730;color:#f1cd72}.pill.green{border-color:#246841;color:#49e08e}.pill.red{border-color:#71333c;color:#ff8893}.pill.amber{border-color:#795b28;color:#ffc765}.title{font-weight:900;font-size:16px;margin:6px 0}.score{font-size:19px;font-weight:1000;color:var(--green)}.source{font-size:11px;color:#8c989d}.opactions{display:flex;gap:8px;margin-top:12px}.opactions button{flex:1;border:1px solid #344047;border-radius:12px;padding:11px;background:#11171a;color:#fff;font-weight:850}.opactions .primary{background:#d2a84f;border-color:#d2a84f;color:#090806}
-.sectiontitle{font-size:17px;font-weight:950;margin:18px 2px 6px}.mono{font-family:ui-monospace,monospace;font-size:11px;word-break:break-all;color:#aeb7bb}.empty{text-align:center;padding:27px 12px;color:#808b90}.scanring{width:148px;height:148px;border-radius:50%;border:2px solid #866c30;margin:22px auto;display:grid;place-items:center;box-shadow:inset 0 0 35px #d4a94d22,0 0 32px #d4a94d18;position:relative}.scanring:after{content:"";position:absolute;inset:9px;border:1px dashed #725d2b;border-radius:50%;animation:spin 8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid #20282d}.circle{min-width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#171d20;border:1px solid #3a4449;color:#d1d7da;font-weight:900}.back{background:none;border:0;color:white;font-size:25px}.notice{border-left:3px solid var(--gold);padding:10px 12px;background:#121008;border-radius:8px;margin-top:11px;color:#d6d0bd;font-size:11px;line-height:1.45}
-.nav{position:fixed;left:9px;right:9px;bottom:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px;background:#080c0ef2;border:1px solid #273238;border-radius:21px;backdrop-filter:blur(14px);z-index:30}.nav button{border:0;background:transparent;color:#7d888d;padding:8px 1px;font-size:9px}.nav button.on{color:#efc866}.nav span{font-size:19px;display:block}#gate,#walletGate{max-width:520px;margin:auto}
-.progress{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.progress .pill.active{background:#1a160c;border-color:#7d6730;color:#f1cd72}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#020304;--bg2:#07090a;--panel:#0a0e10;--panel2:#101517;
+  --line:#293238;--line2:#4a3a20;--gold:#c8922e;--gold2:#f3d27a;
+  --gold3:#8f651e;--text:#f4f6f6;--muted:#8f989d;--green:#32dd8b;
+  --red:#ff6573;--amber:#f2bd52;--steel:#cbd0d3;--blue:#70b8ff
+}
+html,body{
+  margin:0;min-height:100%;
+  background:
+    radial-gradient(90% 48% at 50% -4%,#30220f55 0%,transparent 60%),
+    radial-gradient(65% 38% at 80% 15%,#14202a44 0%,transparent 65%),
+    linear-gradient(180deg,#030405 0%,#050708 46%,#010202 100%);
+  color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
+}
+body{padding:18px 16px 108px;position:relative;overflow-x:hidden}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;z-index:0;
+  background-image:
+    linear-gradient(#d5ad5508 1px,transparent 1px),
+    linear-gradient(90deg,#d5ad5508 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:linear-gradient(to bottom,#000 0%,transparent 68%)
+}
+body:after{
+  content:"";position:fixed;left:-18%;right:-18%;bottom:42px;height:240px;pointer-events:none;z-index:0;opacity:.18;
+  background:
+    linear-gradient(168deg,transparent 0 40%,#b8862c 40.4% 41%,transparent 41.4%),
+    linear-gradient(190deg,transparent 0 50%,#778086 50.4% 51%,transparent 51.4%);
+  filter:blur(.2px)
+}
+#gate,#walletGate,#app,#detail{position:relative;z-index:1}
+.hide{display:none!important}.screen{display:none}.screen.active{display:block;animation:screenIn .24s ease}
+@keyframes screenIn{from{opacity:.35;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.top{display:flex;align-items:center;justify-content:space-between;margin:5px 2px 16px;gap:10px}
+.top .brand{display:flex;align-items:center;gap:9px}
+.top .brand:before{
+  content:"";width:31px;height:31px;border-radius:10px;flex:0 0 31px;
+  background:url('hunter_alpha_official.webp') center/cover no-repeat;
+  border:1px solid #80652d;box-shadow:0 0 18px #d8b55c2a
+}
+.brand{
+  font-size:23px;font-weight:1000;letter-spacing:.075em;
+  background:linear-gradient(180deg,#fff 0%,#c6cbce 48%,#7e8589 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.brand b{
+  background:linear-gradient(180deg,#ffe7a2 0%,#d7a448 52%,#8f641f 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.mini{font-size:9px;color:#91999d;letter-spacing:.08em}.tag{font-size:8px;letter-spacing:.21em;color:#929a9f;margin-top:4px}
+.statuschip{padding:7px 9px;border-radius:999px;background:#0b1012;border:1px solid #2a3439;white-space:nowrap}
+.iconbtn{width:34px;height:34px;border-radius:12px;border:1px solid #313b40;background:#0a0e10;color:#d6b258;font-size:17px;display:grid;place-items:center}
+
+.hero,.card{
+  position:relative;overflow:hidden;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(120% 100% at 100% 0%,#c8952d0d 0%,transparent 52%),
+    linear-gradient(155deg,#0d1214 0%,#080b0c 56%,#050708 100%);
+  border-radius:22px;padding:17px;margin-top:11px;
+  box-shadow:0 16px 42px #0007,inset 0 1px 0 #ffffff05
+}
+.hero{
+  border-color:#5a4725;
+  background:
+    radial-gradient(55% 90% at 88% 14%,#d4a94d20 0%,transparent 72%),
+    radial-gradient(38% 65% at 18% 0%,#9aa4aa12 0%,transparent 72%),
+    linear-gradient(145deg,#12130f 0%,#090c0d 42%,#050708 100%);
+  box-shadow:0 20px 60px #000a,inset 0 1px 0 #f5d78910,0 0 0 1px #a47a2810
+}
+.hero:before{
+  content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-78px;top:-88px;
+  border:1px solid #d5ad5535;box-shadow:0 0 42px #d5ad5515,inset 0 0 34px #d5ad550c
+}
+.hero:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,#e1b95788,transparent)
+}
+.hero h1{font-size:31px;line-height:1.02;margin:10px 0 12px;letter-spacing:-.035em}
+.sub,.small{color:var(--muted);font-size:12px;line-height:1.48}.small{font-size:11px}
+.k{font-size:9px;letter-spacing:.16em;color:#7f898e;font-weight:900}.v{font-size:20px;font-weight:950;margin-top:4px}
+.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}
+
+.logo{
+  width:164px;height:164px;margin:20px auto 14px;border-radius:38px;overflow:hidden;position:relative;
+  border:1px solid #8b6f34;
+  box-shadow:0 0 0 7px #d3aa4f08,0 0 0 18px #d3aa4f05,0 0 70px #d5ad5537,0 26px 65px #000a;
+  background:#050607
+}
+.logo:before{content:"";position:absolute;inset:-42px;border-radius:50%;border:1px solid #d5ad5520;z-index:-1}
+.logo img{width:100%;height:100%;object-fit:cover;display:block}
+.wolf{text-align:center;color:#d3ad59;font-size:9px;letter-spacing:.23em;margin-top:2px}
+.gateTitle{
+  text-align:center;font-size:38px;font-weight:1000;letter-spacing:.045em;line-height:1;
+  background:linear-gradient(180deg,#fff,#aeb4b8 68%,#666d71);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.gateTitle b{
+  background:linear-gradient(180deg,#ffe6a0,#d6a345 55%,#95671f);
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+#gate>.tag{text-align:center!important;margin-top:8px;color:#b7bec1}
+#gate .hero{margin-top:25px}
+
+.btn{
+  width:100%;border:0;border-radius:16px;padding:15px 17px;margin-top:10px;
+  font-size:13px;font-weight:1000;letter-spacing:.025em;
+  background:linear-gradient(100deg,#a96f19 0%,#f1cf76 46%,#c28d31 100%);
+  color:#080806;box-shadow:0 8px 22px #c7922820,inset 0 1px 0 #fff4bf88
+}
+.btn:active{transform:scale(.992)}
+.btn.dark{
+  background:linear-gradient(180deg,#13191c,#0b1012);color:#eef2f2;border:1px solid #364149;
+  box-shadow:inset 0 1px 0 #ffffff08
+}
+.btn.red{background:#261015;color:#ff9ba4;border:1px solid #61313a;box-shadow:none}
+input{
+  width:100%;background:#080c0e;border:1px solid #303a40;color:#fff;border-radius:15px;
+  padding:14px 15px;margin-top:10px;outline:none;box-shadow:inset 0 1px 0 #ffffff03
+}
+input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
+.security{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.security div{
+  border:1px solid #293338;border-radius:15px;padding:12px 5px;text-align:center;font-size:9px;color:#aab2b6;
+  background:linear-gradient(180deg,#0b1012,#070a0b);box-shadow:inset 0 1px 0 #ffffff05
+}
+
+.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}
+.statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:11px}
+.stat{
+  background:linear-gradient(180deg,#0c1113,#070a0c);border:1px solid #2a3439;border-radius:16px;text-align:center;
+  padding:12px 4px;box-shadow:inset 0 1px 0 #ffffff05
+}
+.stat b{
+  display:block;font-size:21px;
+  background:linear-gradient(180deg,#fff,#c7cccf);-webkit-background-clip:text;background-clip:text;color:transparent
+}
+.filters{display:flex;gap:7px;overflow:auto;margin:13px -2px 1px;padding:2px 2px 5px;scrollbar-width:none}.filters::-webkit-scrollbar{display:none}
+.filter{
+  white-space:nowrap;border:1px solid #303a40;background:#090d0f;color:#9da6aa;padding:8px 12px;border-radius:999px;
+  font-size:10px;font-weight:800
+}
+.filter.on{border-color:#84692f;color:#f3d17a;background:linear-gradient(180deg,#1b160c,#110e08);box-shadow:0 0 18px #d4aa4e13}
+
+.pill{display:inline-block;border:1px solid #39444a;border-radius:999px;padding:5px 8px;font-size:9px;color:#c6cdd1;margin:3px 3px 0 0;font-weight:850;letter-spacing:.02em}
+.pill.gold{border-color:#7d6730;color:#f1cd72;background:#171209}.pill.green{border-color:#246841;color:#49e08e;background:#091710}.pill.red{border-color:#71333c;color:#ff8893;background:#17090c}.pill.amber{border-color:#795b28;color:#ffc765;background:#181209}
+.title{font-weight:950;font-size:16px;margin:7px 0;letter-spacing:-.01em}.score{font-size:20px;font-weight:1000;color:var(--green)}.source{font-size:11px;color:#8d989d}
+.opactions{display:flex;gap:8px;margin-top:13px}.opactions button{flex:1;border:1px solid #344047;border-radius:12px;padding:11px;background:#101619;color:#fff;font-weight:900}.opactions .primary{background:linear-gradient(100deg,#b77c21,#e5bd63);border-color:#d0a249;color:#090806}
+
+.sectiontitle{font-size:17px;font-weight:950;margin:20px 2px 7px}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;word-break:break-all;color:#b3bcc0}
+.empty{text-align:center;padding:29px 14px;color:#818c91}
+.empty b{display:block;color:#c8ced1;font-size:14px;margin-bottom:6px}
+.scanring{
+  width:188px;height:188px;border-radius:50%;margin:27px auto;display:grid;place-items:center;position:relative;
+  border:1px solid #896d30;
+  background:
+    radial-gradient(circle at center,#d5ad5512 0 2px,transparent 3px),
+    repeating-radial-gradient(circle at center,transparent 0 23px,#d5ad5513 24px 25px),
+    conic-gradient(from 0deg,transparent 0 72%,#d8b35622 78%,#d8b3566b 84%,transparent 91%);
+  box-shadow:0 0 55px #d4a94d18,inset 0 0 44px #d4a94d12
+}
+.scanring:before{
+  content:"";position:absolute;inset:13px;border-radius:50%;border:1px dashed #75602e;animation:spin 9s linear infinite
+}
+.scanring:after{
+  content:"";position:absolute;width:8px;height:8px;border-radius:50%;top:21px;left:49%;
+  background:#f1cf75;box-shadow:0 0 14px #f1cf75;animation:pulse 1.8s ease-in-out infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{opacity:.35;transform:scale(.7)}}
+.detailgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.check{display:flex;gap:11px;padding:14px 0;border-bottom:1px solid #20292e}.check:last-child{border-bottom:0}
+.circle{min-width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#151b1e;border:1px solid #3c474c;color:#d6dcdf;font-weight:950}
+.back{background:#0a0e10;border:1px solid #2e383d;color:white;font-size:24px;width:36px;height:36px;border-radius:12px}
+.notice{border-left:3px solid var(--gold);padding:11px 13px;background:#121008;border-radius:10px;margin-top:12px;color:#d8d1bd;font-size:11px;line-height:1.45}
+.progress{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.progress .pill.active{background:#1c160b;border-color:#8d7031;color:#f5d27a;box-shadow:0 0 14px #d3aa4c15}
+
+.card{transition:border-color .2s ease,transform .2s ease}.card:active{border-color:#46525a}
+#homeOps .card{border-left-color:#4f4025}
+#homeOps .card:before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,transparent,#d2aa50,transparent);opacity:.7
+}
+
+.nav{
+  position:fixed;left:9px;right:9px;bottom:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px;
+  background:linear-gradient(180deg,#0b1012f4,#06090af6);border:1px solid #2c363b;border-radius:22px;
+  box-shadow:0 18px 55px #000c,inset 0 1px 0 #ffffff08;backdrop-filter:blur(18px);z-index:30
+}
+.nav button{border:0;background:transparent;color:#778287;padding:8px 1px;font-size:9px;font-weight:750}.nav button.on{color:#efc866;text-shadow:0 0 13px #d5ad5540}
+.nav span{font-size:18px;display:block;margin-bottom:2px}
+
+#gate,#walletGate{max-width:520px;margin:auto}
+#walletGate .hero:before{right:-98px;top:-98px}
+#profile .card,#watch .card,#tasks .card,#notifications .card{background:linear-gradient(155deg,#0d1214,#070a0c)}
+#detail>.top{position:sticky;top:0;z-index:8;padding:6px 0;background:linear-gradient(180deg,#030506 55%,transparent)}
+
+.notificationItem{padding:14px 15px}.notificationItem .time{font-size:9px;color:#707b80;margin-top:5px}
+.notificationDot{width:7px;height:7px;border-radius:50%;background:#68a9ff;box-shadow:0 0 10px #68a9ff88}
 </style>
 </head>
 <body>
@@ -29,13 +215,13 @@ input{width:100%;background:#090d0f;border:1px solid #313b40;color:#fff;border-r
   <div class="gateTitle">HUNTER <b>ALPHA</b></div>
   <div class="tag" style="text-align:center">CRYPTO OPPORTUNITY INTELLIGENCE</div>
   <div class="hero">
-    <div class="k">BETA ACCESS</div>
-    <h1>Real opportunities.<br><span class="gold">Less noise.</span></h1>
-    <div class="sub">Hunter hunts airdrops, giveaways, whitelists, quests and learn-to-earn rewards. Source trust and Hunter Score are shown separately.</div>
-    <input id="email" type="email" placeholder="Email for local beta profile">
-    <button class="btn" onclick="enterBeta()">CONTINUE</button>
+    <div class="k">PRIVATE BETA</div>
+    <h1>Find the signal.<br><span class="gold">Ignore the noise.</span></h1>
+    <div class="sub">A premium crypto opportunity hunter for airdrops, giveaways, whitelists, quests and learn-to-earn. Hunter scores the opportunity and verifies source trust separately.</div>
+    <input id="email" type="email" placeholder="Email address">
+    <button class="btn" onclick="enterBeta()">CONTINUE WITH EMAIL</button>
     <button class="btn dark" onclick="enterDemo()">TRY DEMO FIRST</button>
-    <div class="small" style="margin-top:10px">Beta login is local on this device. Cloud authentication is not enabled yet.</div>
+    <div class="small" style="margin-top:10px;text-align:center">Beta profile is stored locally on this device.</div>
   </div>
   <div class="security"><div>◈<br>NON-CUSTODIAL</div><div>✓<br>SOURCE CHECK</div><div>◎<br>YOU CONTROL</div></div>
 </div>
@@ -56,10 +242,10 @@ input{width:100%;background:#090d0f;border:1px solid #313b40;color:#fff;border-r
 
 <div id="app" class="hide">
   <section id="home" class="screen active">
-    <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">OPPORTUNITY HUNTER</div></div><div class="mini" id="topMode">CHECKING</div></div>
+    <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">CRYPTO OPPORTUNITY INTELLIGENCE</div></div><div class="row"><div class="mini statuschip" id="topMode">CHECKING</div><button class="iconbtn" onclick="openNotifications()">◉</button></div></div>
     <div class="hero">
-      <div class="k">HUNTER CORE v0.4</div>
-      <h1>Hunt. Verify.<br><span class="gold">You decide.</span></h1>
+      <div class="k">LIVE HUNT · TITANIUM CORE</div>
+      <h1>Find it before<br><span class="gold">the crowd.</span></h1>
       <div class="sub">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
       <button class="btn" onclick="startHunt()">START HUNT</button>
       <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
@@ -96,8 +282,14 @@ input{width:100%;background:#090d0f;border:1px solid #313b40;color:#fff;border-r
     <div id="taskBody" class="empty">Open an opportunity and tap SAFE GUIDE.</div>
   </section>
 
+  <section id="notifications" class="screen">
+    <div class="top"><div><div class="brand">HUNTER <b>ALERTS</b></div><div class="tag">NEW · UPDATES · REMINDERS</div></div><div class="mini">LIVE FEED</div></div>
+    <div class="hero"><div class="k">INTELLIGENCE FEED</div><h1>Notifications</h1><div class="sub">New qualified opportunities and important status changes appear here.</div></div>
+    <div id="notificationList"></div>
+  </section>
+
   <section id="profile" class="screen">
-    <div class="top"><div class="brand">HUNTER <b>ALPHA</b></div><div class="mini">v0.4</div></div>
+    <div class="top"><div class="brand">HUNTER <b>ALPHA</b></div><div class="mini">v0.4.2 · VISUAL FINAL</div></div>
     <div class="card"><div class="k">PROFILE</div><div class="v" id="profileEmail">Local beta</div><div class="small">Local beta profile on this phone.</div></div>
     <div class="sectiontitle">Background alerts</div>
     <div id="alertsCard"></div>
@@ -170,11 +362,28 @@ function go(id){
   document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('on'));
-  document.getElementById('n-'+id).classList.add('on');
+  let navButton=document.getElementById('n-'+id);if(navButton)navButton.classList.add('on');
   if(id==='watch')renderWatch();
   if(id==='tasks')renderTasks();
+  if(id==='notifications')renderNotifications();
   if(id==='profile'){renderWalletProfile();renderAlerts()}
   scrollTo(0,0)
+}
+
+function openNotifications(){go('notifications')}
+function renderNotifications(){
+  let box=document.getElementById('notificationList');
+  if(!box)return;
+  let arr=Array.isArray(state.alerts)?state.alerts:[];
+  if(!arr.length){
+    box.innerHTML='<div class="card empty"><b>No new alerts</b><span class="small">Hunter will place qualified opportunities here when they appear.</span></div>';
+    return;
+  }
+  box.innerHTML=arr.map(a=>{
+    let v=verification(a);
+    let t=a.foundAt?new Date(a.foundAt).toLocaleString():'Recently';
+    return '<div class="card notificationItem"><div class="row between"><div class="row"><span class="notificationDot"></span><span class="pill '+v.cls+'">'+v.label+'</span></div><span class="score">'+esc(a.score||'—')+'</span></div><div class="title">'+esc(a.title||'New opportunity')+'</div><div class="source">'+esc(sourceDomain(a))+'</div><div class="time">'+esc(t)+'</div></div>';
+  }).join('');
 }
 
 function startHunt(){
@@ -249,7 +458,7 @@ function renderHome(){
   }
   box.innerHTML=arr.map((a,i)=>{
     let v=verification(a);
-    return '<div class="card">'+
+    return '<div class="card opportunity">'+
       '<div class="row between"><span class="pill gold">'+esc(category(a))+'</span><span class="score">'+esc(a.score||'—')+'/100</span></div>'+
       '<div class="title">'+esc(a.title||'Crypto opportunity')+'</div>'+
       '<div class="source">'+esc(sourceDomain(a))+'</div>'+
