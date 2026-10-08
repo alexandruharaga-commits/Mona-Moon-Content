@@ -7,11 +7,11 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.auron.assistant"
+        applicationId = "com.auron.assistant.testsafe"
         minSdk = 26
         targetSdk = 35
-        versionCode = 9
-        versionName = "0.9"
+        versionCode = 10
+        versionName = "0.9.1-test-safe"
     }
 
     buildTypes {
