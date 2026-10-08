@@ -206,7 +206,7 @@ input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
 .notificationItem{padding:14px 15px}.notificationItem .time{font-size:9px;color:#707b80;margin-top:5px}
 .notificationDot{width:7px;height:7px;border-radius:50%;background:#68a9ff;box-shadow:0 0 10px #68a9ff88}
  
-/* v0.4.3 cinematic visual pass */
+/* v0.5 cinematic visual pass */
 .loginStage{position:relative;height:310px;margin:-5px -2px 8px;display:grid;place-items:center;overflow:visible}
 .loginHalo{position:absolute;width:285px;height:285px;border-radius:50%;background:radial-gradient(circle,#f1c96e22 0 24%,#c5922c10 45%,transparent 72%);border:1px solid #d3a94f2a;box-shadow:0 0 80px #d4a94d2e,inset 0 0 55px #ffffff06}
 .loginHalo:before,.loginHalo:after{content:"";position:absolute;inset:22px;border-radius:50%;border:1px solid #78818722}
@@ -276,81 +276,174 @@ input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
   .loginWolf{width:225px;height:225px}
   #gate .gateTitle{font-size:36px}
 }
+
+/* HUNTER ALPHA v0.5 — storyboard target */
+body{padding:15px 13px 104px;background:
+radial-gradient(100% 48% at 50% -10%,#3b2a1055 0%,transparent 65%),
+linear-gradient(180deg,#020304,#040708 45%,#010203)}
+.loginShell{min-height:calc(100vh - 135px);display:flex;flex-direction:column;align-items:center}
+.loginBrand{font-size:28px;font-weight:1000;letter-spacing:.06em;margin-top:9px;background:linear-gradient(180deg,#fff,#a8aeb2);-webkit-background-clip:text;color:transparent}
+.loginBrand b{background:linear-gradient(180deg,#ffe59a,#d9a43e 60%,#92621c);-webkit-background-clip:text;color:transparent}
+.loginTag{font-size:8px;letter-spacing:.21em;color:#aeb6ba;margin-top:5px}
+.loginEmblem{height:285px;width:100%;display:grid;place-items:center;position:relative;margin-top:10px}
+.loginEmblem img{width:230px;height:230px;object-fit:cover;border-radius:40px;position:relative;z-index:2;box-shadow:0 0 38px #e1b45d38,0 22px 45px #000d}
+.loginEmblem .ring{position:absolute;border-radius:50%;border:1px solid #e1b65742;box-shadow:0 0 32px #d9a94522}
+.loginEmblem .ring1{width:266px;height:266px}.loginEmblem .ring2{width:300px;height:300px;border-color:#8e713126}
+.loginPitch{text-align:center;font-weight:950;font-size:29px;line-height:1.05}.loginPitch span{color:#f2ce72}
+.loginTypes{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;margin:18px 0}
+.loginTypes div{text-align:center;color:#d8ad50;font-size:20px}.loginTypes small{display:block;color:#aab3b7;font-size:9px;margin-top:4px}
+.loginCard{width:100%;margin-top:2px}.loginFoot{text-align:center;color:#7f8a8e;font-size:10px;margin-top:13px}
+.loginSecurity{width:100%;margin-top:15px}.loginSecurity div{background:#070a0b}
+
+.walletIntro h1{font-size:28px;margin:7px 0}.walletList{display:grid;gap:8px;margin:17px 0}
+.walletList button{width:100%;display:grid;grid-template-columns:42px 1fr 20px;align-items:center;gap:10px;text-align:left;background:linear-gradient(180deg,#0e1417,#091012);border:1px solid #26343b;color:#f4f6f6;border-radius:13px;padding:9px 12px}
+.walletList button b{font-size:13px}.walletList button i{font-style:normal;font-size:22px;color:#aab3b7}
+.walletLogo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:1000;color:white}
+.walletLogo.fox{background:#f27f22}.walletLogo.trust{background:#3478ed}.walletLogo.wc{background:#2f7fff}.walletLogo.cb{background:#2857d6}.walletLogo.okx{background:#1e2326}
+.walletManual{margin-top:13px}
+
+.appHeader{margin-bottom:10px}.appHeader .brand:before{width:34px;height:34px;flex-basis:34px}
+.homeStatus{display:flex;align-items:center;justify-content:space-between;background:#090e10;border:1px solid #263238;border-radius:14px;padding:10px 12px;margin-bottom:8px}
+.homeStatus>div{display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:7px}.homeStatus small{grid-column:2;color:#758086;font-size:9px}.homeStatus b{font-size:10px;letter-spacing:.08em;color:#38db88}
+.statusLight{width:8px;height:8px;background:#38db88;border-radius:50%;box-shadow:0 0 12px #38db88}
+.miniHunt{border:1px solid #ad8534;background:#1a1408;color:#f4cf72;border-radius:999px;padding:8px 12px;font-size:9px;font-weight:900}
+.homeMetrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
+.homeMetrics div{background:#080d0f;border:1px solid #253038;border-radius:13px;padding:10px 4px;text-align:center}.homeMetrics b{display:block;font-size:18px}.homeMetrics small{font-size:7px;color:#7f8b90;letter-spacing:.12em}
+.homeMessage{padding:0 3px;color:#7f898e}
+
+#homeOps .card{padding:13px 13px;border-radius:15px;margin-top:8px;background:linear-gradient(180deg,#0b1215,#071012)}
+#homeOps .card .title{font-size:14px;margin:4px 0}#homeOps .card .score{font-size:17px}
+#homeOps .opactions{margin-top:9px}.opactions button{padding:9px;font-size:10px}
+.filters{margin:9px 0}.filter{font-size:9px;padding:7px 10px}
+
+.scanTitle{text-align:center;font-size:25px;font-weight:950;margin-top:20px}.scanSub{text-align:center;color:#9aa4a8;font-size:11px;line-height:1.4;max-width:340px;margin:8px auto}
+.globeScan{width:225px;height:225px;border-radius:50%;margin:24px auto;position:relative;display:grid;place-items:center;background:
+radial-gradient(circle at 50% 50%,#dba94c18 0 18%,transparent 19%),
+repeating-radial-gradient(circle at 50% 50%,transparent 0 25px,#e4b3541c 26px 27px),
+conic-gradient(from 20deg,#e7b85711,#e7b85760,#0000 38%,#e7b85722,#0000 68%,#e7b85780,#e7b85711);
+border:1px solid #d5a848;box-shadow:0 0 50px #d9a9492c,inset 0 0 35px #d8a84a20}
+.globeScan:after{content:"";position:absolute;inset:17px;border-radius:50%;border:1px dashed #e1b75c66;animation:spin 8s linear infinite}
+.orbit{position:absolute;border:1px solid #d9a84b33;border-radius:50%}.o1{width:190px;height:75px;transform:rotate(17deg)}.o2{width:75px;height:190px;transform:rotate(17deg)}.o3{width:175px;height:145px;transform:rotate(-30deg)}
+.scanCore{text-align:center;z-index:2}.scanCore .v{font-size:47px;color:white}.scanCore small{display:block;font-size:10px}.scanCore span{font-size:9px;color:#b8c0c3}
+.sourcePanel{background:#071012;border:1px solid #27343a;border-radius:16px;padding:14px;margin-bottom:12px}.sourcePanel>.k{margin-bottom:8px}.sourcePanel>div:not(.k){display:grid;grid-template-columns:22px 1fr 10px;gap:7px;align-items:center;padding:6px 0;font-size:11px}.sourcePanel i{width:7px;height:7px;background:#36dc86;border-radius:50%;box-shadow:0 0 8px #36dc86}
+.huntTelemetry{margin-top:10px}
+
+.profileHead{text-align:center;padding:20px 0 8px}.profileHead img{width:86px;height:86px;border-radius:23px;box-shadow:0 0 30px #d7aa4a30;border:1px solid #7f642b}.profileHead .brand{display:block;margin-top:10px}.profileHead .sub{margin-top:4px}
+.notificationItem{padding:12px 13px}
+
+.nav{padding:6px 4px;bottom:9px}.nav button{font-size:8px;padding:7px 1px}.nav span{font-size:18px}
 </style>
 </head>
 <body>
 
 <div id="gate">
-  <div class="loginStage">
-    <div class="loginHalo"></div>
-    <img class="loginWolf" src="hunter_alpha_official.webp" alt="Hunter Alpha">
+  <div class="loginShell">
+    <div class="loginBrand">HUNTER <b>ALPHA</b></div>
+    <div class="loginTag">CRYPTO OPPORTUNITY INTELLIGENCE</div>
+
+    <div class="loginEmblem">
+      <div class="ring ring1"></div>
+      <div class="ring ring2"></div>
+      <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
+    </div>
+
+    <div class="loginPitch">Your Crypto<br><span>Opportunity Hunter</span></div>
+    <div class="loginTypes">
+      <div>◈<small>Airdrops</small></div>
+      <div>✧<small>Giveaways</small></div>
+      <div>▣<small>Whitelists</small></div>
+      <div>◎<small>Quests</small></div>
+      <div>▤<small>Learn-to-Earn</small></div>
+      <div>↗<small>Early Access</small></div>
+    </div>
+
+    <div class="loginCard">
+      <input id="email" type="email" placeholder="Email address">
+      <button class="btn" onclick="enterBeta()">LOG IN</button>
+      <button class="btn dark" onclick="enterDemo()">TRY DEMO FIRST</button>
+      <div class="loginFoot">Real opportunities. No hype. Just results.</div>
+    </div>
+
+    <div class="security loginSecurity">
+      <div>◇<br>NON-CUSTODIAL</div>
+      <div>⌾<br>SOURCE CHECK</div>
+      <div>◉<br>YOU CONTROL</div>
+    </div>
   </div>
-  <div class="wolf">TITANIUM WOLF · CRYPTO OPPORTUNITY INTELLIGENCE</div>
-  <div class="gateTitle">HUNTER <b>ALPHA</b></div>
-  <div class="tag" style="text-align:center">CRYPTO OPPORTUNITY INTELLIGENCE</div>
-  <div class="hero">
-    <div class="k">PRIVATE BETA</div>
-    <h1>Find the signal.<br><span class="gold">Ignore the noise.</span></h1>
-    <div class="sub">A premium crypto opportunity hunter for airdrops, giveaways, whitelists, quests and learn-to-earn. Hunter scores the opportunity and verifies source trust separately.</div>
-    <input id="email" type="email" placeholder="Email address">
-    <button class="btn" onclick="enterBeta()">CONTINUE WITH EMAIL</button>
-    <button class="btn dark" onclick="enterDemo()">TRY DEMO FIRST</button>
-    <div class="small" style="margin-top:10px;text-align:center">Beta profile is stored locally on this device.</div>
-  </div>
-  <div class="security"><div>◈<br>NON-CUSTODIAL</div><div>✓<br>SOURCE CHECK</div><div>◎<br>YOU CONTROL</div></div>
 </div>
 
 <div id="walletGate" class="hide">
-  <div class="top"><button class="back" onclick="showGate()">‹</button><div class="brand">HUNTER <b>ALPHA</b></div><div></div></div>
-  <div class="hero">
-    <div class="k">OPTIONAL WALLET</div>
-    <h1>Watch-only by default.</h1>
-    <div class="sub">Hunter works without a wallet. For future eligibility checks you may save a public address only. Never enter a seed phrase, recovery phrase or private key.</div>
-    <input id="walletLabel" placeholder="Label, e.g. OKX Wallet">
+  <div class="top"><button class="back" onclick="showGate()">‹</button><div class="brand">CONNECT <b>WALLET</b></div><div></div></div>
+  <div class="walletIntro">
+    <h1>Connect Your Wallet</h1>
+    <div class="sub">Optional. Hunter can work without a wallet. For safety, this beta stores public addresses only and never stores seed phrases or private keys.</div>
+  </div>
+
+  <div class="walletList">
+    <button onclick="walletProviderInfo('MetaMask')"><span class="walletLogo fox">◆</span><b>MetaMask</b><i>›</i></button>
+    <button onclick="walletProviderInfo('Trust Wallet')"><span class="walletLogo trust">⬟</span><b>Trust Wallet</b><i>›</i></button>
+    <button onclick="walletProviderInfo('WalletConnect')"><span class="walletLogo wc">⌁</span><b>WalletConnect</b><i>›</i></button>
+    <button onclick="walletProviderInfo('Coinbase Wallet')"><span class="walletLogo cb">C</span><b>Coinbase Wallet</b><i>›</i></button>
+    <button onclick="walletProviderInfo('OKX Wallet')"><span class="walletLogo okx">▦</span><b>OKX Wallet</b><i>›</i></button>
+  </div>
+
+  <div class="card walletManual">
+    <div class="k">WATCH-ONLY BETA</div>
+    <div class="title">Add public address</div>
+    <input id="walletLabel" placeholder="Wallet label">
     <input id="walletAddress" placeholder="Public wallet address only">
     <button class="btn" onclick="saveWallet()">SAVE PUBLIC ADDRESS</button>
-    <button class="btn dark" onclick="skipWallet()">SKIP FOR NOW</button>
   </div>
+
+  <button class="btn dark" onclick="skipWallet()">USE WITHOUT WALLET FOR NOW</button>
   <div id="walletGateState"></div>
 </div>
 
 <div id="app" class="hide">
   <section id="home" class="screen active">
-    <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">CRYPTO OPPORTUNITY INTELLIGENCE</div></div><div class="row"><div class="mini statuschip" id="topMode">CHECKING</div><button class="iconbtn" onclick="openNotifications()">◉</button></div></div>
-    <div class="hero heroHome">
-      <div class="heroVisual">
-        <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
-        <div class="heroShade"></div>
-      </div>
-      <div class="heroCopy">
-        <div class="k">LIVE HUNT · TITANIUM CORE</div>
-        <h1>Find opportunities<br><span class="gold">before the crowd.</span></h1>
-        <div class="sub">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
-        <div class="heroActions">
-          <button class="btn" onclick="startHunt()">⌕&nbsp;&nbsp;START HUNT</button>
-          <button class="btn dark" onclick="refreshStatus()">↻&nbsp;&nbsp;REFRESH STATUS</button>
-        </div>
-        <div id="huntMessage" class="small huntMessage"></div>
-      </div>
+    <div class="top appHeader">
+      <div class="brand">HUNTER <b>ALPHA</b></div>
+      <div class="row"><button class="iconbtn" onclick="startHunt()">⌕</button><button class="iconbtn" onclick="openNotifications()">♢</button></div>
     </div>
-
-    <div class="statgrid">
-      <div class="stat"><b id="scanned">0</b><div class="k">SCANNED</div></div>
-      <div class="stat"><b id="active">0</b><div class="k">ACTIVE</div></div>
-      <div class="stat"><b id="rejected">0</b><div class="k">REJECTED</div></div>
-      <div class="stat"><b id="minScore">80</b><div class="k">MIN SCORE</div></div>
+    <div class="homeStatus">
+      <div><span class="statusLight"></span><b id="topMode">CHECKING</b><small>Opportunity intelligence</small></div>
+      <button class="miniHunt" onclick="startHunt()">START HUNT</button>
     </div>
 
     <div class="filters" id="filters"></div>
     <div id="homeOps"></div>
+
+    <div class="homeMetrics">
+      <div><b id="scanned">0</b><small>SCANNED</small></div>
+      <div><b id="active">0</b><small>ACTIVE</small></div>
+      <div><b id="rejected">0</b><small>REJECTED</small></div>
+      <div><b id="minScore">80</b><small>MIN SCORE</small></div>
+    </div>
+    <div id="huntMessage" class="small homeMessage"></div>
   </section>
 
   <section id="hunt" class="screen">
-    <div class="top"><div class="brand">HUNT <b>STATUS</b></div><div class="mini" id="lastRun">—</div></div>
-    <div class="scanring"><div style="text-align:center"><div class="v" id="ringCount">0</div><div class="small">active alerts</div></div></div>
-    <div class="card"><div class="k">AGENT</div><div class="v green" id="agentMode">CHECKING</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
-    <div class="card trustPanel"><div class="k">TRUST ENGINE</div><div class="title">Score ≠ source verification</div><div class="small">Hunter Score measures opportunity quality. Source Trust separately marks Official, Known Platform, Reputable Media, Mention Only or Unverified.</div></div>
-    <button class="btn" onclick="startHunt()">START HUNT</button>
+    <div class="top"><button class="back" onclick="go('home')">‹</button><div class="brand">HUNTER <b>SCAN</b></div><div class="mini" id="lastRun">—</div></div>
+    <div class="scanTitle">Hunter is scanning...</div>
+    <div class="scanSub">Searching across configured sources for airdrops, giveaways, whitelists, quests and learn-to-earn opportunities.</div>
+
+    <div class="globeScan">
+      <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div>
+      <div class="gridLines"></div>
+      <div class="scanCore"><div class="v" id="ringCount">0</div><small>OPPORTUNITIES</small><span>FOUND</span></div>
+    </div>
+
+    <div class="sourcePanel">
+      <div class="k">SCANNING SOURCES</div>
+      <div><span>◈</span>Exchange announcements <i></i></div>
+      <div><span>◆</span>Official project channels <i></i></div>
+      <div><span>◎</span>Quest platforms <i></i></div>
+      <div><span>✦</span>Reputable crypto news <i></i></div>
+      <div><span>⌁</span>Public web sources <i></i></div>
+    </div>
+
+    <div class="card huntTelemetry"><div class="k">AGENT STATUS</div><div class="v green" id="agentMode">CHECKING</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
+    <button class="btn" onclick="startHunt()">START NEW HUNT</button>
     <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
   </section>
 
@@ -365,13 +458,13 @@ input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
   </section>
 
   <section id="notifications" class="screen">
-    <div class="top"><div><div class="brand">HUNTER <b>ALERTS</b></div><div class="tag">NEW · UPDATES · REMINDERS</div></div><div class="mini">LIVE FEED</div></div>
+    <div class="top"><div class="brand">NOTIFICATIONS</div><button class="iconbtn">⚙</button></div>
     <div class="hero"><div class="k">INTELLIGENCE FEED</div><h1>Notifications</h1><div class="sub">New qualified opportunities and important status changes appear here.</div></div>
     <div id="notificationList"></div>
   </section>
 
   <section id="profile" class="screen">
-    <div class="top"><div class="brand">HUNTER <b>ALPHA</b></div><div class="mini">v0.4.2 · VISUAL FINAL</div></div>
+    <div class="profileHead"><img src="hunter_alpha_official.webp"><div class="brand">HUNTER <b>ALPHA</b></div><div class="sub">Crypto Opportunity Intelligence</div></div>
     <div class="card"><div class="k">PROFILE</div><div class="v" id="profileEmail">Local beta</div><div class="small">Local beta profile on this phone.</div></div>
     <div class="sectiontitle">Background alerts</div>
     <div id="alertsCard"></div>
@@ -655,6 +748,9 @@ function renderTasks(){
     (a.link?'<button class="btn" onclick="selected=JSON.parse(localStorage.hunterTask);openOfficial()">OPEN SOURCE LINK</button>':'')
 }
 
+function walletProviderInfo(name){
+  HunterNative.toast(name+' secure connection is not enabled in this beta yet. You can continue without a wallet or add a public watch-only address.');
+}
 function saveWallet(){
   let label=document.getElementById('walletLabel').value.trim();
   let address=document.getElementById('walletAddress').value.trim();
