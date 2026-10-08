@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070707">
+<meta name="description" content="AURON — secure crypto assistant">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-exact.jpg">
+<title>AURON</title>
+<style>
+:root{
+  --bg:#060606;--panel:#0d0e10;--panel2:#111214;--line:#2d281d;
+  --gold:#d7ad57;--gold2:#ffd985;--gold3:#8f6a28;--txt:#f7f4ee;
+  --muted:#98999d;--green:#16d98b;--red:#ff5454;--blue:#6fa6ff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#2a1c08 0,transparent 32%),var(--bg);color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+body{min-height:100vh;overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.shell{width:min(100%,760px);margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 14px calc(225px + env(safe-area-inset-bottom))}
+.screen{display:none;animation:fade .22s ease}.screen.active{display:block}
+@keyframes fade{from{opacity:.45;transform:translateY(6px)}to{opacity:1;transform:none}}
+.glass{background:linear-gradient(145deg,#111214f2,#070809f2);border:1px solid #3a3120;border-radius:24px;box-shadow:0 18px 60px #0009,inset 0 1px #ffffff0a}
+.goldline{border-color:#c28b32;box-shadow:0 0 0 1px #ffcf6d44,0 0 24px #b4772630,0 18px 55px #0009}
+.brand{display:flex;align-items:center;gap:12px}.brandMark{width:48px;height:48px;border-radius:14px;border:1px solid #7a5b23;display:grid;place-items:center;background:linear-gradient(145deg,#221707,#090909);overflow:hidden;box-shadow:0 0 18px #b47a2522}.brandMark img{width:100%;height:100%;display:block}.brandText b{font:600 22px Georgia;color:#f3ca76;letter-spacing:.16em}.brandText small{display:block;color:#b8aa8a;font-size:8px;letter-spacing:.23em;margin-top:2px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:13px 4px 12px}.iconbtn{width:40px;height:40px;border-radius:14px;border:1px solid #302d26;background:#0c0d0f;color:#eacb84}.title{font:500 31px Georgia;margin:8px 0 4px}.eyebrow{font-size:10px;color:var(--gold);letter-spacing:.18em;font-weight:800}.muted{color:var(--muted)}
+.btn{border:0;border-radius:15px;padding:14px 16px;font-weight:800;transition:.18s ease}.btn:disabled{cursor:not-allowed;filter:grayscale(1);opacity:.34;box-shadow:none!important;transform:none!important}.btnGold{background:linear-gradient(135deg,#c4933d,#ffd77e,#c58e34);color:#181107;box-shadow:0 9px 30px #a46e2130}.btnDark{background:#111316;color:#e4e4e4;border:1px solid #2c3036}.btnGreen{background:linear-gradient(135deg,#078c55,#19df8f);color:white}.btnRed{background:linear-gradient(135deg,#871b25,#ef334c);color:white}.btnWide{width:100%}
+.row{display:flex;gap:10px}.col{display:grid;gap:10px}
+.kpi{padding:16px}.kpi small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.09em}.kpi strong{display:block;font-size:23px;margin-top:7px}.positive{color:var(--green)}.negative{color:var(--red)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.section{margin-top:12px}.sectionHead{display:flex;align-items:center;justify-content:space-between;margin:0 3px 8px}.sectionHead h2{font:500 21px Georgia;margin:0}.sectionHead button{background:none;border:0;color:var(--gold2)}
+.card{padding:17px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #37332a;border-radius:999px;padding:7px 9px;font-size:11px;color:#d2c8b3}.pill.live{color:var(--green);border-color:#285a43}.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.coin{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #1d1f23}.coin:first-child{border-top:0}.coinIcon{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:white;background:#23262a}.coinMeta{flex:1}.coinMeta b{display:block}.coinMeta small{color:var(--muted)}.coinPrice{text-align:right}.coinPrice b,.coinPrice small{display:block}.coinPrice small{margin-top:3px}
+.nav{position:fixed;left:50%;bottom:max(1px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 20px),740px);background:#0c0d0ff5;border:1px solid #27292d;border-radius:24px;display:grid;grid-template-columns:repeat(5,1fr);padding:5px 7px;z-index:30;box-shadow:0 14px 50px #000b}.nav button{border:0;background:transparent;color:#84878d;border-radius:17px;padding:7px 4px;font-size:10px}.nav button span{display:block;font-size:20px;margin-bottom:3px}.nav button.active{background:linear-gradient(145deg,#3a2a10,#15120b);color:#ffd77c}.nav button.center{margin-top:-14px;background:#090807;border:1px solid #a77831;border-radius:50%;aspect-ratio:1;padding:8px;max-width:62px;justify-self:center;box-shadow:0 0 0 5px #070707,0 0 28px #b87a2c44;color:#f5c969;overflow:hidden}.nav button.center img{width:100%;height:100%;object-fit:cover;border-radius:50%;transform:scale(.96)}
+.loginWrap{min-height:calc(100vh - 28px);display:grid;align-content:center;gap:16px;padding:20px 8px;position:relative}.loginWrap:before{content:"";position:absolute;inset:6% -25% 46%;background:radial-gradient(circle at 50% 35%,#a56e2636,transparent 55%);filter:blur(2px);pointer-events:none}.loginLogo{width:190px;height:190px;border-radius:42px;margin:auto;display:grid;place-items:center;background:#080808;border:1px solid #9b7130;box-shadow:0 0 55px #c1882642,0 22px 80px #000a;overflow:hidden;position:relative}.loginLogo img{width:100%;height:100%;display:block}.loginLogo span{display:none}.loginTitle{text-align:center}.loginTitle h1{font:500 47px Georgia;letter-spacing:.13em;color:#f3ca78;margin:0}.loginTitle p{margin:4px 0;color:#b6ab94;letter-spacing:.23em;font-size:10px}.tag{text-align:center;color:#c89c4f;letter-spacing:.16em;font-size:11px;line-height:1.7}.form{display:grid;gap:10px;margin-top:8px}.field{display:flex;align-items:center;gap:10px;border:1px solid #303137;border-radius:15px;background:#0c0d0f;padding:0 13px}.field input{width:100%;background:none;border:0;outline:0;color:white;padding:15px 2px}.formAux{display:flex;justify-content:space-between;color:#aaa;font-size:12px}.formAux button{background:none;border:0;color:#e0b75d;padding:0}
+.disclaimer{text-align:center;color:#76787c;font-size:10px;line-height:1.5}.disclaimer a{color:#d1a952}
+.hero{padding:18px}.heroTop{display:flex;justify-content:space-between;align-items:flex-start}.heroBal{font-size:38px;font-weight:750;margin:6px 0 4px}.heroChart{height:100px;margin-top:13px;position:relative;overflow:hidden}.heroChart svg{width:100%;height:100%}
+.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick{border:1px solid #6f5426;background:linear-gradient(145deg,#13110c,#090a0c);border-radius:19px;padding:14px 6px;text-align:center;color:#eee;box-shadow:inset 0 1px #ffd77d12,0 8px 24px #0008}.quick b{display:block;font-size:20px;color:#e2b65b;margin-bottom:6px}.quick small{font-size:10px}
+.insight{display:grid;grid-template-columns:86px 1fr;overflow:hidden}.aiFace{min-height:132px;background:radial-gradient(circle at 50% 45%,#9f6c1f55,#0c0c0d 64%);display:grid;place-items:center;border-right:1px solid #45371f}.aiFace span{font-size:60px;filter:grayscale(1) sepia(1) saturate(2)}.insightBody{padding:14px}.insightBody p{color:#c1c1c3;line-height:1.45;font-size:12px;margin:7px 0 10px}.tags{display:flex;gap:6px;flex-wrap:wrap}.tagPill{border:1px solid #755825;color:#f0c76f;padding:5px 8px;border-radius:999px;font-size:10px}
+.priceHeader{display:flex;align-items:center;gap:12px}.priceHeader .coinIcon{background:#f39a14}.priceHeader .right{margin-left:auto;text-align:right}.priceHeader .right strong{font-size:24px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#25262a;border-radius:16px;overflow:hidden;margin-top:12px}.stat{background:#0c0e10;padding:11px}.stat small{color:#8f9298;font-size:9px}.stat b{display:block;font-size:12px;margin-top:4px}
+.timeframes{display:flex;gap:5px;overflow:auto;padding:10px 0}.timeframes button{flex:0 0 auto;border:1px solid #292c31;background:#0d0f12;color:#aaa;border-radius:10px;padding:9px 12px}.timeframes button.active{background:#d9a84d;color:#111;border-color:#efca76}
+.chartBox{height:270px;background:linear-gradient(#0c0d0f,#090a0b);border:1px solid #202226;border-radius:20px;overflow:hidden;position:relative}.chartBox svg{width:100%;height:100%}.rsi{height:74px;margin-top:8px}
+.signalBox h2{margin:4px 0;color:var(--green);font-size:28px}.signalBox p{font-size:12px;color:#c5c5c7;line-height:1.45}.signalData{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.signalCell{background:#090a0c;border:1px solid #202226;border-radius:13px;padding:10px}.signalCell small{display:block;color:#888;font-size:9px}.signalCell b{display:block;margin-top:4px;font-size:12px}
+.actions2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.notice{padding:12px 14px;border:1px solid #594626;background:#15110a;border-radius:14px;color:#ccb77f;font-size:11px;line-height:1.5}
+.monitorStatus{display:flex;align-items:center;justify-content:space-between}.bigPnL{font-size:31px;font-weight:800}.tradeGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tradeGrid .kpi strong{font-size:18px}
+.historyItem{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:12px 0;border-top:1px solid #1d1f22}.historyItem:first-child{border-top:0}.historyItem small{color:#8b8e94}.historyItem .amount{text-align:right}.radarGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.radarItem{padding:12px;border:1px solid #5d4725;border-radius:15px;background:linear-gradient(145deg,#13110c,#090a0b);min-width:0}.radarItem b{display:block;font-size:13px}.radarItem small{display:block;color:#92959a;font-size:9px;margin-top:4px}.radarScore{font-size:20px;font-weight:800;color:#f1c56c;margin-top:7px}.radarLabel{display:inline-flex;margin-top:7px;padding:4px 7px;border-radius:999px;border:1px solid #4a4030;font-size:9px;font-weight:800;letter-spacing:.04em}.radarLabel.high{color:#16d98b;border-color:#285a43}.radarLabel.medium{color:#f1c56c;border-color:#6d5427}.radarLabel.low{color:#a8a9ad;border-color:#3a3c41}.radarMeta{display:flex;justify-content:space-between;gap:6px;margin-top:8px;font-size:9px;color:#aaa}.spark{height:74px;margin-top:10px}.spark svg{width:100%;height:100%}.brainStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.brainMini{padding:10px;border:1px solid #332c20;border-radius:13px;background:#090a0b}.brainMini small{display:block;color:#878a90;font-size:8px;text-transform:uppercase;letter-spacing:.08em}.brainMini b{display:block;margin-top:4px;font-size:11px;color:#e7c06a}
+.setting{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid #1d1f22}.setting:first-child{border-top:0}.setting .grow{flex:1}.setting b{display:block}.setting small{color:#8b8e94}.switch{width:43px;height:24px;border-radius:999px;background:#30343a;padding:3px}.switch.on{background:#0d9d65}.switch:after{content:"";display:block;width:18px;height:18px;background:white;border-radius:50%;transform:translateX(0)}.switch.on:after{transform:translateX(19px)}
+.toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,20px);opacity:0;background:#17191d;border:1px solid #353a42;padding:12px 15px;border-radius:999px;z-index:50;transition:.2s;font-size:12px}.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal{position:fixed;inset:0;background:#000c;display:none;align-items:end;z-index:60}.modal.show{display:flex}.sheet{width:min(100%,760px);margin:auto;background:#0c0d0f;border:1px solid #34363a;border-radius:25px 25px 0 0;padding:19px 16px calc(20px + env(safe-area-inset-bottom))}.sheet h3{font:500 25px Georgia;margin:0 0 7px}.sheet p{color:#aaa;font-size:12px;line-height:1.5}
+@media(max-width:560px){.radarItem{padding:10px 8px}.radarItem b{font-size:12px}.radarScore{font-size:18px}.radarLabel{font-size:8px;padding:3px 5px}.brainMini{padding:9px 7px}.quickGrid{grid-template-columns:repeat(4,1fr);gap:6px}.quick{padding:12px 3px;min-height:98px}.quick b{font-size:19px}.quick small{font-size:9px;line-height:1.22}.stats{grid-template-columns:repeat(4,1fr)}.stat{padding:8px 5px}.stat small{font-size:8px}.stat b{font-size:10px}.signalData{grid-template-columns:1fr 1fr}.heroBal{font-size:32px}.loginTitle h1{font-size:40px}.brandText b{font-size:19px}.brandText small{font-size:7px}}
+</style>
+</head>
+<body>
+<main class="shell">
+<section id="login" class="screen active">
+  <div class="loginWrap">
+    <div class="loginLogo"><img src="icon-exact.jpg" alt="AURON"></div>
+    <div class="loginTitle"><h1>AURON</h1><p>SECURE CRYPTO ASSISTANT</p></div>
+    <div class="tag">SMART INSIGHTS. YOUR DECISION.<br>REAL OPPORTUNITIES.</div>
+    <div class="form">
+      <div class="field"><span>✉</span><input id="email" type="email" autocomplete="email" placeholder="Email"></div>
+      <div class="field"><span>▣</span><input id="password" type="password" autocomplete="current-password" placeholder="Password"></div>
+      <div class="formAux"><label><input id="remember" type="checkbox" checked> Remember me</label><button id="forgot">Forgot password?</button></div>
+      <button class="btn btnGold btnWide" id="loginBtn">LOG IN →</button>
+      <button class="btn btnDark btnWide" id="demoBtn">ENTER DEMO</button>
+      <div class="disclaimer">By continuing, you agree to our <a href="#">Terms</a> & <a href="#">Privacy Policy</a>.<br>Trading involves risk. AURON provides decision support, not guaranteed returns.</div>
+    </div>
+  </div>
+</section>
+
+<section id="home" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="settings">☰</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>SECURE CRYPTO ASSISTANT</small></div></div><button class="iconbtn" data-go="profile">◯</button></header>
+  <article class="hero glass goldline">
+    <div class="heroTop"><div><div class="eyebrow">TOTAL PORTFOLIO</div><div class="heroBal" id="portfolio">$—</div><div id="portfolioSub" class="positive">OKX account read pending</div></div><span class="pill">USD ▾</span></div>
+    <div class="eyebrow" style="margin-top:12px">BTC MARKET CONTEXT · LIVE</div><div class="heroChart" id="portfolioChart"><div class="muted" style="padding-top:34px;font-size:11px">Loading live market context…</div></div><div class="timeframes" style="padding:8px 0 0"><button class="active">1D</button><button>1W</button><button>1M</button><button>3M</button><button>1Y</button><button>ALL</button></div>
+  </article>
+  <section class="section quickGrid">
+    <button class="quick" data-go="markets"><b>⌁</b><small>Market Analysis</small></button>
+    <button class="quick" data-go="signal"><b>◎</b><small>AI Insights</small></button>
+    <button class="quick" data-go="signal"><b>⇄</b><small>Trade Suggestions</small></button>
+    <button class="quick" data-go="settings"><b>▣</b><small>Wallet Overview</small></button>
+  </section>
+  <section class="section glass card goldline"><div class="sectionHead"><h2>Opportunity Radar</h2><span class="pill live"><i class="dot"></i>SCAN</span></div><div class="muted" style="font-size:10px;line-height:1.45;margin-bottom:10px">AURON ranks liquid markets by momentum, volatility and volume after a liquidity filter. Scores measure market activity, not profit certainty.</div><div id="opportunityList" class="radarGrid"></div><div class="brainStrip"><div class="brainMini"><small>Scanner</small><b id="brainScanner">Loading</b></div><div class="brainMini"><small>Risk filter</small><b>Enabled</b></div><div class="brainMini"><small>Execution</small><b>Manual final submit</b></div></div></section>
+  <section class="section"><div class="sectionHead"><h2>Top Coins</h2><button data-go="markets">See All ›</button></div><div class="glass card" id="coins"></div></section>
+  <section class="section glass insight goldline"><div class="aiFace"><img src="icon-exact.jpg" alt="AURON AI" style="width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 0 24px #d69b3b66"></div><div class="insightBody"><div class="monitorStatus"><div class="eyebrow">AURON AI INSIGHT</div><span class="pill live"><i class="dot"></i>LIVE</span></div><p id="homeInsight">Waiting for AURON Brain to surface a valid market setup.</p><div class="tags"><span class="tagPill" id="homePair">Market</span><span class="tagPill">Confirmation required</span></div></div></section>
+</section>
+
+<section id="markets" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>MARKET ANALYSIS</small></div></div><button class="iconbtn" id="marketRefresh">↻</button></header>
+  <article class="glass card goldline">
+    <div class="priceHeader"><div class="coinIcon">₿</div><div><div class="eyebrow">SELECTED MARKET</div><b id="marketPair">BTC/USDT</b></div><div class="right"><strong id="marketPrice">$—</strong><small id="marketChange" class="muted">Live data</small></div></div>
+    <div class="stats"><div class="stat"><small>Scanner</small><b id="scannerState">Standby</b></div><div class="stat"><small>Universe</small><b id="scannerUniverse">0</b></div><div class="stat"><small>Mode</small><b>Spot</b></div><div class="stat"><small>Risk</small><b>5–10 USDT</b></div></div>
+  </article>
+  <div class="timeframes"><button>1m</button><button>5m</button><button>15m</button><button>1H</button><button class="active">4H</button><button>1D</button><button>1W</button></div>
+  <div class="chartBox"><div id="marketCandles" class="v091error">Waiting for verified OKX candles…</div></div>
+  <div class="chartBox rsi"><div id="marketRsi" class="v091error">RSI(14) requires market data.</div></div>
+  <section class="section glass card signalBox goldline"><div class="monitorStatus"><div class="eyebrow">AURON ANALYSIS</div><span class="pill live"><i class="dot"></i>LIVE</span></div><h2 id="analysisTitle">WAIT</h2><p id="analysisText">AURON is scanning the market. A trade suggestion appears only when the configured conditions are met.</p><div class="tags"><span class="tagPill">Technical</span><span class="tagPill">Risk gated</span><span class="tagPill">Human approval</span></div><button class="btn btnGold btnWide" style="margin-top:12px" data-go="signal">View Trade Suggestion</button></section>
+</section>
+
+<section id="signal" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="markets">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>TRADE SUGGESTION</small></div></div><span id="signalLive" class="pill live"><i class="dot"></i>LIVE</span></header>
+  <article class="glass card signalBox goldline"><div class="eyebrow">AURON TRADE SUGGESTION</div><h2 id="sigTitle">NO ACTIVE SIGNAL</h2><p id="sigReason">AURON has not produced a valid setup yet.</p><div class="signalData"><div class="signalCell"><small>Entry</small><b id="sigEntry">—</b></div><div class="signalCell"><small>Take Profit</small><b id="sigTp">—</b></div><div class="signalCell"><small>Stop Loss</small><b id="sigSl">—</b></div><div class="signalCell"><small>Confidence</small><b id="sigConf">—</b></div></div><div class="signalData"><div class="signalCell"><small>Amount</small><b id="sigAmount">5–10 USDT</b></div><div class="signalCell"><small>Execution</small><b>Manual submit</b></div><div class="signalCell"><small>Exchange</small><b>OKX</b></div><div class="signalCell"><small>Expiry</small><b id="sigExpiry">—</b></div></div></article>
+  <div class="notice section">AURON can approve the handoff, but it does not press the final real-money Submit button for you. After approval, the OKX trade screen opens for your final check.</div>
+  <div id="signalActionHint" class="muted" style="text-align:center;font-size:11px;margin-top:12px">Waiting for a valid AURON signal.</div><div class="actions2"><button class="btn btnGreen" id="approveBtn" disabled>✓ APPROVE TRADE</button><button class="btn btnRed" id="rejectBtn" disabled>✕ REJECT</button></div>
+</section>
+
+<section id="trade" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>TRADE MONITOR</small></div></div><button class="iconbtn" data-go="history">◷</button></header>
+  <article class="glass card goldline"><div class="monitorStatus"><div><div class="eyebrow">LATEST APPROVED HANDOFF</div><h2 id="tradePair" class="title" style="font-size:27px">No approved trade</h2></div><span class="pill" id="tradeStatus">WAITING</span></div><div class="tradeGrid"><div class="kpi glass"><small>Entry</small><strong id="tradeEntry">—</strong></div><div class="kpi glass"><small>Amount</small><strong id="tradeAmount">—</strong></div><div class="kpi glass"><small>Stop Loss</small><strong id="tradeSl">—</strong></div><div class="kpi glass"><small>Take Profit</small><strong id="tradeTp">—</strong></div></div></article>
+  <section class="section glass card"><div class="sectionHead"><h2>AURON Monitoring</h2><span class="pill" id="monitorBadge"><i class="dot"></i><span id="monitorBadgeText">SCANNING</span></span></div><p class="muted" style="line-height:1.55;font-size:12px">AURON is scanning market conditions. When a valid trade is approved, this screen will switch to handoff mode and enable OKX for your final review.</p><button class="btn btnGold btnWide" id="openOkx" disabled>OPEN OKX →</button></section>
+  <section class="section glass card"><div class="sectionHead"><h2>Safety Gate</h2></div><div class="setting"><span>✓</span><div class="grow"><b>Manual final submit</b><small>Required in OKX</small></div></div><div class="setting"><span>✓</span><div class="grow"><b>Withdrawal / transfer</b><small>Locked</small></div></div><div class="setting"><span>✓</span><div class="grow"><b>Risk amount</b><small>5–10 USDT</small></div></div></section>
+</section>
+
+<section id="history" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="trade">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>DECISION HISTORY</small></div></div><button class="iconbtn" id="clearHistory">⌫</button></header>
+  <article class="glass card"><div class="grid3"><div class="kpi"><small>Signals</small><strong id="histSignals">0</strong></div><div class="kpi"><small>Approved</small><strong id="histApproved">0</strong></div><div class="kpi"><small>Rejected</small><strong id="histRejected">0</strong></div></div></article>
+  <section class="section glass card" id="historyList"></section>
+</section>
+
+<section id="settings" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>SETTINGS</small></div></div><button class="iconbtn" id="settingsRefresh">↻</button></header>
+  <article class="glass card">
+    <div class="setting"><span>◆</span><div class="grow"><b>OKX Connection</b><small id="okxState">Checking backend…</small></div><span id="okxBadge" class="pill">—</span></div>
+    <div class="setting"><span>⚖</span><div class="grow"><b>Risk Manager</b><small>5 USDT standard · 10 USDT high confidence</small></div><span class="pill">LOCKED</span></div>
+    <div class="setting"><span>✓</span><div class="grow"><b>Confirmation Gate</b><small>Required before every trade handoff</small></div><div class="switch on"></div></div>
+    <div class="setting"><span>⇧</span><div class="grow"><b>Withdraw / Transfer</b><small>Disabled by design</small></div><div class="switch"></div></div>
+    <div class="setting"><span>◉</span><div class="grow"><b>Market Scanner</b><small id="scannerSetting">OKX SPOT · scheduled</small></div><span class="pill live"><i class="dot"></i>ON</span></div><div class="setting"><span>⌁</span><div class="grow"><b>Opportunity Scanner</b><small>Liquidity · momentum · volatility ranking</small></div><span class="pill live"><i class="dot"></i>ON</span></div>
+    <div class="setting"><span>🔔</span><div class="grow"><b>In-app notifications</b><small>Signal and backend status</small></div><div class="switch on"></div></div>
+  </article>
+  <button class="btn btnDark btnWide section" id="logout">Log out</button>
+</section>
+
+<section id="profile" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>PROFILE</small></div></div><span></span></header>
+  <article class="glass card goldline" style="text-align:center"><div class="loginLogo" style="width:96px;height:96px;border-radius:24px"><img src="icon-exact.jpg" alt="AURON"></div><h2 style="margin-bottom:2px">AURON Trader</h2><div class="muted" id="profileEmail">Local session</div><div class="pill" style="margin-top:12px">v0.9.1 · TEST SAFE</div></article>
+  <section class="section glass card"><div class="setting"><span>♛</span><div class="grow"><b>Plan</b><small>Private beta</small></div><span class="pill">BETA</span></div><div class="setting"><span>?</span><div class="grow"><b>Help & Support</b><small>Product setup in progress</small></div><span>›</span></div><div class="setting"><span>i</span><div class="grow"><b>About AURON</b><small>Secure crypto decision assistant</small></div><span>›</span></div></section>
+<div style="height:90px"></div></section>
+</main>
+
+<nav id="nav" class="nav hidden">
+  <button data-go="home"><span>⌂</span>Home</button>
+  <button data-go="markets"><span>⌁</span>Markets</button>
+  <button data-go="signal" class="center"><img src="icon-exact.jpg" alt="AURON"></button>
+  <button data-go="trade"><span>⇄</span>Trades</button>
+  <button data-go="profile"><span>◯</span>Profile</button>
+</nav>
+<div id="toast" class="toast"></div>
+<div id="modal" class="modal"><div class="sheet"><h3 id="modalTitle">AURON</h3><p id="modalText"></p><div class="actions2"><button class="btn btnDark" id="modalClose">Close</button><button class="btn btnGold" id="modalAction">Continue</button></div></div></div>
+
+<script>
+const SAFE_TEST_MODE=true;
+const CFG={
+  statusUrl:'https://alalex.app.n8n.cloud/webhook/john-v56/status',
+  decisionUrl:'https://alalex.app.n8n.cloud/webhook/john-v56/decision',
+  coingecko:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h', radar:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h'
+};
+const $=id=>document.getElementById(id);
+let state={
+  status:null,
+  proposal:null,
+  approved:JSON.parse(localStorage.getItem('auronApproved')||'null'),
+  openUrl:localStorage.getItem('auronOpenUrl')||'',
+  market:null
+};
+function toast(msg){const x=$('toast');x.textContent=msg;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2200)}
+function fmt(n,max=8){const v=Number(n);return Number.isFinite(v)?v.toLocaleString(undefined,{maximumFractionDigits:max}):'—'}
+function money(n){const v=Number(n);return Number.isFinite(v)?'$'+v.toLocaleString(undefined,{maximumFractionDigits:2}):'$—'}
+function show(id){
+  document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));
+  $('nav').classList.toggle('hidden',id==='login');
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.go===id));
+  window.scrollTo({top:0,behavior:'instant'});
+  location.hash=id==='login'?'':id;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)show(b.dataset.go)});
+function setSession(email){localStorage.setItem('auronSession',JSON.stringify({email,at:Date.now()}));$('profileEmail').textContent=email||'Private beta';show('home');syncAll()}
+function login(){
+  const email=$('email').value.trim(),pass=$('password').value;
+  if(!email.includes('@')||pass.length<4){toast('Introduce un email valid și o parolă de minimum 4 caractere.');return}
+  setSession(email);
+}
+$('loginBtn').onclick=login;
+$('demoBtn').onclick=()=>setSession('demo@auron.app');
+$('forgot').onclick=()=>toast('Resetarea parolei va fi conectată în modulul Auth.');
+$('logout').onclick=()=>{localStorage.removeItem('auronSession');show('login')};
+function sparkSvg(values,stroke='#e3b65d'){
+  const v=(values||[]).map(Number).filter(Number.isFinite);if(v.length<2)return '<div class="muted" style="padding:22px 0;font-size:10px">No chart data</div>';
+  const min=Math.min(...v),max=Math.max(...v),range=Math.max(max-min,1e-9);
+  const pts=v.map((n,i)=>((i/(v.length-1))*100).toFixed(2)+','+(100-((n-min)/range)*88-6).toFixed(2)).join(' ');
+  return '<svg viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d7ad57" stop-opacity=".38"/><stop offset="1" stop-color="#d7ad57" stop-opacity="0"/></linearGradient></defs><polyline points="'+pts+'" fill="none" stroke="'+stroke+'" stroke-width="2.5" vector-effect="non-scaling-stroke"/></svg>';
+}
+function renderCoins(data){
+  const map={bitcoin:['BTC','Bitcoin','₿'],ethereum:['ETH','Ethereum','Ξ'],solana:['SOL','Solana','S']};
+  const rows=(data||[]).filter(x=>map[x.id]);
+  $('coins').innerHTML=rows.length?rows.map(d=>{const [sym,name,ico]=map[d.id],ch=Number(d.price_change_percentage_24h||0);return '<div class="coin"><div class="coinIcon">'+ico+'</div><div class="coinMeta"><b>'+sym+'</b><small>'+name+'</small></div><div class="coinPrice"><b>'+money(d.current_price)+'</b><small class="'+(ch>=0?'positive':'negative')+'">'+(ch>=0?'+':'')+ch.toFixed(2)+'%</small></div></div>'}).join(''):'<div class="muted">Market feed unavailable.</div>';
+}
+function opportunityScore(d,maxVol){
+  const change=Math.abs(Number(d.price_change_percentage_24h||0));
+  const vol=Number(d.total_volume||0);
+  const price=Math.max(Number(d.current_price||0),1e-9);
+  const range=Math.max(0,(Number(d.high_24h||0)-Number(d.low_24h||0))/price*100);
+  const momentum=Math.min(1,change/12);
+  const volatility=Math.min(1,range/16);
+  const liquidity=Math.min(1,Math.sqrt(vol/Math.max(maxVol,1)));
+  return Math.round(Math.min(88,28 + momentum*20 + volatility*20 + liquidity*20));
+}
+function opportunityBand(score){
+  if(score>=72)return {label:'HIGH',cls:'high'};
+  if(score>=55)return {label:'MEDIUM',cls:'medium'};
+  return {label:'LOW',cls:'low'};
+}
+function renderRadar(rows){
+  const excluded=['tether','usd-coin','dai','first-digital-usd','true-usd','paypal-usd'];
+  const liquid=(rows||[]).filter(d=>{
+    const vol=Number(d.total_volume||0),price=Number(d.current_price||0),mcap=Number(d.market_cap||0);
+    return price>0 && vol>=100000000 && mcap>=300000000 && !excluded.includes(d.id);
+  });
+  const maxVol=Math.max(1,...liquid.map(d=>Number(d.total_volume||0)));
+  const ranked=liquid.map(d=>({...d,_score:opportunityScore(d,maxVol)}))
+    .sort((a,b)=>b._score-a._score).slice(0,3);
+  $('opportunityList').innerHTML=ranked.length?ranked.map(d=>{
+    const ch=Number(d.price_change_percentage_24h||0);
+    const band=opportunityBand(d._score);
+    const dir=ch>=0?'Momentum ↑':'Momentum ↓';
+    return '<div class="radarItem"><b>'+String(d.symbol||'').toUpperCase()+'/USD</b><small>'+dir+'</small><div class="radarScore">'+d._score+'<span style="font-size:10px;color:#8c8e94"> / 100</span></div><span class="radarLabel '+band.cls+'">'+band.label+' ACTIVITY</span><div class="radarMeta"><span>24h '+(ch>=0?'+':'')+ch.toFixed(1)+'%</span><span>Vol '+(Number(d.total_volume)/1e9).toFixed(1)+'B</span></div></div>';
+  }).join(''):'<div class="muted">No liquid market currently passes the scanner filters.</div>';
+  $('brainScanner').textContent=ranked.length?liquid.length+' liquid markets':'Waiting';
+}
+async function marketData(){
+  try{
+    const [r,rr]=await Promise.all([fetch(CFG.coingecko,{cache:'no-store'}),fetch(CFG.radar,{cache:'no-store'})]);
+    if(!r.ok)throw new Error('price feed');
+    const rows=await r.json();state.market=rows;renderCoins(rows);
+    const btc=rows.find(x=>x.id==='bitcoin')||{};$('marketPrice').textContent=money(btc.current_price);const ch=Number(btc.price_change_percentage_24h||0);$('marketChange').textContent=(ch>=0?'+':'')+ch.toFixed(2)+'% (24h)';$('marketChange').className=ch>=0?'positive':'negative';
+    $('portfolioChart').innerHTML=sparkSvg(btc.sparkline_in_7d?.price||[], '#e8bd63');
+    if(rr.ok)renderRadar(await rr.json()); else renderRadar(rows);
+  }catch(e){
+    if(!$('coins').children.length)renderCoins([]);$('marketChange').textContent='Public price feed unavailable';$('marketChange').className='muted';$('portfolioChart').innerHTML='<div class="muted" style="padding-top:34px;font-size:11px">Live chart unavailable</div>';renderRadar([]);
+  }
+}
+function proposalActive(p){return p&&p.id&&!['approved','approved_for_handoff','rejected','expired'].includes(String(p.status||'pending').toLowerCase())}
+function renderProposal(p){
+  state.proposal=proposalActive(p)?p:null;
+  const q=state.proposal;
+  if(!q){
+    $('sigTitle').textContent='NO ACTIVE SIGNAL';$('sigReason').textContent='AURON has not produced a valid setup yet.';$('sigEntry').textContent=$('sigTp').textContent=$('sigSl').textContent=$('sigConf').textContent=$('sigExpiry').textContent='—';$('sigAmount').textContent='5–10 USDT';$('approveBtn').disabled=true;$('rejectBtn').disabled=true;$('signalActionHint').textContent='Waiting for a valid AURON signal.';$('analysisTitle').textContent='WAIT';$('analysisText').textContent='AURON is scanning the market. A trade suggestion appears only when the configured conditions are met.';$('homeInsight').textContent='Waiting for AURON Brain to surface a valid market setup.';$('homePair').textContent='Market';return;
+  }
+  const side=String(q.side||'buy').toUpperCase(),pair=q.pair||q.instId||'—',conf=Number(q.confidence||0);$('sigTitle').textContent=side+' '+pair.replace('-','/');$('sigReason').textContent=q.reason||'AURON detected a valid setup.';$('sigEntry').textContent=fmt(q.entry);$('sigTp').textContent=fmt(q.takeProfit??q.tp);$('sigSl').textContent=fmt(q.stopLoss??q.sl);$('sigConf').textContent=Math.round(conf*(conf<=1?100:1))+'%';$('sigAmount').textContent=(q.amountQuote??q.amount??q.amountEur??5)+' USDT';$('sigExpiry').textContent=q.expiresAt?Math.max(0,Math.ceil((Number(q.expiresAt)-Date.now())/60000))+' min':'20 min';$('approveBtn').disabled=SAFE_TEST_MODE;$('rejectBtn').disabled=SAFE_TEST_MODE;$('signalActionHint').textContent='Signal validated by AURON. Approve or reject the handoff.';$('analysisTitle').textContent=side+' SETUP';$('analysisText').textContent=q.reason||'AURON detected a valid setup.';$('homeInsight').textContent=q.reason||'AURON detected a valid setup.';$('homePair').textContent=pair;
+}
+function renderStatus(d){
+  state.status=d;
+  const a=d?.account||{},m=d?.market||{},s=d?.scanner||{};
+  $('portfolio').textContent=a.ok?(a.totalEq?money(a.totalEq):((a.balance??'—')+' '+(a.currency||'USDT'))):'$—';
+  $('portfolioSub').textContent=a.ok?'OKX authorized':'OKX account read unavailable';$('portfolioSub').className=a.ok?'positive':'muted';
+  $('scannerState').textContent=s.state||'Standby';$('scannerUniverse').textContent=m.universe||0;$('scannerSetting').textContent=(s.state||'Standby')+' · OKX SPOT';
+  $('okxState').textContent=a.ok?'Authorized read-only account connection':(a.message||'Unavailable');$('okxBadge').textContent=a.ok?'AUTHORIZED':'OFFLINE';$('okxBadge').className=a.ok?'pill live':'pill';
+  if(m.pair)$('marketPair').textContent=String(m.pair).replace('-','/');
+  renderProposal(d?.proposal||d?.tradeProposal||d?.pendingTrade);
+}
+async function backendStatus(){
+  try{const r=await fetch(CFG.statusUrl,{cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d?.message||'Backend');renderStatus(d)}
+  catch(e){$('okxState').textContent='Backend unavailable';$('okxBadge').textContent='OFFLINE';$('okxBadge').className='pill';toast('AURON backend indisponibil')}
+}
+async function syncAll(){await Promise.allSettled([backendStatus(),marketData()]);renderTrade();renderHistory()}
+async function decide(decision){
+  if(SAFE_TEST_MODE){toast('TEST SAFE: approvals and rejections are disabled.');return;}
+  const p=state.proposal;if(!p?.id)return toast('Nu există o propunere activă.');
+  $('approveBtn').disabled=$('rejectBtn').disabled=true;
+  try{
+    const r=await fetch(CFG.decisionUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({proposalId:p.id,decision,confirmedAt:new Date().toISOString()})});
+    const d=await r.json();if(!r.ok||d.ok===false)throw new Error(d.message||'Decision failed');
+    pushHistory({id:p.id,pair:p.pair||p.instId,decision,status:d.status,at:Date.now(),amount:p.amountQuote??p.amount??p.amountEur,entry:p.entry,tp:p.takeProfit??p.tp,sl:p.stopLoss??p.sl});
+    if(decision==='approve'){
+      state.approved={...p,status:'approved_for_handoff',approvedAt:Date.now()};state.openUrl=d.openUrl||'';localStorage.setItem('auronApproved',JSON.stringify(state.approved));localStorage.setItem('auronOpenUrl',state.openUrl);
+      $('modalTitle').textContent='Trade approved';$('modalText').textContent='AURON approved the handoff. Review the order in OKX and press the final Submit button yourself.';$('modalAction').textContent='Open OKX';$('modal').classList.add('show');renderTrade();
+    }else{toast('Propunere respinsă');state.proposal=null;renderProposal(null);show('home')}
+  }catch(e){toast(e.message||'Backend indisponibil');$('approveBtn').disabled=$('rejectBtn').disabled=false}
+}
+$('approveBtn').onclick=()=>decide('approve');$('rejectBtn').onclick=()=>decide('reject');
+function renderTrade(){
+  const p=state.approved;
+  if(!p){
+    $('tradePair').textContent='No approved trade';
+    $('tradeStatus').textContent='WAITING';
+    $('tradeEntry').textContent=$('tradeAmount').textContent=$('tradeSl').textContent=$('tradeTp').textContent='—';
+    $('openOkx').disabled=true;
+    $('monitorBadgeText').textContent='SCANNING';
+    $('monitorBadge').className='pill';
+    return;
+  }
+  $('tradePair').textContent=String(p.pair||p.instId||'—').replace('-','/');
+  $('tradeStatus').textContent='AWAITING FINAL SUBMIT';
+  $('tradeEntry').textContent=fmt(p.entry);
+  $('tradeAmount').textContent=(p.amountQuote??p.amount??p.amountEur??'—')+' USDT';
+  $('tradeSl').textContent=fmt(p.stopLoss??p.sl);
+  $('tradeTp').textContent=fmt(p.takeProfit??p.tp);
+  $('openOkx').disabled=SAFE_TEST_MODE||!state.openUrl;
+  $('monitorBadgeText').textContent=state.openUrl?'AWAITING FINAL SUBMIT':'APPROVED';
+  $('monitorBadge').className=state.openUrl?'pill live':'pill';
+}
+$('openOkx').onclick=()=>{if(SAFE_TEST_MODE)return toast('TEST SAFE: OKX handoff is disabled.');if(state.openUrl)location.href=state.openUrl;else toast('Niciun handoff OKX disponibil.')};
+function getHistory(){try{return JSON.parse(localStorage.getItem('auronHistory')||'[]')}catch(e){return[]}}
+function pushHistory(x){const h=getHistory();h.unshift(x);localStorage.setItem('auronHistory',JSON.stringify(h.slice(0,100)));renderHistory()}
+function renderHistory(){const h=getHistory();$('histSignals').textContent=h.length;$('histApproved').textContent=h.filter(x=>x.decision==='approve').length;$('histRejected').textContent=h.filter(x=>x.decision==='reject').length;$('historyList').innerHTML=h.length?h.map(x=>'<div class="historyItem"><div class="coinIcon">'+(x.decision==='approve'?'✓':'×')+'</div><div><b>'+String(x.pair||'Signal').replace('-','/')+'</b><small>'+new Date(x.at).toLocaleString()+' · '+x.status+'</small></div><div class="amount '+(x.decision==='approve'?'positive':'negative')+'">'+x.decision.toUpperCase()+'<small>'+(x.amount?x.amount+' USDT':'')+'</small></div></div>').join(''):'<div class="muted">No AURON decisions stored on this device yet.</div>'}
+$('clearHistory').onclick=()=>{localStorage.removeItem('auronHistory');renderHistory();toast('Istoric local curățat')};
+$('settingsRefresh').onclick=syncAll;$('marketRefresh').onclick=marketData;
+$('modalClose').onclick=()=>{$('modal').classList.remove('show');show('trade')};$('modalAction').onclick=()=>{if(SAFE_TEST_MODE)return toast('TEST SAFE: OKX handoff is disabled.');if(state.openUrl)location.href=state.openUrl;else $('modal').classList.remove('show')};
+const session=JSON.parse(localStorage.getItem('auronSession')||'null');if(session?.email){$('profileEmail').textContent=session.email;show(location.hash.slice(1)||'home');syncAll()}else show('login');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+setInterval(()=>{if(!$('nav').classList.contains('hidden'))backendStatus()},20000);
+</script>
+<script>
+/* AURON v0.9.1 — read-only UX repair, no real-money operations. */
+(function () {
+  'use strict';
+  const byId = (id) => document.getElementById(id);
+  const SAFE_MODE = true;
+  const HOME_DAYS = {'1D':'1','1W':'7','1M':'30','3M':'90','1Y':'365','ALL':'max'};
+  const MARKET_BARS = {'1m':'1m','5m':'5m','15m':'15m','1H':'1H','4H':'4H','1D':'1D','1W':'1W'};
+  let homePeriod='1D', marketPeriod='4H', homeSeq=0, marketSeq=0, activeCurrency='USD', fx=1;
+  const marketArea = document.querySelector('#markets .chartBox');
+  const rsiArea = document.querySelector('#markets .chartBox.rsi');
+  const homeArea = byId('portfolioChart');
+  const css=document.createElement('style');
+  css.textContent='.shell{padding-top:max(32px,env(safe-area-inset-top,0px))!important;padding-bottom:calc(165px + env(safe-area-inset-bottom,0px))!important}.nav{bottom:calc(8px + env(safe-area-inset-bottom,0px))!important}.v091status{font-size:11px;color:#bcb6a6;margin:6px 4px 10px;line-height:1.5}.v091safe{margin:9px 0;padding:10px;border:1px solid #735525;border-radius:12px;color:#f0cd7c;background:#1b150b;font-size:12px}.v091interactive{cursor:pointer;border-radius:10px}.v091interactive:focus-visible{outline:2px solid #e3b858;outline-offset:2px}.v091currency{background:#111316;color:#f1cd83;cursor:pointer}.v091chart svg{width:100%;height:100%;display:block}.v091chart{height:100%;min-height:70px}.v091error{padding:15px;color:#bdb6a9;font-size:12px}.v091price{font-size:11px;color:#daba78}';
+  document.head.appendChild(css);
+  if (byId('profile')) {
+    const badge=byId('profile').querySelector('article .pill');
+    if(badge)badge.textContent='v0.9.1 · TEST SAFE';
+  }
+  // Remove static "LIVE" claims; an actual status is shown only after a successful response.
+  const homeHeader=document.querySelector('#home .hero .eyebrow[style]');
+  if(homeHeader)homeHeader.textContent='BTC MARKET CONTEXT · PUBLIC DATA';
+  document.querySelectorAll('#home .pill.live, #markets .pill.live, #signal .pill.live').forEach((p)=>{p.classList.remove('live');p.textContent='STATUS UNVERIFIED';});
+  const note=document.createElement('div'); note.className='v091safe';
+  note.textContent='TEST SAFE · Read-only market monitoring. Approve, Reject, and Open OKX are locked in this test build.';
+  const signalActions=document.querySelector('#signal .actions2');
+  if(signalActions)signalActions.parentNode.insertBefore(note.cloneNode(true),signalActions);
+  const tradeSection=document.querySelector('#trade article');
+  if(tradeSection)tradeSection.insertAdjacentElement('afterend',note.cloneNode(true));
+  // Safety is enforced at UI, state renderers, and action-entry points.
+  const lockActions=()=>{
+    ['approveBtn','rejectBtn','openOkx'].forEach((id)=>{const b=byId(id);if(b)b.disabled=true;});
+    if(byId('signalActionHint'))byId('signalActionHint').textContent='TEST SAFE: trade decisions disabled; no orders can be submitted from this interface.';
+  };
+  if(typeof window.renderProposal==='function'){
+    const original=window.renderProposal;
+    window.renderProposal=function(p){original(p);lockActions();};
+  }
+  if(typeof window.renderTrade==='function'){
+    const original=window.renderTrade;
+    window.renderTrade=function(){original();lockActions();};
+  }
+  window.decide=function(){if(typeof window.toast==='function')window.toast('TEST SAFE: trading decisions are locked.');};
+  document.addEventListener('click',(event)=>{
+    if(event.target.closest('#approveBtn,#rejectBtn,#openOkx,#modalAction')){
+      event.preventDefault();event.stopImmediatePropagation();
+      if(typeof window.toast==='function')window.toast('TEST SAFE: real-money actions disabled.');
+    }
+  },true);
+  lockActions();
+
+  // Convert only publicly quoted USD numbers; never silently assume a foreign-exchange rate.
+  const oldMoney=window.money;
+  if(typeof oldMoney==='function'){
+    window.money=function(value){
+      const v=Number(value);
+      if(!Number.isFinite(v))return activeCurrency==='EUR'?'€—':'$—';
+      return new Intl.NumberFormat(undefined,{style:'currency',currency:activeCurrency,maximumFractionDigits:2}).format(v*(activeCurrency==='EUR'?fx:1));
+    };
+  }
+  const oldRenderStatus=window.renderStatus;
+  if(typeof oldRenderStatus==='function'){
+    window.renderStatus=function(d){
+      oldRenderStatus(d);lockActions();
+      const p=document.querySelector('#home .insight .pill');
+      if(p){p.textContent='BACKEND CONNECTED';p.classList.add('live');}
+    };
+  }
+  const oldBackendStatus=window.backendStatus;
+  if(typeof oldBackendStatus==='function'){
+    window.backendStatus=async function(){
+      await oldBackendStatus();
+      const b=byId('okxBadge'),p=document.querySelector('#home .insight .pill');
+      if(p && b && b.textContent==='OFFLINE'){p.textContent='BACKEND UNAVAILABLE';p.classList.remove('live');}
+      lockActions();
+    };
+  }
+  // Existing marketData can overwrite the selected historical chart; reload its actual selected range.
+  const originalMarketData=window.marketData;
+  if(typeof originalMarketData==='function'){
+    window.marketData=async function(){await originalMarketData();if(document.querySelector('#home.screen.active'))await loadHome();};
+    const marketRefresh=byId('marketRefresh');if(marketRefresh)marketRefresh.onclick=()=>{window.marketData();loadCandles();};
+  }
+  const curr=document.querySelector('#home .heroTop .pill');
+  if(curr){
+    const btn=document.createElement('button');
+    btn.type='button';btn.className='pill v091currency';btn.id='currencySelector';btn.textContent='USD ▾';curr.replaceWith(btn);
+    btn.addEventListener('click',async()=>{
+      if(activeCurrency==='EUR'){
+        activeCurrency='USD';fx=1;btn.textContent='USD ▾';redrawMoney();return;
+      }
+      btn.textContent='EUR …';btn.disabled=true;
+      try{
+        const r=await fetch('https://open.er-api.com/v6/latest/USD',{cache:'no-store'});
+        if(!r.ok)throw new Error('FX unavailable');
+        const data=await r.json(), rate=Number(data && data.rates && data.rates.EUR);
+        if(data.result!=='success'||!(rate>0.5&&rate<1.5))throw new Error('Invalid FX rate');
+        activeCurrency='EUR';fx=rate;btn.textContent='EUR ▾';redrawMoney();
+      }catch(e){btn.textContent='USD ▾';activeCurrency='USD';fx=1;if(typeof window.toast==='function')window.toast('EUR exchange rate unavailable: showing USD.');}
+      finally{btn.disabled=false;}
+    });
+  }
+  function redrawMoney(){
+    if(Array.isArray(typeof state!=='undefined' && state && state.market)){
+      if(typeof window.renderCoins==='function')window.renderCoins(state.market);
+      const btc=state.market.find(x=>x.id==='bitcoin');
+      if(btc&&byId('marketPrice'))byId('marketPrice').textContent=window.money(btc.current_price);
+    }
+    if(typeof state!=='undefined' && state && state.status && typeof window.renderStatus==='function')window.renderStatus(state.status);
+    if(typeof window.toast==='function')window.toast('Display currency: '+activeCurrency+' (converted from USD quotes).');
+  }
+
+  // Historical BTC values: every range requests a matching dataset, not the same 7-day sparkline.
+  const homeLabel=document.createElement('div');homeLabel.className='v091status';homeLabel.id='homeChartStatus';
+  if(homeArea)homeArea.insertAdjacentElement('afterend',homeLabel);
+  function chartLine(points){
+    const series=points.filter(p=>Array.isArray(p)&&Number.isFinite(Number(p[1]))).slice(-500);
+    if(series.length<2)throw new Error('Insufficient price history');
+    const sample=series.filter((_,i)=>i%Math.max(1,Math.floor(series.length/150))===0);
+    if(sample[sample.length-1]!==series[series.length-1])sample.push(series[series.length-1]);
+    const values=sample.map(p=>Number(p[1])),mn=Math.min(...values),mx=Math.max(...values),span=(mx-mn)||1;
+    const coords=values.map((v,i)=>[(i/(values.length-1))*760,92-((v-mn)/span)*84]);
+    const d=coords.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+    return '<div class="v091chart"><svg viewBox="0 0 760 100" preserveAspectRatio="none" role="img" aria-label="BTC historical price line"><path d="'+d+'" stroke="#e7b85f" stroke-width="3" fill="none" vector-effect="non-scaling-stroke"/></svg></div>';
+  }
+  async function loadHome(){
+    if(!homeArea)return;
+    const seq=++homeSeq;homeLabel.textContent='Fetching BTC '+homePeriod+' history…';
+    try{
+      const url='https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days='+HOME_DAYS[homePeriod];
+      const r=await fetch(url,{cache:'no-store'});
+      if(!r.ok)throw new Error('Price provider returned '+r.status);
+      const data=await r.json();
+      if(seq!==homeSeq)return;
+      const prices=data.prices||[];
+      homeArea.innerHTML=chartLine(prices);
+      const last=prices[prices.length-1]||[];
+      homeLabel.textContent='CoinGecko · '+homePeriod+' · Last historical point: '+(last[0]?new Date(Number(last[0])).toLocaleString():'unknown')+' · '+activeCurrency+' display';
+    }catch(e){
+      if(seq!==homeSeq)return;
+      homeArea.innerHTML='<div class="v091error">Historical chart unavailable. No simulated prices shown.</div>';
+      homeLabel.textContent='Historical BTC data unavailable: '+String(e.message||'network failure');
+    }
+  }
+  const homeButtons=document.querySelectorAll('#home .timeframes button');
+  homeButtons.forEach((button)=>{
+    button.addEventListener('click',()=>{
+      homePeriod=button.textContent.trim();
+      homeButtons.forEach(b=>b.classList.toggle('active',b===button));
+      loadHome();
+    });
+  });
+
+  // OKX real public candles; never present a hard-coded SVG as live market data.
+  if(marketArea)marketArea.innerHTML='<div id="marketCandles" class="v091error">Fetching real BTC/USDT candles…</div>';
+  if(rsiArea)rsiArea.innerHTML='<div id="marketRsi" class="v091error">RSI(14) waiting for price history…</div>';
+  const marketStatus=document.createElement('div');
+  marketStatus.className='v091status';marketStatus.id='marketCandleStatus';
+  if(marketArea)marketArea.insertAdjacentElement('beforebegin',marketStatus);
+  function candlesSvg(candles){
+    const recent=candles.slice(-75),width=760,height=250;
+    const lows=recent.map(x=>x.low),highs=recent.map(x=>x.high);
+    const low=Math.min(...lows),high=Math.max(...highs),spread=Math.max(0.00001,high-low),slot=width/recent.length;
+    const y=p=>14+((high-p)/spread)*(height-30);
+    let out='<svg viewBox="0 0 760 250" preserveAspectRatio="none" role="img" aria-label="OKX BTC/USDT candlestick chart">';
+    for(let k=0;k<5;k++){const yy=15+k*55;out+='<path d="M0 '+yy+'H760" stroke="#292b2f" stroke-width="1"/>';}
+    recent.forEach((x,i)=>{
+      const cx=(i+.5)*slot,col=x.close>=x.open?'#18c989':'#f06d71';
+      const yo=y(x.open),yc=y(x.close),top=Math.min(yo,yc),h=Math.max(1,Math.abs(yo-yc));
+      out+='<path d="M'+cx.toFixed(2)+' '+y(x.high).toFixed(2)+'V'+y(x.low).toFixed(2)+'" stroke="'+col+'" stroke-width="1.6"/>';
+      out+='<rect x="'+(cx-slot*.29).toFixed(2)+'" y="'+top.toFixed(2)+'" width="'+(slot*.58).toFixed(2)+'" height="'+h.toFixed(2)+'" fill="'+col+'"/>';
+    });
+    out+='</svg>';return out;
+  }
+  function computeRsi(candles){
+    if(candles.length<16)return [];
+    const closes=candles.map(x=>x.close),results=[];
+    let gain=0,loss=0;
+    for(let i=1;i<=14;i++){const d=closes[i]-closes[i-1];gain+=Math.max(d,0);loss+=Math.max(-d,0);}
+    gain/=14;loss/=14;
+    for(let i=15;i<closes.length;i++){
+      const d=closes[i]-closes[i-1];
+      gain=(gain*13+Math.max(d,0))/14;loss=(loss*13+Math.max(-d,0))/14;
+      results.push(loss===0?(gain===0?50:100):(100-100/(1+gain/loss)));
+    }
+    return results.slice(-75);
+  }
+  function rsiSvg(candles){
+    const values=computeRsi(candles);
+    if(values.length<2)return '<div class="v091error">Not enough data for RSI(14).</div>';
+    const d=values.map((v,i)=>(i?'L':'M')+(i/(values.length-1)*760).toFixed(2)+' '+(68-v*.58).toFixed(2)).join(' ');
+    return '<svg viewBox="0 0 760 74" preserveAspectRatio="none" role="img" aria-label="RSI 14 derived from real candles"><path d="M0 27H760M0 50H760" stroke="#353638" stroke-dasharray="5 5"/><path d="'+d+'" stroke="#e8b85e" stroke-width="3" fill="none"/></svg>';
+  }
+  async function loadCandles(){
+    if(!marketArea)return;
+    const seq=++marketSeq;
+    marketStatus.textContent='Loading OKX '+marketPeriod+' candles…';
+    const target=byId('marketCandles'),rsi=byId('marketRsi');
+    try{
+      const url='https://www.okx.com/api/v5/market/candles?instId=BTC-USDT&bar='+encodeURIComponent(MARKET_BARS[marketPeriod])+'&limit=100';
+      const r=await fetch(url,{cache:'no-store'});
+      if(!r.ok)throw new Error('Market feed returned '+r.status);
+      const data=await r.json();
+      if(data.code!=='0'||!Array.isArray(data.data))throw new Error('Invalid exchange response');
+      const candles=data.data.map(x=>({at:Number(x[0]),open:Number(x[1]),high:Number(x[2]),low:Number(x[3]),close:Number(x[4]),confirmed:String(x[8])==='1'}))
+        .filter(x=>[x.at,x.open,x.high,x.low,x.close].every(Number.isFinite)&&x.low>0).sort((a,b)=>a.at-b.at);
+      if(candles.length<20)throw new Error('Insufficient valid candles');
+      if(seq!==marketSeq)return;
+      target.className='v091chart';target.innerHTML=candlesSvg(candles);
+      rsi.className='v091chart';rsi.innerHTML=rsiSvg(candles);
+      const last=candles[candles.length-1];
+      marketStatus.textContent='OKX spot BTC/USDT · '+marketPeriod+' · Latest candle '+new Date(last.at).toLocaleString()+' · '+(last.confirmed?'closed':'forming')+' · Read-only';
+    }catch(e){
+      if(seq!==marketSeq)return;
+      target.className='v091error';target.textContent='Live candles unavailable. No simulated chart shown.';
+      rsi.className='v091error';rsi.textContent='RSI requires valid market candles.';
+      marketStatus.textContent='OKX market feed unavailable: '+String(e.message||'network failure');
+    }
+  }
+  const marketButtons=document.querySelectorAll('#markets .timeframes button');
+  marketButtons.forEach(button=>button.addEventListener('click',()=>{
+    marketPeriod=button.textContent.trim();
+    marketButtons.forEach(b=>b.classList.toggle('active',b===button));
+    loadCandles();
+  }));
+  const refresh=byId('marketRefresh');if(refresh)refresh.addEventListener('click',loadCandles);
+
+  // Plan, Help and About now open useful informational screens without inventing billing/support.
+  const items=document.querySelectorAll('#profile .setting');
+  const info=[
+    ['AURON Private Beta','Plan: Private Beta. This is a non-commercial test. No paid plan or subscription checkout is connected. Market data and risk safeguards are being validated.'],
+    ['Help & Support','Use Markets to inspect BTC/USDT candles. If data is unavailable, verify your internet connection and retry Refresh. The backend and OKX account status are shown under Settings. A support contact has not been configured yet.'],
+    ['About AURON','AURON v0.9.1 · TEST SAFE. Decision-support prototype with CoinGecko prices, OKX public candles, and optional read-only backend status. Trading approval and OKX order handoff are disabled in this test build. Crypto trading involves substantial risk.']
+  ];
+  items.forEach((item,i)=>{
+    if(i>=info.length)return;
+    item.classList.add('v091interactive');item.tabIndex=0;item.setAttribute('role','button');
+    const open=()=>{
+      byId('modalTitle').textContent=info[i][0];
+      byId('modalText').textContent=info[i][1];
+      byId('modalAction').style.display='none';
+      byId('modal').classList.add('show');
+    };
+    item.addEventListener('click',open);
+    item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  });
+  byId('modalClose').onclick=()=>{byId('modal').classList.remove('show');byId('modalAction').style.display='';};
+  // The original trade modal uses this button for exchange handoff; safe mode never does.
+  byId('modalAction').onclick=()=>{byId('modal').classList.remove('show');byId('modalAction').style.display='';};
+
+  function activeScreen(){return document.querySelector('.screen.active')?.id;}
+  function maybeRefresh(){const screen=activeScreen();if(screen==='home')loadHome();if(screen==='markets')loadCandles();}
+  document.addEventListener('click',(e)=>{
+    const go=e.target.closest('[data-go]');
+    if(go && (go.dataset.go==='home'||go.dataset.go==='markets'))setTimeout(maybeRefresh,0);
+    if(e.target.id==='loginBtn'||e.target.id==='demoBtn')setTimeout(maybeRefresh,150);
+  });
+  if(activeScreen()==='home'||activeScreen()==='markets')setTimeout(maybeRefresh,20);
+  setInterval(()=>{if(!document.hidden)maybeRefresh();},60000);
+})();
+</script>
+</body>
+</html>
