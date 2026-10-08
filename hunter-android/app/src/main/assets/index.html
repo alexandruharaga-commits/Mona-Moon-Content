@@ -205,13 +205,87 @@ input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
 
 .notificationItem{padding:14px 15px}.notificationItem .time{font-size:9px;color:#707b80;margin-top:5px}
 .notificationDot{width:7px;height:7px;border-radius:50%;background:#68a9ff;box-shadow:0 0 10px #68a9ff88}
+ 
+/* v0.4.3 cinematic visual pass */
+.loginStage{position:relative;height:310px;margin:-5px -2px 8px;display:grid;place-items:center;overflow:visible}
+.loginHalo{position:absolute;width:285px;height:285px;border-radius:50%;background:radial-gradient(circle,#f1c96e22 0 24%,#c5922c10 45%,transparent 72%);border:1px solid #d3a94f2a;box-shadow:0 0 80px #d4a94d2e,inset 0 0 55px #ffffff06}
+.loginHalo:before,.loginHalo:after{content:"";position:absolute;inset:22px;border-radius:50%;border:1px solid #78818722}
+.loginHalo:after{inset:48px;border-color:#d5ad5522}
+.loginWolf{position:relative;width:248px;height:248px;object-fit:cover;border-radius:42px;filter:drop-shadow(0 22px 28px #000c);box-shadow:0 0 0 1px #d3aa4f55,0 0 52px #d4a94d26}
+#gate{padding-top:0}
+#gate .gateTitle{font-size:42px;letter-spacing:.055em;margin-top:8px}
+#gate>.tag{font-size:9px;letter-spacing:.25em}
+#gate .hero{margin-top:24px;padding:20px;background:linear-gradient(160deg,#111517 0%,#080b0d 54%,#050708 100%);border-color:#604a25}
+#gate .hero h1{font-size:34px}
+#gate .security{margin-top:16px}
+#gate .security div{padding:14px 5px}
+
+.heroHome{padding:0;min-height:420px;display:flex;align-items:flex-end}
+.heroHome:before,.heroHome:after{display:none}
+.heroVisual{position:absolute;inset:0;overflow:hidden;border-radius:21px}
+.heroVisual img{width:100%;height:100%;object-fit:cover;transform:scale(1.10);filter:saturate(.85) contrast(1.08) brightness(.76)}
+.heroShade{position:absolute;inset:0;background:
+ linear-gradient(180deg,#02030418 0%,#03040555 35%,#030405e6 72%,#030405 100%),
+ linear-gradient(90deg,#020304c7 0%,transparent 60%)}
+.heroCopy{position:relative;z-index:2;width:100%;padding:22px}
+.heroCopy h1{font-size:36px;max-width:360px;text-shadow:0 3px 16px #000}
+.heroCopy .sub{color:#b6bec2;text-shadow:0 2px 8px #000}
+.heroActions{display:grid;grid-template-columns:1.35fr 1fr;gap:9px;margin-top:12px}
+.heroActions .btn{margin-top:0}
+.huntMessage{margin-top:10px;color:#a9b1b5}
+
+.top{padding-top:2px}
+.top .brand{font-size:25px}
+.top .brand:before{width:38px;height:38px;flex-basis:38px;border-radius:11px;box-shadow:0 0 20px #e0b85b40}
+.statuschip{font-weight:900;border-color:#235c3c;color:#4de08f;background:#07150e}
+
+.statgrid{gap:9px}
+.stat{padding:14px 5px;border-radius:18px;border-color:#303a40;background:radial-gradient(90% 90% at 50% 0%,#ffffff05,transparent 60%),linear-gradient(180deg,#0c1113,#06090a)}
+.stat b{font-size:24px}
+.stat .k{margin-top:4px}
+
+#homeOps .card,.trustPanel,#watch .card,#tasks .card,#profile .card,#notifications .card{
+  border-color:#303a40;background:
+  radial-gradient(80% 120% at 100% 0%,#d5ad550b,transparent 60%),
+  linear-gradient(155deg,#0e1315,#070a0c);
+  box-shadow:0 16px 34px #0007,inset 0 1px 0 #fff7
+}
+#homeOps .card{padding:18px}
+#homeOps .title{font-size:17px}
+#homeOps .score{font-size:22px}
+.trustPanel{border-left:2px solid #d0a84e}
+
+.scanring{width:214px;height:214px;margin:32px auto}
+.scanring:before{inset:15px}.scanring:after{top:26px}
+#hunt .card{margin-top:14px}
+#hunt .heroScanLegend{margin-top:0}
+
+.nav{left:12px;right:12px;bottom:12px;padding:9px 7px;border-radius:24px;border-color:#384248;background:linear-gradient(180deg,#101517f3,#06090af6)}
+.nav button{padding:9px 1px;font-size:9px}
+.nav span{font-size:20px;margin-bottom:3px}
+.nav button.on{color:#f4cb69}
+.nav button.on span{filter:drop-shadow(0 0 8px #e2b65b88)}
+
+.notificationItem{border-left:2px solid #5489ff}
+#notifications .hero{min-height:170px}
+#notifications .hero h1{font-size:34px}
+
+@media (max-width:380px){
+  .heroActions{grid-template-columns:1fr}
+  .loginStage{height:280px}
+  .loginWolf{width:225px;height:225px}
+  #gate .gateTitle{font-size:36px}
+}
 </style>
 </head>
 <body>
 
 <div id="gate">
-  <div class="logo"><img src="hunter_alpha_official.webp" alt="Hunter Alpha"></div>
-  <div class="wolf">OFFICIAL TITANIUM WOLF</div>
+  <div class="loginStage">
+    <div class="loginHalo"></div>
+    <img class="loginWolf" src="hunter_alpha_official.webp" alt="Hunter Alpha">
+  </div>
+  <div class="wolf">TITANIUM WOLF · CRYPTO OPPORTUNITY INTELLIGENCE</div>
   <div class="gateTitle">HUNTER <b>ALPHA</b></div>
   <div class="tag" style="text-align:center">CRYPTO OPPORTUNITY INTELLIGENCE</div>
   <div class="hero">
@@ -243,13 +317,21 @@ input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
 <div id="app" class="hide">
   <section id="home" class="screen active">
     <div class="top"><div><div class="brand">HUNTER <b>ALPHA</b></div><div class="tag">CRYPTO OPPORTUNITY INTELLIGENCE</div></div><div class="row"><div class="mini statuschip" id="topMode">CHECKING</div><button class="iconbtn" onclick="openNotifications()">◉</button></div></div>
-    <div class="hero">
-      <div class="k">LIVE HUNT · TITANIUM CORE</div>
-      <h1>Find it before<br><span class="gold">the crowd.</span></h1>
-      <div class="sub">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
-      <button class="btn" onclick="startHunt()">START HUNT</button>
-      <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
-      <div id="huntMessage" class="small" style="margin-top:9px"></div>
+    <div class="hero heroHome">
+      <div class="heroVisual">
+        <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
+        <div class="heroShade"></div>
+      </div>
+      <div class="heroCopy">
+        <div class="k">LIVE HUNT · TITANIUM CORE</div>
+        <h1>Find opportunities<br><span class="gold">before the crowd.</span></h1>
+        <div class="sub">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
+        <div class="heroActions">
+          <button class="btn" onclick="startHunt()">⌕&nbsp;&nbsp;START HUNT</button>
+          <button class="btn dark" onclick="refreshStatus()">↻&nbsp;&nbsp;REFRESH STATUS</button>
+        </div>
+        <div id="huntMessage" class="small huntMessage"></div>
+      </div>
     </div>
 
     <div class="statgrid">
@@ -267,7 +349,7 @@ input:focus{border-color:#9a7633;box-shadow:0 0 0 3px #d2aa4d0d}
     <div class="top"><div class="brand">HUNT <b>STATUS</b></div><div class="mini" id="lastRun">—</div></div>
     <div class="scanring"><div style="text-align:center"><div class="v" id="ringCount">0</div><div class="small">active alerts</div></div></div>
     <div class="card"><div class="k">AGENT</div><div class="v green" id="agentMode">CHECKING</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
-    <div class="card"><div class="k">SOURCE POLICY</div><div class="small">Hunter Score is not proof of legitimacy. Source status is displayed separately: Official, Known Platform, Reputable Media, Mention Only or Unverified.</div></div>
+    <div class="card trustPanel"><div class="k">TRUST ENGINE</div><div class="title">Score ≠ source verification</div><div class="small">Hunter Score measures opportunity quality. Source Trust separately marks Official, Known Platform, Reputable Media, Mention Only or Unverified.</div></div>
     <button class="btn" onclick="startHunt()">START HUNT</button>
     <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
   </section>
