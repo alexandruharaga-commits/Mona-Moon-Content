@@ -74,6 +74,12 @@
       lockActions();
     };
   }
+  // Existing marketData can overwrite the selected historical chart; reload its actual selected range.
+  const originalMarketData=window.marketData;
+  if(typeof originalMarketData==='function'){
+    window.marketData=async function(){await originalMarketData();if(document.querySelector('#home.screen.active'))await loadHome();};
+    const marketRefresh=byId('marketRefresh');if(marketRefresh)marketRefresh.onclick=()=>{window.marketData();loadCandles();};
+  }
   const curr=document.querySelector('#home .heroTop .pill');
   if(curr){
     const btn=document.createElement('button');
@@ -94,12 +100,12 @@
     });
   }
   function redrawMoney(){
-    if(Array.isArray(window.state && window.state.market)){
-      if(typeof window.renderCoins==='function')window.renderCoins(window.state.market);
-      const btc=window.state.market.find(x=>x.id==='bitcoin');
+    if(Array.isArray(typeof state!=='undefined' && state && state.market)){
+      if(typeof window.renderCoins==='function')window.renderCoins(state.market);
+      const btc=state.market.find(x=>x.id==='bitcoin');
       if(btc&&byId('marketPrice'))byId('marketPrice').textContent=window.money(btc.current_price);
     }
-    if(window.state && window.state.status && typeof window.renderStatus==='function')window.renderStatus(window.state.status);
+    if(typeof state!=='undefined' && state && state.status && typeof window.renderStatus==='function')window.renderStatus(state.status);
     if(typeof window.toast==='function')window.toast('Display currency: '+activeCurrency+' (converted from USD quotes).');
   }
 
