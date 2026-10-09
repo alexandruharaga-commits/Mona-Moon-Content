@@ -369,6 +369,49 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   .premiumHeroContent h1{font-size:31px}
   .premiumHeroActions{grid-template-columns:1fr 1fr}
 }
+
+/* v0.5.4 — FINAL VISUAL LOCK */
+:root{--gold:#d2a744;--gold2:#f5d77f;--panel:#0a0d0f;--line:#333a3f}
+body{background:
+radial-gradient(70% 36% at 50% 0%,#8c65152b 0%,transparent 65%),
+radial-gradient(50% 30% at 100% 15%,#5b42121a 0%,transparent 70%),
+linear-gradient(180deg,#020304 0%,#050708 52%,#010202 100%)}
+.loginBrand,.brand{letter-spacing:.085em}
+.loginEmblem{height:270px}
+.loginEmblem img{width:244px;height:244px;object-fit:contain;border-radius:46px;padding:8px;background:
+radial-gradient(circle,#17191b 0%,#050607 68%);border:1px solid #9a7934;box-shadow:0 0 58px #e1b65733,0 28px 65px #000d}
+.loginPitch{font-size:30px;letter-spacing:-.02em}
+.loginCard{background:linear-gradient(160deg,#0c1012,#050708);border:1px solid #3e3a2c;border-radius:20px;padding:13px;box-shadow:0 18px 45px #0009}
+.btn{min-height:50px}
+.btn.ghost{background:#070a0b;color:#d9bd73;border:1px solid #66542c;box-shadow:none}
+.biometricBtn{border-color:#62522c!important;color:#f2d27a!important}
+.walletIntro{padding:8px 4px}
+.walletIntro h1{font-size:31px;letter-spacing:-.03em}
+.walletList button{min-height:58px;border-color:#343b3f;background:linear-gradient(180deg,#101517,#070a0c)}
+.walletList button:active{border-color:#a98337}
+.premiumHero{min-height:390px;background:
+radial-gradient(55% 60% at 72% 24%,#d5ad5515 0%,transparent 70%),
+linear-gradient(160deg,#0a0d0f,#030405)}
+.premiumHeroVisual{display:grid;place-items:center}
+.premiumHeroVisual img{width:78%;height:78%;object-fit:contain;object-position:center;transform:none;filter:drop-shadow(0 22px 36px #000) drop-shadow(0 0 20px #d4aa4a22)}
+.premiumHeroOverlay{background:
+linear-gradient(180deg,transparent 0%,#03040522 48%,#030405e8 79%,#030405 100%),
+linear-gradient(90deg,#020304b7 0%,transparent 62%)}
+.premiumHeroContent{padding:22px}
+.premiumHeroContent h1{font-size:34px}
+.premiumMetrics div{border-color:#4b422c}
+.scanTitle{font-size:28px}
+.globeScan{box-shadow:0 0 65px #d5ad5538,inset 0 0 45px #d5ad551c}
+#stopScanBtn:disabled{opacity:.35}
+.notificationItem{cursor:pointer;border-left:2px solid #d1a747}
+#profile .profileHead img{object-fit:contain;background:#060809;padding:5px}
+#updateCard{border-color:#5e4c28;box-shadow:0 0 32px #d5ad5510}
+.nav{border-color:#4a402b}
+.nav button.on{color:#f4cf72}
+@media(max-width:390px){
+  .loginEmblem{height:245px}.loginEmblem img{width:220px;height:220px}
+  .premiumHero{min-height:370px}.premiumHeroContent h1{font-size:30px}
+}
 </style>
 </head>
 <body>
@@ -381,7 +424,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
     <div class="loginEmblem">
       <div class="ring ring1"></div>
       <div class="ring ring2"></div>
-      <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
+      <img src="hunter_alpha_wolf.svg" alt="Hunter Alpha">
     </div>
 
     <div class="loginPitch">Your Crypto<br><span>Opportunity Hunter</span></div>
@@ -397,8 +440,9 @@ linear-gradient(155deg,#0d1214,#070a0c)}
     <div class="loginCard">
       <input id="email" type="email" placeholder="Email address">
       <button class="btn" onclick="enterBeta()">LOG IN</button>
-      <button class="btn dark" onclick="enterDemo()">TRY DEMO FIRST</button>
-      <div class="loginFoot">Real opportunities. No hype. Just results.</div>
+      <button class="btn dark biometricBtn" onclick="HunterNative.startBiometric()">◉&nbsp;&nbsp;USE BIOMETRIC</button>
+      <button class="btn ghost" onclick="enterDemo()">TRY DEMO FIRST</button>
+      <div class="loginFoot">Real opportunities. Verified sources. Your control.</div>
     </div>
 
     <div class="security loginSecurity">
@@ -413,7 +457,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   <div class="top"><button class="back" onclick="backFromWallet()">‹</button><div class="brand">CONNECT <b>WALLET</b></div><div></div></div>
   <div class="walletIntro">
     <h1>Connect Your Wallet</h1>
-    <div class="sub">Optional. Hunter can work without a wallet. For safety, this beta stores public addresses only and never stores seed phrases or private keys.</div>
+    <div class="sub">Optional. Hunter works without a wallet. In this build, provider buttons open only the official wallet source; watch-only eligibility uses a public address. Hunter never stores seed phrases or private keys.</div>
   </div>
 
   <div class="walletList">
@@ -425,7 +469,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   </div>
 
   <div class="card walletManual">
-    <div class="k">WATCH-ONLY BETA</div>
+    <div class="k">WATCH-ONLY · SAFE MODE</div>
     <div class="title">Add public address</div>
     <input id="walletLabel" placeholder="Wallet label">
     <input id="walletAddress" placeholder="Public wallet address only">
@@ -449,7 +493,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
 
     <div class="hero premiumHero">
       <div class="premiumHeroVisual">
-        <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
+        <img src="hunter_alpha_wolf.svg" alt="Hunter Alpha">
         <div class="premiumHeroOverlay"></div>
       </div>
       <div class="premiumHeroContent">
@@ -457,8 +501,8 @@ linear-gradient(155deg,#0d1214,#070a0c)}
         <h1>Find opportunities<br><span class="gold">before the crowd.</span></h1>
         <div class="sub heroKinds">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
         <div class="premiumHeroActions">
-          <button class="btn" onclick="startHunt()">⌕&nbsp;&nbsp;START HUNT</button>
-          <button class="btn dark" onclick="refreshStatus()">↻&nbsp;&nbsp;REFRESH STATUS</button>
+          <button class="btn" id="homeHuntBtn" onclick="startHunt(true)">⌕&nbsp;&nbsp;START HUNT</button>
+          <button class="btn dark" id="refreshHomeBtn" onclick="refreshStatus(true)">↻&nbsp;&nbsp;REFRESH STATUS</button>
         </div>
         <div id="huntMessage" class="small premiumHuntMessage"></div>
       </div>
@@ -496,8 +540,9 @@ linear-gradient(155deg,#0d1214,#070a0c)}
     </div>
 
     <div class="card huntTelemetry"><div class="k">AGENT STATUS</div><div class="v green" id="agentMode">CHECKING</div><div class="sub" id="huntSummary">Waiting for status…</div></div>
-    <button class="btn" onclick="startHunt()">START NEW HUNT</button>
-    <button class="btn dark" onclick="refreshStatus()">REFRESH STATUS</button>
+    <button class="btn" id="scanControlBtn" onclick="startHunt(false)">START NEW HUNT</button>
+    <button class="btn dark" id="stopScanBtn" onclick="stopHunt()" disabled>STOP / PAUSE SCAN</button>
+    <button class="btn ghost" id="refreshHuntBtn" onclick="refreshStatus(true)">REFRESH STATUS</button>
   </section>
 
   <section id="watch" class="screen">
@@ -524,6 +569,12 @@ linear-gradient(155deg,#0d1214,#070a0c)}
     <div class="sectiontitle">Public wallet</div>
     <div id="walletProfile"></div>
     <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades • External link domains are shown before opening.</div></div>
+    <div class="sectiontitle">App update</div>
+    <div class="card" id="updateCard">
+      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.5.4</div></div><span class="pill gold" id="updateBadge">READY</span></div>
+      <div class="small" id="updateText">Signed update channel is active. Future builds install over this app and keep local settings.</div>
+      <button class="btn dark" id="updateButton" onclick="checkForUpdate()">CHECK FOR UPDATE</button>
+    </div>
     <button class="btn dark" onclick="showWalletSettings()">WALLET SETTINGS</button>
     <button class="btn red" onclick="resetOnboarding()">RESET LOCAL PROFILE</button>
   </section>
@@ -544,7 +595,9 @@ linear-gradient(155deg,#0d1214,#070a0c)}
 
 <script>
 const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
-let state={alerts:[],raw:null,filter:'All'};
+const UPDATE_MANIFEST='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/update.json';
+const UI_VERSION='0.5.4';
+let state={alerts:[],raw:null,filter:'All',scanning:false,scanTimers:[]};
 let selected=null;
 let walletReturnTarget='gate';
 
@@ -573,19 +626,24 @@ function linkDomain(a){return domainOf(a.link)||'unknown'}
 function enterBeta(){
   let e=document.getElementById('email').value.trim();
   if(!/^\S+@\S+\.\S+$/.test(e)){HunterNative.toast('Enter a valid email for the beta profile.');return}
-  localStorage.hunterEmail=e;localStorage.hunterUiVersion='0.5.2';showWalletGate()
+  localStorage.hunterEmail=e;localStorage.hunterUiVersion=UI_VERSION;showWalletGate()
 }
-function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion='0.5.2';showWalletGate()}
+function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion=UI_VERSION;showWalletGate()}
+window.hunterBiometricSuccess=function(){
+  localStorage.hunterEmail=localStorage.hunterEmail||'Biometric profile';
+  localStorage.hunterUiVersion=UI_VERSION;
+  showWalletGate();
+}
 function showGate(){document.getElementById('gate').classList.remove('hide');document.getElementById('walletGate').classList.add('hide')}
 function showWalletGate(){walletReturnTarget='gate';document.getElementById('gate').classList.add('hide');document.getElementById('app').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
-function skipWallet(){localStorage.hunterReady='1';localStorage.hunterUiVersion='0.5.2';bootApp()}
+function skipWallet(){localStorage.hunterReady='1';localStorage.hunterUiVersion=UI_VERSION;bootApp()}
 function bootApp(){
   document.getElementById('gate').classList.add('hide');
   document.getElementById('walletGate').classList.add('hide');
   document.getElementById('detail').classList.add('hide');
   document.getElementById('app').classList.remove('hide');
   document.getElementById('profileEmail').textContent=localStorage.hunterEmail||'Local beta';
-  renderWalletProfile();renderAlerts();refreshStatus()
+  renderWalletProfile();renderAlerts();refreshStatus(false)
 }
 function go(id){
   document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
@@ -600,6 +658,10 @@ function go(id){
 }
 
 function openNotifications(){go('notifications')}
+function openNotificationDetail(i){
+  let arr=Array.isArray(state.alerts)?state.alerts:[];
+  selected=arr[i]; if(selected)renderDetail();
+}
 function renderNotifications(){
   let box=document.getElementById('notificationList');
   if(!box)return;
@@ -611,29 +673,62 @@ function renderNotifications(){
   box.innerHTML=arr.map(a=>{
     let v=verification(a);
     let t=a.foundAt?new Date(a.foundAt).toLocaleString():'Recently';
-    return '<div class="card notificationItem"><div class="row between"><div class="row"><span class="notificationDot"></span><span class="pill '+v.cls+'">'+v.label+'</span></div><span class="score">'+esc(a.score||'—')+'</span></div><div class="title">'+esc(a.title||'New opportunity')+'</div><div class="source">'+esc(sourceDomain(a))+'</div><div class="time">'+esc(t)+'</div></div>';
+    let idx=arr.indexOf(a);
+    return '<div class="card notificationItem" onclick="openNotificationDetail('+idx+')"><div class="row between"><div class="row"><span class="notificationDot"></span><span class="pill '+v.cls+'">'+v.label+'</span></div><span class="score">'+esc(a.score||'—')+'</span></div><div class="title">'+esc(a.title||'New opportunity')+'</div><div class="source">'+esc(sourceDomain(a))+'</div><div class="time">'+esc(t)+'</div><div class="small gold" style="margin-top:7px">Tap to review →</div></div>';
   }).join('');
 }
 
-function startHunt(){
-  go('hunt');
-  document.getElementById('huntMessage').textContent='Checking for a fresh hunt…';
-  document.getElementById('agentMode').textContent='STARTING…';
+function setScanUi(active,message){
+  state.scanning=!!active;
+  let start=document.getElementById('scanControlBtn'),stop=document.getElementById('stopScanBtn');
+  if(start){start.textContent=active?'SCANNING…':'START NEW HUNT';start.disabled=active}
+  if(stop){stop.disabled=!active}
+  let mode=document.getElementById('agentMode');
+  if(mode&&active)mode.textContent='SCANNING…';
+  if(message){
+    let hm=document.getElementById('huntMessage');
+    if(hm)hm.textContent=message;
+  }
+}
+function clearScanTimers(){
+  (state.scanTimers||[]).forEach(x=>clearTimeout(x));
+  state.scanTimers=[];
+}
+function startHunt(goToHunt){
+  if(state.scanning)return;
+  if(goToHunt!==false)go('hunt');
+  clearScanTimers();
+  setScanUi(true,'Starting a fresh Hunter scan…');
   HunterNative.triggerScan();
 }
+function stopHunt(){
+  clearScanTimers();
+  setScanUi(false,'Paused on this phone. A remote scan already submitted may still finish in the background.');
+  let m=document.getElementById('agentMode');if(m)m.textContent='PAUSED';
+}
 window.hunterScanResult=function(ok,msg){
+  if(!state.scanning)return;
   document.getElementById('huntMessage').textContent=msg;
   if(ok){
     document.getElementById('agentMode').textContent='SCANNING…';
-    setTimeout(refreshStatus,5000);
-    setTimeout(refreshStatus,12000);
+    state.scanTimers=[
+      setTimeout(()=>refreshStatus(false),3500),
+      setTimeout(()=>refreshStatus(false),8500),
+      setTimeout(()=>{refreshStatus(false);setScanUi(false,'Scan cycle finished. Results are up to date.')},14000)
+    ];
   }else{
+    setScanUi(false,msg);
     document.getElementById('agentMode').textContent='SCHEDULED HUNT ONLINE';
-    refreshStatus();
+    refreshStatus(false);
   }
 }
 
-async function refreshStatus(){
+async function refreshStatus(showFeedback=true){
+  const buttons=['refreshHomeBtn','refreshHuntBtn'].map(id=>document.getElementById(id)).filter(Boolean);
+  if(showFeedback){
+    buttons.forEach(b=>{b.disabled=true;b.dataset.old=b.textContent;b.textContent='REFRESHING…'});
+    let hm=document.getElementById('huntMessage'); if(hm)hm.textContent='Refreshing Hunter status…';
+  }
   try{
     let r=await fetch(STATUS,{cache:'no-store'});
     if(!r.ok)throw Error('HTTP '+r.status);
@@ -660,12 +755,19 @@ async function refreshStatus(){
       ' • Source errors '+(s.sourceErrorCount||0);
 
     renderFilters();renderHome();
+    if(showFeedback){
+      let hm=document.getElementById('huntMessage');if(hm)hm.textContent='Status refreshed successfully.';
+      HunterNative.toast('Hunter status refreshed.');
+    }
   }catch(e){
     document.getElementById('agentMode').textContent='OFFLINE';
     document.getElementById('topMode').textContent='HUNTER OFFLINE';
     document.getElementById('topMode').className='mini red';
     document.getElementById('huntSummary').textContent='Status endpoint: '+e.message;
     renderFilters();renderHome();
+    if(showFeedback)HunterNative.toast('Could not refresh Hunter status.');
+  }finally{
+    if(showFeedback)buttons.forEach(b=>{b.disabled=false;b.textContent=b.dataset.old||'REFRESH STATUS'});
   }
 }
 
@@ -858,9 +960,47 @@ function renderAlerts(){
   try{on=HunterNative.alertsEnabled();permission=HunterNative.notificationPermissionGranted()}catch(e){}
   document.getElementById('alertsCard').innerHTML=on&&permission?
     '<div class="card"><div class="row between"><div><div class="v green">ENABLED</div><div class="small">Android checks the backend about every 15 minutes and alerts only on new opportunities.</div></div><span class="pill green">ON</span></div><button class="btn dark" onclick="HunterNative.disableAlerts();setTimeout(renderAlerts,200)">DISABLE ALERTS</button></div>':
-    '<div class="card"><div class="v gold">'+(permission?'OFF':'PERMISSION NEEDED')+'</div><div class="small">Enable local Android notifications for new HUNTER opportunities.</div><button class="btn" onclick="HunterNative.enableAlerts();setTimeout(renderAlerts,900)">ENABLE ALERTS</button></div>'
+    '<div class="card"><div class="v gold">'+(permission?'OFF':'PERMISSION NEEDED')+'</div><div class="small">Enable local Android notifications for new HUNTER opportunities.</div><button class="btn" onclick="safeEnableAlerts()">ENABLE ALERTS</button></div>'
 }
 
+function safeEnableAlerts(){
+  try{
+    let box=document.getElementById('alertsCard');
+    if(box)box.innerHTML='<div class="card"><div class="v gold">ENABLING…</div><div class="small">Requesting Android permission and scheduling the local watcher.</div></div>';
+    HunterNative.enableAlerts();
+    setTimeout(renderAlerts,1200);
+  }catch(e){
+    HunterNative.toast('Could not enable alerts.');
+    setTimeout(renderAlerts,250);
+  }
+}
+function newerVersion(a,b){
+  let A=String(a||'0').split('.').map(Number),B=String(b||'0').split('.').map(Number);
+  for(let i=0;i<Math.max(A.length,B.length);i++){let x=A[i]||0,y=B[i]||0;if(x>y)return true;if(x<y)return false}
+  return false
+}
+let pendingUpdateUrl='';
+function setUpdateUi(label,text,action,url){
+  let badge=document.getElementById('updateBadge'),msg=document.getElementById('updateText'),btn=document.getElementById('updateButton');
+  if(badge)badge.textContent=label;if(msg)msg.textContent=text;pendingUpdateUrl=url||'';
+  if(btn){btn.disabled=false;btn.textContent=action||'CHECK FOR UPDATE';btn.onclick=pendingUpdateUrl?installPublishedUpdate:checkForUpdate}
+}
+async function checkForUpdate(){
+  let btn=document.getElementById('updateButton');if(btn)btn.disabled=true;
+  setUpdateUi('CHECKING','Checking the signed Hunter release channel…','CHECKING…','');
+  try{
+    let r=await fetch(UPDATE_MANIFEST,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
+    let u=await r.json();let url=String(u.url||u.downloadUrl||'');
+    if(u.version&&newerVersion(u.version,UI_VERSION)&&/^https:\/\//i.test(url)){
+      setUpdateUi('UPDATE AVAILABLE','Version '+u.version+' is ready. Android will install it over the current app and keep local settings.','INSTALL UPDATE',url);return;
+    }
+    setUpdateUi('UP TO DATE','Hunter Alpha v'+UI_VERSION+' is the latest published version.','CHECK AGAIN','');
+  }catch(e){setUpdateUi('OFFLINE','Could not reach the update channel.','TRY AGAIN','')}
+}
+function installPublishedUpdate(){
+  if(!pendingUpdateUrl)return checkForUpdate();
+  HunterNative.openExternalChecked(pendingUpdateUrl,'HUNTER ALPHA SIGNED UPDATE');
+}
 function resetOnboarding(){HunterNative.resetNativeState();localStorage.clear();location.reload()}
 window.hunterBack=function(){
   if(!document.getElementById('detail').classList.contains('hide')){closeDetail();return}
@@ -871,16 +1011,8 @@ window.hunterBack=function(){
   go('home');
 }
 
-const UI_VERSION='0.5.2';
-if(localStorage.hunterUiVersion!==UI_VERSION){
-  localStorage.removeItem('hunterReady');
-  localStorage.hunterUiVersion=UI_VERSION;
-  showGate();
-}else if(localStorage.hunterReady==='1'){
-  bootApp();
-}else{
-  showGate();
-}
+if(localStorage.hunterUiVersion!==UI_VERSION){localStorage.hunterUiVersion=UI_VERSION}
+if(localStorage.hunterReady==='1'){bootApp()}else{showGate()}
 renderTasks();
 </script>
 </body>

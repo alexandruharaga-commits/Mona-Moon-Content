@@ -6,8 +6,11 @@ android {
     applicationId "com.friendshipglobaldesign.hunter"
     minSdk 26
     targetSdk 34
-    versionCode 11
-    versionName "0.5.2"
+    versionCode 13
+    versionName "0.5.4"
   }
-  buildTypes { release { minifyEnabled false } }
+  buildTypes {
+    release { minifyEnabled false }
+    debug { minifyEnabled false }
+  }
 }
