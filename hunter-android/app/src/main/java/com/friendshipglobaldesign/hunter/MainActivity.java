@@ -265,7 +265,7 @@ public class MainActivity extends Activity {
                         }
                         @Override public void onAuthenticationError(int code,CharSequence err){
                             super.onAuthenticationError(code,err);
-                            if(code!=BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED&&code!=BiometricPrompt.BIOMETRIC_ERROR_NEGATIVE_BUTTON)toast(String.valueOf(err));
+                            if(code!=BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED&&code!=BiometricPrompt.BIOMETRIC_ERROR_CANCELED)toast(String.valueOf(err));
                         }
                     });
                 }catch(Throwable t){toast("Biometric authentication is not available on this device.");}
