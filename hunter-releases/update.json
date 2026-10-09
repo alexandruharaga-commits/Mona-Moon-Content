@@ -1,7 +1,7 @@
 {
   "version": "0.5.6",
   "versionCode": 15,
-  "sha256": "",
+  "sha256": "d5457a45f25c44c34ffdcb8d0c8e808cf009de1b92015651bb1bba4961abf513",
   "parts": [],
   "notes": "Final visual lock + durable in-app notification history + button, alerts, biometric and updater fixes."
 }
