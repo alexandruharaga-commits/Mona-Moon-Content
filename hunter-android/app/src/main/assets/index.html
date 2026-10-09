@@ -332,6 +332,43 @@ border:1px solid #d5a848;box-shadow:0 0 50px #d9a9492c,inset 0 0 35px #d8a84a20}
 .notificationItem{padding:12px 13px}
 
 .nav{padding:6px 4px;bottom:9px}.nav button{font-size:8px;padding:7px 1px}.nav span{font-size:18px}
+
+/* v0.5.1 selected final design */
+.premiumHeader{margin-bottom:1px}
+.premiumHeader .brand{font-size:28px}
+.premiumHeader .brand:before{width:44px;height:44px;flex-basis:44px;border-radius:13px;box-shadow:0 0 23px #e3b85c50}
+.premiumOnline{font-weight:900;color:#43dd8c;line-height:1.15;max-width:70px;text-align:left}
+.premiumTag{margin:0 0 14px 54px;color:#9ca6aa;letter-spacing:.23em}
+.premiumHero{padding:0;min-height:405px;display:flex;align-items:flex-end;border-color:#8b6c2d;box-shadow:0 22px 55px #000b,0 0 0 1px #d5ad5520}
+.premiumHero:before,.premiumHero:after{display:none}
+.premiumHeroVisual{position:absolute;inset:0;border-radius:21px;overflow:hidden}
+.premiumHeroVisual img{width:100%;height:100%;object-fit:cover;object-position:center 34%;transform:scale(1.07);filter:contrast(1.08) saturate(.94) brightness(.82)}
+.premiumHeroOverlay{position:absolute;inset:0;background:
+linear-gradient(180deg,#0203040a 0%,#02030425 22%,#020304a5 64%,#020304 100%),
+linear-gradient(90deg,#020304d8 0%,#0203046c 46%,transparent 78%)}
+.premiumHeroContent{position:relative;z-index:2;width:100%;padding:22px}
+.premiumHeroContent h1{font-size:35px;line-height:1.03;margin:8px 0 10px;text-shadow:0 4px 18px #000}
+.heroKinds{color:#c0c7ca;font-size:11px;text-shadow:0 2px 10px #000}
+.premiumHeroActions{display:grid;grid-template-columns:1.18fr .92fr;gap:9px;margin-top:15px}
+.premiumHeroActions .btn{margin-top:0;min-height:54px}
+.premiumHuntMessage{margin-top:10px;color:#b0b8bb}
+.premiumMetrics{margin:13px 0 8px;gap:8px}
+.premiumMetrics div{padding:13px 4px;border-color:#534526;background:linear-gradient(180deg,#0e1315,#070a0c);box-shadow:inset 0 1px 0 #fff6}
+.premiumMetrics span{display:block;color:#e0b85f;font-size:16px;margin-bottom:3px}
+.premiumMetrics b{font-size:22px}
+.premiumMetrics small{font-size:7px;letter-spacing:.13em}
+#homeOps .empty{min-height:180px;display:flex;flex-direction:column;justify-content:center;border-color:#756032;background:
+radial-gradient(80% 100% at 50% 0%,#d5ad5510,transparent 62%),
+linear-gradient(155deg,#0d1214,#070a0c)}
+#homeOps .empty:before{content:"⌑";display:block;color:#e2bc67;font-size:38px;margin-bottom:9px;text-shadow:0 0 18px #d7aa4a55}
+#homeOps .empty b{font-size:16px}
+@media(max-width:390px){
+  .premiumHeader .brand{font-size:24px}
+  .premiumTag{margin-left:48px}
+  .premiumHero{min-height:385px}
+  .premiumHeroContent h1{font-size:31px}
+  .premiumHeroActions{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
@@ -401,25 +438,41 @@ border:1px solid #d5a848;box-shadow:0 0 50px #d9a9492c,inset 0 0 35px #d8a84a20}
 
 <div id="app" class="hide">
   <section id="home" class="screen active">
-    <div class="top appHeader">
+    <div class="top premiumHeader">
       <div class="brand">HUNTER <b>ALPHA</b></div>
-      <div class="row"><button class="iconbtn" onclick="startHunt()">⌕</button><button class="iconbtn" onclick="openNotifications()">♢</button></div>
+      <div class="row">
+        <div class="mini premiumOnline" id="topMode">CHECKING</div>
+        <button class="iconbtn" onclick="openNotifications()">◉</button>
+      </div>
     </div>
-    <div class="homeStatus">
-      <div><span class="statusLight"></span><b id="topMode">CHECKING</b><small>Opportunity intelligence</small></div>
-      <button class="miniHunt" onclick="startHunt()">START HUNT</button>
+    <div class="tag premiumTag">CRYPTO OPPORTUNITY INTELLIGENCE</div>
+
+    <div class="hero premiumHero">
+      <div class="premiumHeroVisual">
+        <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
+        <div class="premiumHeroOverlay"></div>
+      </div>
+      <div class="premiumHeroContent">
+        <div class="k">LIVE HUNT · TITANIUM CORE</div>
+        <h1>Find opportunities<br><span class="gold">before the crowd.</span></h1>
+        <div class="sub heroKinds">Airdrops • Giveaways • Whitelists • Quests • Learn-to-Earn</div>
+        <div class="premiumHeroActions">
+          <button class="btn" onclick="startHunt()">⌕&nbsp;&nbsp;START HUNT</button>
+          <button class="btn dark" onclick="refreshStatus()">↻&nbsp;&nbsp;REFRESH STATUS</button>
+        </div>
+        <div id="huntMessage" class="small premiumHuntMessage"></div>
+      </div>
+    </div>
+
+    <div class="homeMetrics premiumMetrics">
+      <div><span>⌂</span><b id="scanned">0</b><small>SCANNED</small></div>
+      <div><span>◎</span><b id="active">0</b><small>ACTIVE</small></div>
+      <div><span>×</span><b id="rejected">0</b><small>REJECTED</small></div>
+      <div><span>▥</span><b id="minScore">80</b><small>MIN SCORE</small></div>
     </div>
 
     <div class="filters" id="filters"></div>
     <div id="homeOps"></div>
-
-    <div class="homeMetrics">
-      <div><b id="scanned">0</b><small>SCANNED</small></div>
-      <div><b id="active">0</b><small>ACTIVE</small></div>
-      <div><b id="rejected">0</b><small>REJECTED</small></div>
-      <div><b id="minScore">80</b><small>MIN SCORE</small></div>
-    </div>
-    <div id="huntMessage" class="small homeMessage"></div>
   </section>
 
   <section id="hunt" class="screen">
@@ -519,12 +572,12 @@ function linkDomain(a){return domainOf(a.link)||'unknown'}
 function enterBeta(){
   let e=document.getElementById('email').value.trim();
   if(!/^\S+@\S+\.\S+$/.test(e)){HunterNative.toast('Enter a valid email for the beta profile.');return}
-  localStorage.hunterEmail=e;showWalletGate()
+  localStorage.hunterEmail=e;localStorage.hunterUiVersion='0.5.1';showWalletGate()
 }
-function enterDemo(){localStorage.hunterEmail='Demo profile';showWalletGate()}
+function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion='0.5.1';showWalletGate()}
 function showGate(){document.getElementById('gate').classList.remove('hide');document.getElementById('walletGate').classList.add('hide')}
 function showWalletGate(){document.getElementById('gate').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
-function skipWallet(){localStorage.hunterReady='1';bootApp()}
+function skipWallet(){localStorage.hunterReady='1';localStorage.hunterUiVersion='0.5.1';bootApp()}
 function bootApp(){
   document.getElementById('gate').classList.add('hide');
   document.getElementById('walletGate').classList.add('hide');
@@ -780,7 +833,8 @@ function resetOnboarding(){localStorage.clear();location.reload()}
 window.hunterBack=function(){
   if(!document.getElementById('detail').classList.contains('hide')){closeDetail();return}
   if(!document.getElementById('walletGate').classList.contains('hide')){
-    if(localStorage.hunterReady==='1')bootApp();else showGate();
+    const UI_VERSION='0.5.1';
+if(localStorage.hunterUiVersion!==UI_VERSION){localStorage.removeItem('hunterReady');localStorage.hunterUiVersion=UI_VERSION;showGate();}else if(localStorage.hunterReady==='1')bootApp();else showGate();
     return
   }
   go('home')

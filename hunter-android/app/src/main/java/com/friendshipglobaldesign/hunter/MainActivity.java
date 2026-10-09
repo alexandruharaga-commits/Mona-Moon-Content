@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        settings.setUserAgentString(settings.getUserAgentString() + " HUNTER-ALPHA/0.4");
+        settings.setUserAgentString(settings.getUserAgentString() + " HUNTER-ALPHA/0.5.1");
 
         webView.addJavascriptInterface(new HunterNative(), "HunterNative");
         webView.setWebViewClient(new WebViewClient() {
@@ -238,9 +238,9 @@ public class MainActivity extends Activity {
                     ok = code >= 200 && code < 300;
                     message = ok
                             ? "Hunt started. HUNTER is scanning the configured sources."
-                            : "On-demand hunt is not active on the backend yet (HTTP " + code + ").";
+                            : "Scheduled Hunter is online. On-demand hunt activates with the new backend.";
                 } catch (Exception e) {
-                    message = "On-demand hunt endpoint is unavailable. Latest scheduled results will be shown.";
+                    message = "Scheduled Hunter is online. On-demand hunt is not active yet; latest scheduled results are shown.";
                 } finally {
                     if (connection != null) connection.disconnect();
                 }
