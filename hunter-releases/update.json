@@ -1,7 +1,7 @@
 {
   "version": "0.5.5",
   "versionCode": 14,
-  "sha256": "",
+  "sha256": "99552d6e0525a93df73ec52208caf3d8b23ac64952579e05fe70d3e337a8421a",
   "parts": [],
   "notes": "Final visual lock, reliable button feedback, alerts crash protection, biometric local unlock and signed in-app update channel."
 }
