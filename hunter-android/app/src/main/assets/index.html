@@ -370,7 +370,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   .premiumHeroActions{grid-template-columns:1fr 1fr}
 }
 
-/* v0.5.6 — FINAL VISUAL LOCK */
+/* v0.6.0 — FINAL VISUAL LOCK */
 :root{--gold:#d2a744;--gold2:#f5d77f;--panel:#0a0d0f;--line:#333a3f}
 body{background:
 radial-gradient(70% 36% at 50% 0%,#8c65152b 0%,transparent 65%),
@@ -424,7 +424,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
     <div class="loginEmblem">
       <div class="ring ring1"></div>
       <div class="ring ring2"></div>
-      <img src="hunter_alpha_wolf.svg" alt="Hunter Alpha">
+      <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
     </div>
 
     <div class="loginPitch">Your Crypto<br><span>Opportunity Hunter</span></div>
@@ -440,7 +440,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
     <div class="loginCard">
       <input id="email" type="email" placeholder="Email address">
       <button class="btn" onclick="enterBeta()">LOG IN</button>
-      <button class="btn dark biometricBtn" onclick="HunterNative.startBiometric()">◉&nbsp;&nbsp;USE BIOMETRIC</button>
+      <button class="btn dark biometricBtn" onclick="useBiometric()">◉&nbsp;&nbsp;USE BIOMETRIC</button>
       <button class="btn ghost" onclick="enterDemo()">TRY DEMO FIRST</button>
       <div class="loginFoot">Real opportunities. Verified sources. Your control.</div>
     </div>
@@ -493,7 +493,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
 
     <div class="hero premiumHero">
       <div class="premiumHeroVisual">
-        <img src="hunter_alpha_wolf.svg" alt="Hunter Alpha">
+        <img src="hunter_alpha_official.webp" alt="Hunter Alpha">
         <div class="premiumHeroOverlay"></div>
       </div>
       <div class="premiumHeroContent">
@@ -571,7 +571,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
     <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades • External link domains are shown before opening.</div></div>
     <div class="sectiontitle">App update</div>
     <div class="card" id="updateCard">
-      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.5.6</div></div><span class="pill gold" id="updateBadge">READY</span></div>
+      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.6.0</div></div><span class="pill gold" id="updateBadge">READY</span></div>
       <div class="small" id="updateText">Signed update channel is active. Future builds install over this app and keep local settings.</div>
       <button class="btn dark" id="updateButton" onclick="checkForUpdate()">CHECK FOR UPDATE</button>
     </div>
@@ -596,7 +596,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
 <script>
 const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
 const UPDATE_MANIFEST='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/update.json';
-const UI_VERSION='0.5.6';
+const UI_VERSION='0.6.0';
 let state={alerts:[],raw:null,filter:'All',scanning:false,scanTimers:[]};
 let selected=null;
 let walletReturnTarget='gate';
@@ -629,6 +629,13 @@ function enterBeta(){
   localStorage.hunterEmail=e;localStorage.hunterUiVersion=UI_VERSION;showWalletGate()
 }
 function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion=UI_VERSION;showWalletGate()}
+function useBiometric(){
+  if(!localStorage.hunterEmail){
+    HunterNative.toast('Set up your Hunter profile once with email before enabling biometric login.');
+    return;
+  }
+  HunterNative.startBiometric();
+}
 window.hunterUpdateStatus=function(message){
   let msg=document.getElementById('updateText');if(msg)msg.textContent=message;
 }

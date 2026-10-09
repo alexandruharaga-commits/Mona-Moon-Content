@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(true);
         s.setAllowContentAccess(false);
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        s.setUserAgentString(s.getUserAgentString()+" HUNTER-ALPHA/0.5.6");
+        s.setUserAgentString(s.getUserAgentString()+" HUNTER-ALPHA/0.6.0");
 
         webView.addJavascriptInterface(new HunterNative(),"HunterNative");
         webView.setWebViewClient(new WebViewClient(){
