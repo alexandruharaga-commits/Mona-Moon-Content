@@ -134,13 +134,12 @@ public class HunterWatchService extends JobService {
         }
 
         Intent launchIntent = new Intent(this, MainActivity.class);
-        launchIntent.setFlags(
-                Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
-        );
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        launchIntent.putExtra("open_notifications", true);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
-                0,
+                4401,
                 launchIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
@@ -148,10 +147,7 @@ public class HunterWatchService extends JobService {
         String title = alert.optString("title", "New crypto opportunity");
         int score = alert.optInt("score", 0);
         String status = alert.optString("sourceVerification", "UNVERIFIED");
-        String source = alert.optString(
-                "sourceHost",
-                alert.optString("source", "source")
-        );
+        String source = alert.optString("sourceHost", alert.optString("source", "source"));
 
         String text = count > 1
                 ? count + " new opportunities. Top: " + title + " · " + score + "/100"

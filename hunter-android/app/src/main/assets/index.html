@@ -333,7 +333,7 @@ border:1px solid #d5a848;box-shadow:0 0 50px #d9a9492c,inset 0 0 35px #d8a84a20}
 
 .nav{padding:6px 4px;bottom:9px}.nav button{font-size:8px;padding:7px 1px}.nav span{font-size:18px}
 
-/* v0.5.1 selected final design */
+/* v0.5.2 selected final design */
 .premiumHeader{margin-bottom:1px}
 .premiumHeader .brand{font-size:28px}
 .premiumHeader .brand:before{width:44px;height:44px;flex-basis:44px;border-radius:13px;box-shadow:0 0 23px #e3b85c50}
@@ -410,7 +410,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
 </div>
 
 <div id="walletGate" class="hide">
-  <div class="top"><button class="back" onclick="showGate()">‹</button><div class="brand">CONNECT <b>WALLET</b></div><div></div></div>
+  <div class="top"><button class="back" onclick="backFromWallet()">‹</button><div class="brand">CONNECT <b>WALLET</b></div><div></div></div>
   <div class="walletIntro">
     <h1>Connect Your Wallet</h1>
     <div class="sub">Optional. Hunter can work without a wallet. For safety, this beta stores public addresses only and never stores seed phrases or private keys.</div>
@@ -511,7 +511,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   </section>
 
   <section id="notifications" class="screen">
-    <div class="top"><div class="brand">NOTIFICATIONS</div><button class="iconbtn">⚙</button></div>
+    <div class="top"><div class="brand">NOTIFICATIONS</div><button class="iconbtn" onclick="openAlertSettings()">⚙</button></div>
     <div class="hero"><div class="k">INTELLIGENCE FEED</div><h1>Notifications</h1><div class="sub">New qualified opportunities and important status changes appear here.</div></div>
     <div id="notificationList"></div>
   </section>
@@ -546,6 +546,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
 const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
 let state={alerts:[],raw:null,filter:'All'};
 let selected=null;
+let walletReturnTarget='gate';
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function domainOf(u){try{return new URL(String(u||'')).hostname.replace(/^www\./,'')}catch(e){return''}}
@@ -572,12 +573,12 @@ function linkDomain(a){return domainOf(a.link)||'unknown'}
 function enterBeta(){
   let e=document.getElementById('email').value.trim();
   if(!/^\S+@\S+\.\S+$/.test(e)){HunterNative.toast('Enter a valid email for the beta profile.');return}
-  localStorage.hunterEmail=e;localStorage.hunterUiVersion='0.5.1';showWalletGate()
+  localStorage.hunterEmail=e;localStorage.hunterUiVersion='0.5.2';showWalletGate()
 }
-function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion='0.5.1';showWalletGate()}
+function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion='0.5.2';showWalletGate()}
 function showGate(){document.getElementById('gate').classList.remove('hide');document.getElementById('walletGate').classList.add('hide')}
-function showWalletGate(){document.getElementById('gate').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
-function skipWallet(){localStorage.hunterReady='1';localStorage.hunterUiVersion='0.5.1';bootApp()}
+function showWalletGate(){walletReturnTarget='gate';document.getElementById('gate').classList.add('hide');document.getElementById('app').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
+function skipWallet(){localStorage.hunterReady='1';localStorage.hunterUiVersion='0.5.2';bootApp()}
 function bootApp(){
   document.getElementById('gate').classList.add('hide');
   document.getElementById('walletGate').classList.add('hide');
@@ -615,18 +616,19 @@ function renderNotifications(){
 }
 
 function startHunt(){
-  document.getElementById('huntMessage').textContent='Starting on-demand hunt…';
+  go('hunt');
+  document.getElementById('huntMessage').textContent='Checking for a fresh hunt…';
   document.getElementById('agentMode').textContent='STARTING…';
   HunterNative.triggerScan();
 }
 window.hunterScanResult=function(ok,msg){
   document.getElementById('huntMessage').textContent=msg;
   if(ok){
-    go('hunt');
     document.getElementById('agentMode').textContent='SCANNING…';
     setTimeout(refreshStatus,5000);
     setTimeout(refreshStatus,12000);
   }else{
+    document.getElementById('agentMode').textContent='SCHEDULED HUNT ONLINE';
     refreshStatus();
   }
 }
@@ -802,7 +804,7 @@ function renderTasks(){
 }
 
 function walletProviderInfo(name){
-  HunterNative.toast(name+' secure connection is not enabled in this beta yet. You can continue without a wallet or add a public watch-only address.');
+  HunterNative.openWalletProvider(name);
 }
 function saveWallet(){
   let label=document.getElementById('walletLabel').value.trim();
@@ -820,27 +822,65 @@ function renderWalletProfile(){
     '<div class="card"><span class="pill green">WATCH-ONLY</span><div class="title">'+esc(c.label||'Public wallet')+'</div><div class="mono">'+esc(c.address)+'</div><button class="btn red" onclick="HunterNative.clearPublicWallet();renderWalletProfile()">REMOVE ADDRESS</button></div>':
     '<div class="card"><div class="v gold">Not configured</div><div class="small">Wallet is optional. Add a public address only if you want future eligibility checks.</div></div>'
 }
-function showWalletSettings(){document.getElementById('app').classList.add('hide');document.getElementById('walletGate').classList.remove('hide');renderWalletGate()}
+function showWalletSettings(){
+  walletReturnTarget='profile';
+  document.getElementById('app').classList.add('hide');
+  document.getElementById('walletGate').classList.remove('hide');
+  renderWalletGate();
+}
+function backFromWallet(){
+  document.getElementById('walletGate').classList.add('hide');
+  if(walletReturnTarget==='profile'){
+    document.getElementById('app').classList.remove('hide');
+    go('profile');
+  }else{
+    showGate();
+  }
+}
+
+function openAlertSettings(){
+  go('profile');
+  setTimeout(()=>{
+    const el=document.getElementById('alertsCard');
+    if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+    HunterNative.openNotificationSettings();
+  },150);
+}
+window.hunterOpenNotificationsFromNative=function(){
+  if(localStorage.hunterReady==='1'){
+    bootApp();
+    go('notifications');
+  }
+}
 
 function renderAlerts(){
-  let on=false;try{on=HunterNative.alertsEnabled()}catch(e){}
-  document.getElementById('alertsCard').innerHTML=on?
+  let on=false,permission=true;
+  try{on=HunterNative.alertsEnabled();permission=HunterNative.notificationPermissionGranted()}catch(e){}
+  document.getElementById('alertsCard').innerHTML=on&&permission?
     '<div class="card"><div class="row between"><div><div class="v green">ENABLED</div><div class="small">Android checks the backend about every 15 minutes and alerts only on new opportunities.</div></div><span class="pill green">ON</span></div><button class="btn dark" onclick="HunterNative.disableAlerts();setTimeout(renderAlerts,200)">DISABLE ALERTS</button></div>':
-    '<div class="card"><div class="v gold">OFF</div><div class="small">Enable local Android notifications for new HUNTER opportunities.</div><button class="btn" onclick="HunterNative.enableAlerts();setTimeout(renderAlerts,500)">ENABLE ALERTS</button></div>'
+    '<div class="card"><div class="v gold">'+(permission?'OFF':'PERMISSION NEEDED')+'</div><div class="small">Enable local Android notifications for new HUNTER opportunities.</div><button class="btn" onclick="HunterNative.enableAlerts();setTimeout(renderAlerts,900)">ENABLE ALERTS</button></div>'
 }
 
-function resetOnboarding(){localStorage.clear();location.reload()}
+function resetOnboarding(){HunterNative.resetNativeState();localStorage.clear();location.reload()}
 window.hunterBack=function(){
   if(!document.getElementById('detail').classList.contains('hide')){closeDetail();return}
-  if(!document.getElementById('walletGate').classList.contains('hide')){
-    const UI_VERSION='0.5.1';
-if(localStorage.hunterUiVersion!==UI_VERSION){localStorage.removeItem('hunterReady');localStorage.hunterUiVersion=UI_VERSION;showGate();}else if(localStorage.hunterReady==='1')bootApp();else showGate();
-    return
-  }
-  go('home')
+  if(!document.getElementById('walletGate').classList.contains('hide')){backFromWallet();return}
+  if(!document.getElementById('gate').classList.contains('hide')){HunterNative.exitApp();return}
+  const active=document.querySelector('.screen.active');
+  if(active&&active.id==='home'){HunterNative.exitApp();return}
+  go('home');
 }
 
-if(localStorage.hunterReady==='1')bootApp();else showGate();
+const UI_VERSION='0.5.2';
+if(localStorage.hunterUiVersion!==UI_VERSION){
+  localStorage.removeItem('hunterReady');
+  localStorage.hunterUiVersion=UI_VERSION;
+  showGate();
+}else if(localStorage.hunterReady==='1'){
+  bootApp();
+}else{
+  showGate();
+}
 renderTasks();
 </script>
 </body>
