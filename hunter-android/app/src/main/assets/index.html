@@ -370,7 +370,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   .premiumHeroActions{grid-template-columns:1fr 1fr}
 }
 
-/* v0.5.4 — FINAL VISUAL LOCK */
+/* v0.5.5 — FINAL VISUAL LOCK */
 :root{--gold:#d2a744;--gold2:#f5d77f;--panel:#0a0d0f;--line:#333a3f}
 body{background:
 radial-gradient(70% 36% at 50% 0%,#8c65152b 0%,transparent 65%),
@@ -571,7 +571,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
     <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades • External link domains are shown before opening.</div></div>
     <div class="sectiontitle">App update</div>
     <div class="card" id="updateCard">
-      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.5.4</div></div><span class="pill gold" id="updateBadge">READY</span></div>
+      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.5.5</div></div><span class="pill gold" id="updateBadge">READY</span></div>
       <div class="small" id="updateText">Signed update channel is active. Future builds install over this app and keep local settings.</div>
       <button class="btn dark" id="updateButton" onclick="checkForUpdate()">CHECK FOR UPDATE</button>
     </div>
@@ -596,7 +596,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
 <script>
 const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
 const UPDATE_MANIFEST='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/update.json';
-const UI_VERSION='0.5.4';
+const UI_VERSION='0.5.5';
 let state={alerts:[],raw:null,filter:'All',scanning:false,scanTimers:[]};
 let selected=null;
 let walletReturnTarget='gate';
@@ -629,6 +629,9 @@ function enterBeta(){
   localStorage.hunterEmail=e;localStorage.hunterUiVersion=UI_VERSION;showWalletGate()
 }
 function enterDemo(){localStorage.hunterEmail='Demo profile';localStorage.hunterUiVersion=UI_VERSION;showWalletGate()}
+window.hunterUpdateStatus=function(message){
+  let msg=document.getElementById('updateText');if(msg)msg.textContent=message;
+}
 window.hunterBiometricSuccess=function(){
   localStorage.hunterEmail=localStorage.hunterEmail||'Biometric profile';
   localStorage.hunterUiVersion=UI_VERSION;
@@ -990,16 +993,21 @@ async function checkForUpdate(){
   setUpdateUi('CHECKING','Checking the signed Hunter release channel…','CHECKING…','');
   try{
     let r=await fetch(UPDATE_MANIFEST,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
-    let u=await r.json();let url=String(u.url||u.downloadUrl||'');
-    if(u.version&&newerVersion(u.version,UI_VERSION)&&/^https:\/\//i.test(url)){
-      setUpdateUi('UPDATE AVAILABLE','Version '+u.version+' is ready. Android will install it over the current app and keep local settings.','INSTALL UPDATE',url);return;
+    let u=await r.json();
+    let hasParts=Array.isArray(u.parts)&&u.parts.length>0;
+    let url=String(u.url||u.downloadUrl||'');
+    if(u.version&&newerVersion(u.version,UI_VERSION)&&(hasParts||/^https:\/\//i.test(url))){
+      setUpdateUi('UPDATE AVAILABLE','Version '+u.version+' is ready. Android will verify and install it over the current app while keeping local settings.','INSTALL UPDATE','native');return;
     }
     setUpdateUi('UP TO DATE','Hunter Alpha v'+UI_VERSION+' is the latest published version.','CHECK AGAIN','');
   }catch(e){setUpdateUi('OFFLINE','Could not reach the update channel.','TRY AGAIN','')}
 }
 function installPublishedUpdate(){
   if(!pendingUpdateUrl)return checkForUpdate();
-  HunterNative.openExternalChecked(pendingUpdateUrl,'HUNTER ALPHA SIGNED UPDATE');
+  let btn=document.getElementById('updateButton');
+  if(btn){btn.disabled=true;btn.textContent='PREPARING UPDATE…'}
+  HunterNative.installUpdate(UPDATE_MANIFEST);
+  setTimeout(()=>{if(btn){btn.disabled=false;btn.textContent='INSTALL UPDATE'}},2500);
 }
 function resetOnboarding(){HunterNative.resetNativeState();localStorage.clear();location.reload()}
 window.hunterBack=function(){

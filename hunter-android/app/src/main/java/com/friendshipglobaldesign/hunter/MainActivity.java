@@ -5,16 +5,21 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.biometrics.BiometricPrompt;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
+import android.util.Base64;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -22,18 +27,29 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     public static final String STATUS_URL = "https://alalex.app.n8n.cloud/webhook/hunter/status";
     public static final String SCAN_URL = "https://alalex.app.n8n.cloud/webhook/hunter/scan";
     public static final String ALERT_CHANNEL = "hunter_alpha_alerts";
     private static final int NOTIFICATION_PERMISSION_REQUEST = 101;
+    private static final String INSTALL_STATUS_ACTION = "com.friendshipglobaldesign.hunter.INSTALL_STATUS";
 
     private WebView webView;
     private SharedPreferences prefs;
@@ -59,7 +75,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(true);
         s.setAllowContentAccess(false);
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        s.setUserAgentString(s.getUserAgentString()+" HUNTER-ALPHA/0.5.4");
+        s.setUserAgentString(s.getUserAgentString()+" HUNTER-ALPHA/0.5.5");
 
         webView.addJavascriptInterface(new HunterNative(),"HunterNative");
         webView.setWebViewClient(new WebViewClient(){
@@ -78,6 +94,18 @@ public class MainActivity extends Activity {
         if(prefs.getBoolean("alerts_enabled",false)&&notificationPermissionGranted()){
             HunterJobs.schedule(this);
         }
+
+        handleInstallStatus(getIntent());
+    }
+
+    @Override protected void onResume(){
+        super.onResume();
+        String pending=prefs.getString("pending_update_apk","");
+        if(!pending.isEmpty() && canInstallPackages()){
+            prefs.edit().remove("pending_update_apk").apply();
+            File f=new File(pending);
+            if(f.exists())installApk(f);
+        }
     }
 
     private void createNotificationChannel(){
@@ -91,6 +119,10 @@ public class MainActivity extends Activity {
 
     private boolean notificationPermissionGranted(){
         return Build.VERSION.SDK_INT<33 || checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)==PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean canInstallPackages(){
+        return Build.VERSION.SDK_INT<26 || getPackageManager().canRequestPackageInstalls();
     }
 
     private boolean handleExternal(String url){
@@ -109,9 +141,9 @@ public class MainActivity extends Activity {
     private void openHttps(String url){
         try{
             Uri uri=Uri.parse(url);
-            if(!"https".equalsIgnoreCase(uri.getScheme())){Toast.makeText(this,"HUNTER opens HTTPS links only.",Toast.LENGTH_LONG).show();return;}
+            if(!"https".equalsIgnoreCase(uri.getScheme())){toastUi("HUNTER opens HTTPS links only.");return;}
             startActivity(new Intent(Intent.ACTION_VIEW,uri));
-        }catch(Exception e){Toast.makeText(this,"Cannot open this link.",Toast.LENGTH_LONG).show();}
+        }catch(Exception e){toastUi("Cannot open this link.");}
     }
 
     private void readLaunchIntent(Intent intent){
@@ -126,7 +158,24 @@ public class MainActivity extends Activity {
     }
 
     @Override protected void onNewIntent(Intent intent){
-        super.onNewIntent(intent);setIntent(intent);readLaunchIntent(intent);dispatchNotificationOpen();
+        super.onNewIntent(intent);setIntent(intent);readLaunchIntent(intent);dispatchNotificationOpen();handleInstallStatus(intent);
+    }
+
+    private void handleInstallStatus(Intent intent){
+        if(intent==null||!INSTALL_STATUS_ACTION.equals(intent.getAction()))return;
+        int status=intent.getIntExtra(PackageInstaller.EXTRA_STATUS,PackageInstaller.STATUS_FAILURE);
+        if(status==PackageInstaller.STATUS_PENDING_USER_ACTION){
+            Intent confirm=intent.getParcelableExtra(Intent.EXTRA_INTENT);
+            if(confirm!=null){
+                confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try{startActivity(confirm);}catch(Exception e){toastUi("Android could not open the update confirmation.");}
+            }
+        }else if(status==PackageInstaller.STATUS_SUCCESS){
+            toastUi("HUNTER ALPHA update installed.");
+        }else{
+            String msg=intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE);
+            toastUi("Update was not installed"+(msg==null?".":": "+msg));
+        }
     }
 
     @Override public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults){
@@ -136,13 +185,84 @@ public class MainActivity extends Activity {
             prefs.edit().putBoolean("alerts_enabled",granted).putBoolean("alerts_baselined",false).apply();
             if(granted){
                 boolean scheduled=HunterJobs.schedule(this);
-                Toast.makeText(this,scheduled?"HUNTER alerts enabled.":"Alerts enabled; background watcher will retry next time Hunter opens.",Toast.LENGTH_LONG).show();
+                toastUi(scheduled?"HUNTER alerts enabled.":"Alerts enabled; background watcher will retry next time Hunter opens.");
             }else{
                 HunterJobs.cancel(this);
-                Toast.makeText(this,"Notification permission was not granted.",Toast.LENGTH_LONG).show();
+                toastUi("Notification permission was not granted.");
             }
             if(webView!=null)webView.postDelayed(()->webView.evaluateJavascript("window.renderAlerts&&window.renderAlerts();",null),250);
         }
+    }
+
+    private String downloadText(String urlText) throws Exception{
+        URL url=new URL(urlText);
+        if(!"https".equalsIgnoreCase(url.getProtocol()))throw new IllegalArgumentException("HTTPS required");
+        HttpURLConnection c=(HttpURLConnection)url.openConnection();
+        c.setConnectTimeout(10000);c.setReadTimeout(20000);c.setRequestProperty("Cache-Control","no-cache");
+        int code=c.getResponseCode();if(code<200||code>=300){c.disconnect();throw new Exception("HTTP "+code);}
+        StringBuilder sb=new StringBuilder();
+        try(BufferedReader r=new BufferedReader(new InputStreamReader(c.getInputStream(),StandardCharsets.UTF_8))){
+            String line;while((line=r.readLine())!=null)sb.append(line.trim());
+        }finally{c.disconnect();}
+        return sb.toString();
+    }
+
+    private String sha256(byte[] data) throws Exception{
+        MessageDigest md=MessageDigest.getInstance("SHA-256");
+        byte[] d=md.digest(data);StringBuilder s=new StringBuilder();
+        for(byte b:d)s.append(String.format(Locale.US,"%02x",b));
+        return s.toString();
+    }
+
+    private long currentVersionCode(){
+        try{
+            PackageInfo p=getPackageManager().getPackageInfo(getPackageName(),0);
+            return Build.VERSION.SDK_INT>=28?p.getLongVersionCode():p.versionCode;
+        }catch(Exception e){return 0;}
+    }
+
+    private void postUpdateStatus(String message){
+        final String m=message==null?"":message;
+        runOnUiThread(()->{
+            if(webView!=null)webView.evaluateJavascript("window.hunterUpdateStatus&&window.hunterUpdateStatus("+JSONObject.quote(m)+");",null);
+        });
+    }
+
+    private void requestInstallPermission(File apk){
+        prefs.edit().putString("pending_update_apk",apk.getAbsolutePath()).apply();
+        try{
+            Intent i=new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,Uri.parse("package:"+getPackageName()));
+            startActivity(i);
+            toastUi("Allow HUNTER ALPHA to install updates, then return to the app.");
+        }catch(Exception e){toastUi("Open Android settings and allow HUNTER ALPHA to install unknown apps.");}
+    }
+
+    private void installApk(File apk){
+        if(!canInstallPackages()){requestInstallPermission(apk);return;}
+        new Thread(()->{
+            PackageInstaller.Session session=null;
+            try{
+                PackageInstaller installer=getPackageManager().getPackageInstaller();
+                PackageInstaller.SessionParams params=new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+                params.setAppPackageName(getPackageName());
+                int sessionId=installer.createSession(params);
+                session=installer.openSession(sessionId);
+                try(InputStream in=new FileInputStream(apk);OutputStream out=session.openWrite("base.apk",0,apk.length())){
+                    byte[] buf=new byte[65536];int n;
+                    while((n=in.read(buf))>0)out.write(buf,0,n);
+                    session.fsync(out);
+                }
+                Intent callback=new Intent(MainActivity.this,MainActivity.class).setAction(INSTALL_STATUS_ACTION);
+                PendingIntent pending=PendingIntent.getActivity(MainActivity.this,sessionId,callback,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_MUTABLE);
+                session.commit(pending.getIntentSender());
+                session.close();session=null;
+                postUpdateStatus("Android is verifying the signed Hunter update…");
+            }catch(Exception e){
+                postUpdateStatus("Update install failed: "+e.getMessage());
+                toastUi("Could not start the update installer.");
+                try{if(session!=null)session.close();}catch(Exception ignored){}
+            }
+        }).start();
     }
 
     public class HunterNative {
@@ -182,7 +302,7 @@ public class MainActivity extends Activity {
                 try{
                     Uri uri=Uri.parse(target);String host=uri.getHost();
                     if(!"https".equalsIgnoreCase(uri.getScheme())||host==null||host.trim().isEmpty()){
-                        Toast.makeText(MainActivity.this,"Invalid or insecure external link.",Toast.LENGTH_LONG).show();return;
+                        toastUi("Invalid or insecure external link.");return;
                     }
                     String status=sourceStatus==null||sourceStatus.trim().isEmpty()?"UNVERIFIED":sourceStatus;
                     new AlertDialog.Builder(MainActivity.this)
@@ -191,7 +311,7 @@ public class MainActivity extends Activity {
                         .setNegativeButton("CANCEL",null)
                         .setPositiveButton("OPEN",(d,w)->openHttps(target))
                         .show();
-                }catch(Exception e){Toast.makeText(MainActivity.this,"Cannot verify this link.",Toast.LENGTH_LONG).show();}
+                }catch(Exception e){toastUi("Cannot verify this link.");}
             });
         }
 
@@ -224,12 +344,12 @@ public class MainActivity extends Activity {
                     }
                     prefs.edit().putBoolean("alerts_enabled",true).putBoolean("alerts_baselined",false).apply();
                     boolean scheduled=HunterJobs.schedule(MainActivity.this);
-                    Toast.makeText(MainActivity.this,scheduled?"HUNTER alerts enabled.":"Alerts enabled; background scheduling will retry automatically.",Toast.LENGTH_LONG).show();
+                    toastUi(scheduled?"HUNTER alerts enabled.":"Alerts enabled; background scheduling will retry automatically.");
                     if(webView!=null)webView.postDelayed(()->webView.evaluateJavascript("window.renderAlerts&&window.renderAlerts();",null),250);
                 }catch(Throwable t){
                     prefs.edit().putBoolean("alerts_enabled",false).apply();
                     HunterJobs.cancel(MainActivity.this);
-                    Toast.makeText(MainActivity.this,"Could not enable background alerts. Hunter remains usable.",Toast.LENGTH_LONG).show();
+                    toastUi("Could not enable background alerts. Hunter remains usable.");
                     if(webView!=null)webView.postDelayed(()->webView.evaluateJavascript("window.renderAlerts&&window.renderAlerts();",null),250);
                 }
             });
@@ -258,7 +378,7 @@ public class MainActivity extends Activity {
                         .setDescription("Authentication stays on this device.")
                         .setNegativeButton("USE EMAIL",getMainExecutor(),(d,w)->{})
                         .build();
-                    prompt.authenticate(getCancellationSignal(),getMainExecutor(),new BiometricPrompt.AuthenticationCallback(){
+                    prompt.authenticate(new android.os.CancellationSignal(),getMainExecutor(),new BiometricPrompt.AuthenticationCallback(){
                         @Override public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result){
                             super.onAuthenticationSucceeded(result);
                             if(webView!=null)webView.evaluateJavascript("window.hunterBiometricSuccess&&window.hunterBiometricSuccess();",null);
@@ -272,11 +392,51 @@ public class MainActivity extends Activity {
             });
         }
 
-        private android.os.CancellationSignal getCancellationSignal(){return new android.os.CancellationSignal();}
+        @JavascriptInterface public void installUpdate(String manifestUrl){
+            final String manifest=manifestUrl==null?"":manifestUrl.trim();
+            new Thread(()->{
+                try{
+                    postUpdateStatus("Downloading signed update metadata…");
+                    JSONObject m=new JSONObject(downloadText(manifest));
+                    long code=m.optLong("versionCode",0);
+                    if(code<=currentVersionCode()){postUpdateStatus("HUNTER ALPHA is already up to date.");return;}
+                    JSONArray parts=m.optJSONArray("parts");
+                    if(parts==null||parts.length()==0){postUpdateStatus("Update package is not published yet.");return;}
+                    String expected=m.optString("sha256","").toLowerCase(Locale.US);
+                    StringBuilder encoded=new StringBuilder();
+                    for(int i=0;i<parts.length();i++){
+                        String part=parts.optString(i,"");
+                        URL u=new URL(part);
+                        if(!"https".equalsIgnoreCase(u.getProtocol())||!"raw.githubusercontent.com".equalsIgnoreCase(u.getHost())){
+                            throw new SecurityException("Update source is not approved");
+                        }
+                        postUpdateStatus("Downloading update "+(i+1)+"/"+parts.length()+"…");
+                        encoded.append(downloadText(part));
+                    }
+                    byte[] apk=Base64.decode(encoded.toString(),Base64.DEFAULT);
+                    String actual=sha256(apk);
+                    if(expected.isEmpty()||!actual.equals(expected))throw new SecurityException("SHA-256 verification failed");
+                    File dir=getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                    if(dir==null)dir=getCacheDir();
+                    File out=new File(dir,"HUNTER-ALPHA-update.apk");
+                    try(FileOutputStream fos=new FileOutputStream(out)){fos.write(apk);fos.flush();}
+                    postUpdateStatus("Update verified. Preparing Android installer…");
+                    runOnUiThread(()->installApk(out));
+                }catch(Exception e){
+                    postUpdateStatus("Update failed: "+e.getMessage());
+                    toastUi("Hunter update could not be prepared.");
+                }
+            }).start();
+        }
 
         @JavascriptInterface public void resetNativeState(){prefs.edit().clear().apply();HunterJobs.cancel(MainActivity.this);}
         @JavascriptInterface public void exitApp(){runOnUiThread(MainActivity.this::finishAndRemoveTask);}
-        @JavascriptInterface public void toast(String message){String m=message==null?"":message;runOnUiThread(()->Toast.makeText(MainActivity.this,m,Toast.LENGTH_LONG).show());}
+        @JavascriptInterface public void toast(String message){toastUi(message);}
+    }
+
+    private void toastUi(String message){
+        String m=message==null?"":message;
+        runOnUiThread(()->Toast.makeText(MainActivity.this,m,Toast.LENGTH_LONG).show());
     }
 
     @Override public void onBackPressed(){
