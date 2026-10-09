@@ -75,7 +75,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(true);
         s.setAllowContentAccess(false);
         s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        s.setUserAgentString(s.getUserAgentString()+" HUNTER-ALPHA/0.5.5");
+        s.setUserAgentString(s.getUserAgentString()+" HUNTER-ALPHA/0.5.6");
 
         webView.addJavascriptInterface(new HunterNative(),"HunterNative");
         webView.setWebViewClient(new WebViewClient(){
@@ -333,6 +333,8 @@ public class MainActivity extends Activity {
             }).start();
         }
 
+        @JavascriptInterface public String getNotificationHistory(){return prefs.getString("notification_history_json","[]");}
+        @JavascriptInterface public void clearNotificationHistory(){prefs.edit().remove("notification_history_json").apply();}
         @JavascriptInterface public boolean alertsEnabled(){return prefs.getBoolean("alerts_enabled",false);}
         @JavascriptInterface public boolean notificationPermissionGranted(){return MainActivity.this.notificationPermissionGranted();}
 

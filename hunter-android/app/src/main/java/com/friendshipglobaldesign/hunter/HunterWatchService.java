@@ -20,6 +20,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,6 +71,8 @@ public class HunterWatchService extends JobService {
         JSONArray alerts = root.optJSONArray("lastAlerts");
         if (alerts == null) return;
 
+        persistHistory(prefs, alerts);
+
         Set<String> currentKeys = new HashSet<>();
         for (int i = 0; i < alerts.length(); i++) {
             JSONObject alert = alerts.optJSONObject(i);
@@ -105,6 +109,34 @@ public class HunterWatchService extends JobService {
         if (newest != null && newCount > 0) {
             showNotification(newest, newCount);
         }
+    }
+
+    private void persistHistory(SharedPreferences prefs, JSONArray alerts) {
+        try {
+            LinkedHashMap<String, JSONObject> merged = new LinkedHashMap<>();
+            for (int i = 0; i < alerts.length(); i++) {
+                JSONObject a = alerts.optJSONObject(i);
+                if (a != null) {
+                    String k = keyOf(a);
+                    if (!k.isEmpty()) merged.put(k, a);
+                }
+            }
+            JSONArray old = new JSONArray(prefs.getString("notification_history_json", "[]"));
+            for (int i = 0; i < old.length() && merged.size() < 50; i++) {
+                JSONObject a = old.optJSONObject(i);
+                if (a != null) {
+                    String k = keyOf(a);
+                    if (!k.isEmpty() && !merged.containsKey(k)) merged.put(k, a);
+                }
+            }
+            JSONArray out = new JSONArray();
+            int count = 0;
+            for (Map.Entry<String, JSONObject> e : merged.entrySet()) {
+                if (count++ >= 50) break;
+                out.put(e.getValue());
+            }
+            prefs.edit().putString("notification_history_json", out.toString()).apply();
+        } catch (Exception ignored) {}
     }
 
     private String keyOf(JSONObject alert) {

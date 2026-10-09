@@ -370,7 +370,7 @@ linear-gradient(155deg,#0d1214,#070a0c)}
   .premiumHeroActions{grid-template-columns:1fr 1fr}
 }
 
-/* v0.5.5 — FINAL VISUAL LOCK */
+/* v0.5.6 — FINAL VISUAL LOCK */
 :root{--gold:#d2a744;--gold2:#f5d77f;--panel:#0a0d0f;--line:#333a3f}
 body{background:
 radial-gradient(70% 36% at 50% 0%,#8c65152b 0%,transparent 65%),
@@ -571,7 +571,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
     <div class="card"><div class="k">SECURITY</div><div class="small">No seed phrase storage • No private keys • No automatic claims • No automatic transfers or trades • External link domains are shown before opening.</div></div>
     <div class="sectiontitle">App update</div>
     <div class="card" id="updateCard">
-      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.5.5</div></div><span class="pill gold" id="updateBadge">READY</span></div>
+      <div class="row between"><div><div class="k">CURRENT VERSION</div><div class="v">v0.5.6</div></div><span class="pill gold" id="updateBadge">READY</span></div>
       <div class="small" id="updateText">Signed update channel is active. Future builds install over this app and keep local settings.</div>
       <button class="btn dark" id="updateButton" onclick="checkForUpdate()">CHECK FOR UPDATE</button>
     </div>
@@ -596,7 +596,7 @@ linear-gradient(90deg,#020304b7 0%,transparent 62%)}
 <script>
 const STATUS='https://alalex.app.n8n.cloud/webhook/hunter/status';
 const UPDATE_MANIFEST='https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/update.json';
-const UI_VERSION='0.5.5';
+const UI_VERSION='0.5.6';
 let state={alerts:[],raw:null,filter:'All',scanning:false,scanTimers:[]};
 let selected=null;
 let walletReturnTarget='gate';
@@ -660,15 +660,29 @@ function go(id){
   scrollTo(0,0)
 }
 
+function alertKey(a){return String((a&&a.link)||(a&&a.title)||'').toLowerCase()}
+function readLocalNotificationHistory(){try{return JSON.parse(localStorage.hunterNotificationHistory||'[]')}catch(e){return[]}}
+function readNativeNotificationHistory(){try{return JSON.parse(HunterNative.getNotificationHistory()||'[]')}catch(e){return[]}}
+function notificationItems(){
+  let all=[...(Array.isArray(state.alerts)?state.alerts:[]),...readNativeNotificationHistory(),...readLocalNotificationHistory()];
+  let out=[],seen=new Set();
+  all.forEach(a=>{let k=alertKey(a);if(!k||seen.has(k))return;seen.add(k);out.push(a)});
+  return out.slice(0,50);
+}
+function saveNotificationHistory(arr){
+  let all=[...(Array.isArray(arr)?arr:[]),...readLocalNotificationHistory()],out=[],seen=new Set();
+  all.forEach(a=>{let k=alertKey(a);if(!k||seen.has(k))return;seen.add(k);out.push(a)});
+  localStorage.hunterNotificationHistory=JSON.stringify(out.slice(0,50));
+}
 function openNotifications(){go('notifications')}
 function openNotificationDetail(i){
-  let arr=Array.isArray(state.alerts)?state.alerts:[];
+  let arr=notificationItems();
   selected=arr[i]; if(selected)renderDetail();
 }
 function renderNotifications(){
   let box=document.getElementById('notificationList');
   if(!box)return;
-  let arr=Array.isArray(state.alerts)?state.alerts:[];
+  let arr=notificationItems();
   if(!arr.length){
     box.innerHTML='<div class="card empty"><b>No new alerts</b><span class="small">Hunter will place qualified opportunities here when they appear.</span></div>';
     return;
@@ -738,6 +752,7 @@ async function refreshStatus(showFeedback=true){
     let j=await r.json();
     state.raw=j;
     state.alerts=Array.isArray(j.lastAlerts)?j.lastAlerts:[];
+    saveNotificationHistory(state.alerts);
     let s=j.lastRunSummary||{};
     let rejected=(s.scamRejectedCount||0)+(s.belowThresholdCount||0)+(s.invalidCount||0)+(s.staleCount||0);
 
