@@ -10,36 +10,37 @@
 <title>AURON</title>
 <style>
 :root{
-  --bg:#060606;--panel:#0d0e10;--panel2:#111214;--line:#2d281d;
-  --gold:#d7ad57;--gold2:#ffd985;--gold3:#8f6a28;--txt:#f7f4ee;
-  --muted:#98999d;--green:#16d98b;--red:#ff5454;--blue:#6fa6ff;
+  --bg:#030405;--panel:#090b0d;--panel2:#0e1114;--line:#2a2418;
+  --gold:#d9a947;--gold2:#ffd97a;--gold3:#8a6425;--txt:#f7f4ee;
+  --muted:#8f9399;--green:#00df8b;--red:#ff334e;--blue:#4d7fe8;
+  --radius:20px;--shadow:0 18px 55px #000a;
 }
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#2a1c08 0,transparent 32%),var(--bg);color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -14%,#261804 0,transparent 30%),linear-gradient(180deg,#050505,#020303 45%,#000);color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 body{min-height:100vh;overflow-x:hidden}
 button,input{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-.shell{width:min(100%,760px);margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 14px calc(225px + env(safe-area-inset-bottom))}
+.shell{width:min(100%,760px);margin:auto;min-height:100vh;padding:max(6px,env(safe-area-inset-top)) clamp(10px,2.5vw,18px) calc(170px + env(safe-area-inset-bottom))}
 .screen{display:none;animation:fade .22s ease}.screen.active{display:block}
 @keyframes fade{from{opacity:.45;transform:translateY(6px)}to{opacity:1;transform:none}}
-.glass{background:linear-gradient(145deg,#111214f2,#070809f2);border:1px solid #3a3120;border-radius:24px;box-shadow:0 18px 60px #0009,inset 0 1px #ffffff0a}
-.goldline{border-color:#c28b32;box-shadow:0 0 0 1px #ffcf6d44,0 0 24px #b4772630,0 18px 55px #0009}
-.brand{display:flex;align-items:center;gap:12px}.brandMark{width:48px;height:48px;border-radius:14px;border:1px solid #7a5b23;display:grid;place-items:center;background:linear-gradient(145deg,#221707,#090909);overflow:hidden;box-shadow:0 0 18px #b47a2522}.brandMark img{width:100%;height:100%;display:block}.brandText b{font:600 22px Georgia;color:#f3ca76;letter-spacing:.16em}.brandText small{display:block;color:#b8aa8a;font-size:8px;letter-spacing:.23em;margin-top:2px}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:13px 4px 12px}.iconbtn{width:40px;height:40px;border-radius:14px;border:1px solid #302d26;background:#0c0d0f;color:#eacb84}.title{font:500 31px Georgia;margin:8px 0 4px}.eyebrow{font-size:10px;color:var(--gold);letter-spacing:.18em;font-weight:800}.muted{color:var(--muted)}
+.glass{background:linear-gradient(145deg,#0d1012f5,#060708f5);border:1px solid #25272a;border-radius:var(--radius);box-shadow:var(--shadow),inset 0 1px #ffffff09}
+.goldline{border-color:#8f6727;box-shadow:0 0 0 1px #d9a94726,0 0 24px #a66f1d1f,0 18px 55px #000b}
+.brand{display:flex;align-items:center;gap:10px}.brandMark{width:44px;height:44px;border-radius:14px;border:1px solid #7a5b23;display:grid;place-items:center;background:linear-gradient(145deg,#221707,#090909);overflow:hidden;box-shadow:0 0 18px #b47a2522}.brandMark img{width:100%;height:100%;display:block}.brandText b{font:600 21px Georgia;color:#f3ca76;letter-spacing:.16em}.brandText small{display:block;color:#b8aa8a;font-size:8px;letter-spacing:.23em;margin-top:2px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 2px 11px;position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#050505f7,#050505d8 72%,transparent);backdrop-filter:blur(10px)}.iconbtn{width:40px;height:40px;border-radius:14px;border:1px solid #302d26;background:#0c0d0f;color:#eacb84}.title{font:500 31px Georgia;margin:8px 0 4px}.eyebrow{font-size:10px;color:var(--gold);letter-spacing:.18em;font-weight:800}.muted{color:var(--muted)}
 .btn{border:0;border-radius:15px;padding:14px 16px;font-weight:800;transition:.18s ease}.btn:disabled{cursor:not-allowed;filter:grayscale(1);opacity:.34;box-shadow:none!important;transform:none!important}.btnGold{background:linear-gradient(135deg,#c4933d,#ffd77e,#c58e34);color:#181107;box-shadow:0 9px 30px #a46e2130}.btnDark{background:#111316;color:#e4e4e4;border:1px solid #2c3036}.btnGreen{background:linear-gradient(135deg,#078c55,#19df8f);color:white}.btnRed{background:linear-gradient(135deg,#871b25,#ef334c);color:white}.btnWide{width:100%}
 .row{display:flex;gap:10px}.col{display:grid;gap:10px}
 .kpi{padding:16px}.kpi small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.09em}.kpi strong{display:block;font-size:23px;margin-top:7px}.positive{color:var(--green)}.negative{color:var(--red)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .section{margin-top:12px}.sectionHead{display:flex;align-items:center;justify-content:space-between;margin:0 3px 8px}.sectionHead h2{font:500 21px Georgia;margin:0}.sectionHead button{background:none;border:0;color:var(--gold2)}
-.card{padding:17px}
+.card{padding:clamp(13px,3vw,18px)}
 .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #37332a;border-radius:999px;padding:7px 9px;font-size:11px;color:#d2c8b3}.pill.live{color:var(--green);border-color:#285a43}.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
 .coin{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #1d1f23}.coin:first-child{border-top:0}.coinIcon{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:white;background:#23262a}.coinMeta{flex:1}.coinMeta b{display:block}.coinMeta small{color:var(--muted)}.coinPrice{text-align:right}.coinPrice b,.coinPrice small{display:block}.coinPrice small{margin-top:3px}
-.nav{position:fixed;left:50%;bottom:max(1px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 20px),740px);background:#0c0d0ff5;border:1px solid #27292d;border-radius:24px;display:grid;grid-template-columns:repeat(5,1fr);padding:5px 7px;z-index:30;box-shadow:0 14px 50px #000b}.nav button{border:0;background:transparent;color:#84878d;border-radius:17px;padding:7px 4px;font-size:10px}.nav button span{display:block;font-size:20px;margin-bottom:3px}.nav button.active{background:linear-gradient(145deg,#3a2a10,#15120b);color:#ffd77c}.nav button.center{margin-top:-14px;background:#090807;border:1px solid #a77831;border-radius:50%;aspect-ratio:1;padding:8px;max-width:62px;justify-self:center;box-shadow:0 0 0 5px #070707,0 0 28px #b87a2c44;color:#f5c969;overflow:hidden}.nav button.center img{width:100%;height:100%;object-fit:cover;border-radius:50%;transform:scale(.96)}
+.nav{position:fixed;left:50%;bottom:max(7px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(calc(100% - 18px),740px);background:#090b0df7;border:1px solid #25272b;border-radius:22px;display:grid;grid-template-columns:repeat(5,1fr);padding:5px 7px;z-index:30;box-shadow:0 14px 50px #000b}.nav button{border:0;background:transparent;color:#84878d;border-radius:17px;padding:7px 4px;font-size:10px}.nav button span{display:block;font-size:20px;margin-bottom:3px}.nav button.active{background:linear-gradient(145deg,#3a2a10,#15120b);color:#ffd77c}.nav button.center{margin-top:-14px;background:#090807;border:1px solid #a77831;border-radius:50%;aspect-ratio:1;padding:8px;max-width:62px;justify-self:center;box-shadow:0 0 0 5px #070707,0 0 28px #b87a2c44;color:#f5c969;overflow:hidden}.nav button.center img{width:100%;height:100%;object-fit:cover;border-radius:50%;transform:scale(.96)}
 .loginWrap{min-height:calc(100vh - 28px);display:grid;align-content:center;gap:16px;padding:20px 8px;position:relative}.loginWrap:before{content:"";position:absolute;inset:6% -25% 46%;background:radial-gradient(circle at 50% 35%,#a56e2636,transparent 55%);filter:blur(2px);pointer-events:none}.loginLogo{width:190px;height:190px;border-radius:42px;margin:auto;display:grid;place-items:center;background:#080808;border:1px solid #9b7130;box-shadow:0 0 55px #c1882642,0 22px 80px #000a;overflow:hidden;position:relative}.loginLogo img{width:100%;height:100%;display:block}.loginLogo span{display:none}.loginTitle{text-align:center}.loginTitle h1{font:500 47px Georgia;letter-spacing:.13em;color:#f3ca78;margin:0}.loginTitle p{margin:4px 0;color:#b6ab94;letter-spacing:.23em;font-size:10px}.tag{text-align:center;color:#c89c4f;letter-spacing:.16em;font-size:11px;line-height:1.7}.form{display:grid;gap:10px;margin-top:8px}.field{display:flex;align-items:center;gap:10px;border:1px solid #303137;border-radius:15px;background:#0c0d0f;padding:0 13px}.field input{width:100%;background:none;border:0;outline:0;color:white;padding:15px 2px}.formAux{display:flex;justify-content:space-between;color:#aaa;font-size:12px}.formAux button{background:none;border:0;color:#e0b75d;padding:0}
 .disclaimer{text-align:center;color:#76787c;font-size:10px;line-height:1.5}.disclaimer a{color:#d1a952}
-.hero{padding:18px}.heroTop{display:flex;justify-content:space-between;align-items:flex-start}.heroBal{font-size:38px;font-weight:750;margin:6px 0 4px}.heroChart{height:100px;margin-top:13px;position:relative;overflow:hidden}.heroChart svg{width:100%;height:100%}
-.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick{border:1px solid #6f5426;background:linear-gradient(145deg,#13110c,#090a0c);border-radius:19px;padding:14px 6px;text-align:center;color:#eee;box-shadow:inset 0 1px #ffd77d12,0 8px 24px #0008}.quick b{display:block;font-size:20px;color:#e2b65b;margin-bottom:6px}.quick small{font-size:10px}
+.hero{padding:clamp(15px,3.5vw,20px)}.heroTop{display:flex;justify-content:space-between;align-items:flex-start}.heroBal{font-size:38px;font-weight:750;margin:6px 0 4px}.heroChart{height:100px;margin-top:13px;position:relative;overflow:hidden}.heroChart svg{width:100%;height:100%}
+.quickGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.quick{border:1px solid #5d4725;background:linear-gradient(155deg,#131007,#08090a 68%);border-radius:16px;padding:14px 6px;text-align:center;color:#eee;box-shadow:inset 0 1px #ffd77d10,0 8px 24px #0009}.quick b{display:block;font-size:20px;color:#e2b65b;margin-bottom:6px}.quick small{font-size:10px}
 .insight{display:grid;grid-template-columns:86px 1fr;overflow:hidden}.aiFace{min-height:132px;background:radial-gradient(circle at 50% 45%,#9f6c1f55,#0c0c0d 64%);display:grid;place-items:center;border-right:1px solid #45371f}.aiFace span{font-size:60px;filter:grayscale(1) sepia(1) saturate(2)}.insightBody{padding:14px}.insightBody p{color:#c1c1c3;line-height:1.45;font-size:12px;margin:7px 0 10px}.tags{display:flex;gap:6px;flex-wrap:wrap}.tagPill{border:1px solid #755825;color:#f0c76f;padding:5px 8px;border-radius:999px;font-size:10px}
 .priceHeader{display:flex;align-items:center;gap:12px}.priceHeader .coinIcon{background:#f39a14}.priceHeader .right{margin-left:auto;text-align:right}.priceHeader .right strong{font-size:24px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#25262a;border-radius:16px;overflow:hidden;margin-top:12px}.stat{background:#0c0e10;padding:11px}.stat small{color:#8f9298;font-size:9px}.stat b{display:block;font-size:12px;margin-top:4px}
 .timeframes{display:flex;gap:5px;overflow:auto;padding:10px 0}.timeframes button{flex:0 0 auto;border:1px solid #292c31;background:#0d0f12;color:#aaa;border-radius:10px;padding:9px 12px}.timeframes button.active{background:#d9a84d;color:#111;border-color:#efca76}
@@ -52,14 +53,14 @@ button{cursor:pointer}
 .setting{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid #1d1f22}.setting:first-child{border-top:0}.setting .grow{flex:1}.setting b{display:block}.setting small{color:#8b8e94}.switch{width:43px;height:24px;border-radius:999px;background:#30343a;padding:3px}.switch.on{background:#0d9d65}.switch:after{content:"";display:block;width:18px;height:18px;background:white;border-radius:50%;transform:translateX(0)}.switch.on:after{transform:translateX(19px)}
 .toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,20px);opacity:0;background:#17191d;border:1px solid #353a42;padding:12px 15px;border-radius:999px;z-index:50;transition:.2s;font-size:12px}.toast.show{opacity:1;transform:translate(-50%,0)}
 .modal{position:fixed;inset:0;background:#000c;display:none;align-items:end;z-index:60}.modal.show{display:flex}.sheet{width:min(100%,760px);margin:auto;background:#0c0d0f;border:1px solid #34363a;border-radius:25px 25px 0 0;padding:19px 16px calc(20px + env(safe-area-inset-bottom))}.sheet h3{font:500 25px Georgia;margin:0 0 7px}.sheet p{color:#aaa;font-size:12px;line-height:1.5}
-@media(max-width:560px){.radarItem{padding:10px 8px}.radarItem b{font-size:12px}.radarScore{font-size:18px}.radarLabel{font-size:8px;padding:3px 5px}.brainMini{padding:9px 7px}.quickGrid{grid-template-columns:repeat(4,1fr);gap:6px}.quick{padding:12px 3px;min-height:98px}.quick b{font-size:19px}.quick small{font-size:9px;line-height:1.22}.stats{grid-template-columns:repeat(4,1fr)}.stat{padding:8px 5px}.stat small{font-size:8px}.stat b{font-size:10px}.signalData{grid-template-columns:1fr 1fr}.heroBal{font-size:32px}.loginTitle h1{font-size:40px}.brandText b{font-size:19px}.brandText small{font-size:7px}}
+@media(max-width:560px){.shell{padding-left:10px;padding-right:10px}.topbar{padding-top:7px}.brandText b{font-size:18px}.brandText small{font-size:6.5px}.brandMark{width:40px;height:40px}.iconbtn{width:38px;height:38px}.heroBal{font-size:34px}.title{font-size:27px}.chartBox{height:min(54vw,270px)}.radarItem{padding:10px 8px}.radarItem b{font-size:12px}.radarScore{font-size:18px}.radarLabel{font-size:8px;padding:3px 5px}.brainMini{padding:9px 7px}.quickGrid{grid-template-columns:repeat(4,1fr);gap:6px}.quick{padding:12px 3px;min-height:98px}.quick b{font-size:19px}.quick small{font-size:9px;line-height:1.22}.stats{grid-template-columns:repeat(4,1fr)}.stat{padding:8px 5px}.stat small{font-size:8px}.stat b{font-size:10px}.signalData{grid-template-columns:1fr 1fr}.loginTitle h1{font-size:40px}.radarGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.nav button{font-size:9px}}@media(max-width:390px){.quickGrid{gap:4px}.quick{padding:10px 2px}.quick small{font-size:8px}.radarGrid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.signalData{grid-template-columns:1fr 1fr}.brandText small{display:none}}@media(min-width:561px){.shell{padding-bottom:185px}.chartBox{height:300px}}
 </style>
 </head>
 <body>
 <main class="shell">
 <section id="login" class="screen active">
   <div class="loginWrap">
-    <div class="loginLogo"><img src="icon-exact.jpg" alt="AURON"></div>
+    <div class="loginLogo" style="width:156px;height:156px;border-radius:50%;background:radial-gradient(circle,#2b1c06,#060606 68%);padding:10px"><img src="icon-exact.jpg" alt="AURON" style="border-radius:50%"></div>
     <div class="loginTitle"><h1>AURON</h1><p>SECURE CRYPTO ASSISTANT</p></div>
     <div class="tag">SMART INSIGHTS. YOUR DECISION.<br>REAL OPPORTUNITIES.</div>
     <div class="form">
@@ -81,7 +82,7 @@ button{cursor:pointer}
   </article>
   <section class="section quickGrid">
     <button class="quick" data-go="markets"><b>⌁</b><small>Market Analysis</small></button>
-    <button class="quick" data-go="signal"><b>◎</b><small>AI Insights</small></button>
+    <button class="quick" data-go="signal"><b>◎</b><small>AI Analysis</small></button>
     <button class="quick" data-go="signal"><b>⇄</b><small>Trade Suggestions</small></button>
     <button class="quick" data-go="settings"><b>▣</b><small>Wallet Overview</small></button>
   </section>
@@ -130,16 +131,34 @@ button{cursor:pointer}
     <div class="setting"><span>✓</span><div class="grow"><b>Confirmation Gate</b><small>Required before every trade handoff</small></div><div class="switch on"></div></div>
     <div class="setting"><span>⇧</span><div class="grow"><b>Withdraw / Transfer</b><small>Disabled by design</small></div><div class="switch"></div></div>
     <div class="setting"><span>◉</span><div class="grow"><b>Market Scanner</b><small id="scannerSetting">OKX SPOT · scheduled</small></div><span class="pill live"><i class="dot"></i>ON</span></div><div class="setting"><span>⌁</span><div class="grow"><b>Opportunity Scanner</b><small>Liquidity · momentum · volatility ranking</small></div><span class="pill live"><i class="dot"></i>ON</span></div>
-    <div class="setting"><span>🔔</span><div class="grow"><b>In-app notifications</b><small>Signal and backend status</small></div><div class="switch on"></div></div>
+    <div class="setting"><span>🔔</span><div class="grow"><b>In-app notifications</b><small>Signal and backend status</small></div><div class="switch on"></div></div><div class="setting" data-go="update" style="cursor:pointer"><span>↻</span><div class="grow"><b>App Update</b><small>Check and load latest AURON build</small></div><span>›</span></div>
   </article>
   <button class="btn btnDark btnWide section" id="logout">Log out</button>
 </section>
 
 <section id="profile" class="screen">
   <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>PROFILE</small></div></div><span></span></header>
-  <article class="glass card goldline" style="text-align:center"><div class="loginLogo" style="width:96px;height:96px;border-radius:24px"><img src="icon-exact.jpg" alt="AURON"></div><h2 style="margin-bottom:2px">AURON Trader</h2><div class="muted" id="profileEmail">Local session</div><div class="pill" style="margin-top:12px">v0.9 · PRIVATE BETA</div></article>
+  <article class="glass card goldline" style="text-align:center"><div class="loginLogo" style="width:96px;height:96px;border-radius:24px"><img src="icon-exact.jpg" alt="AURON"></div><h2 style="margin-bottom:2px">AURON Trader</h2><div class="muted" id="profileEmail">Local session</div><div class="pill" style="margin-top:12px">v0.10 · PRIVATE BETA</div></article>
   <section class="section glass card"><div class="setting"><span>♛</span><div class="grow"><b>Plan</b><small>Private beta</small></div><span class="pill">BETA</span></div><div class="setting"><span>?</span><div class="grow"><b>Help & Support</b><small>Product setup in progress</small></div><span>›</span></div><div class="setting"><span>i</span><div class="grow"><b>About AURON</b><small>Secure crypto decision assistant</small></div><span>›</span></div></section>
+  <button class="btn btnGold btnWide section" data-go="update">CHECK FOR UPDATES</button>
 <div style="height:90px"></div></section>
+
+<section id="update" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="profile">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>APP UPDATE</small></div></div><span></span></header>
+  <article class="glass card goldline" style="text-align:center">
+    <div style="font-size:54px;color:var(--gold2);margin:8px 0">↻</div>
+    <h2 class="title" style="font-size:27px;margin-bottom:8px">AURON Update Center</h2>
+    <p class="muted" style="font-size:12px;line-height:1.55">Most interface and logic improvements are delivered automatically. Use this button to force the latest AURON web build without reinstalling the app.</p>
+    <div class="pill" style="margin:10px 0">Current UI: <b style="margin-left:5px">v0.10</b></div>
+    <button class="btn btnGold btnWide" id="checkUpdate">CHECK & UPDATE NOW</button>
+    <div id="updateState" class="muted" style="font-size:11px;margin-top:12px">Ready to check.</div>
+  </article>
+  <section class="section glass card">
+    <div class="setting"><span>✓</span><div class="grow"><b>Responsive UI</b><small>Adapts to phone size and aspect ratio</small></div></div>
+    <div class="setting"><span>✓</span><div class="grow"><b>Live web updates</b><small>No reinstall for most AURON interface changes</small></div></div>
+    <div class="setting"><span>i</span><div class="grow"><b>Native APK changes</b><small>May still require an Android package update</small></div></div>
+  </section>
+</section>
 </main>
 
 <nav id="nav" class="nav hidden">
@@ -156,7 +175,7 @@ button{cursor:pointer}
 const CFG={
   statusUrl:'https://alalex.app.n8n.cloud/webhook/john-v56/status',
   decisionUrl:'https://alalex.app.n8n.cloud/webhook/john-v56/decision',
-  coingecko:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h', radar:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h'
+  coingecko:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h', radar:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h',versionUrl:'./version.json'
 };
 const $=id=>document.getElementById(id);
 let state={
@@ -308,6 +327,27 @@ function renderHistory(){const h=getHistory();$('histSignals').textContent=h.len
 $('clearHistory').onclick=()=>{localStorage.removeItem('auronHistory');renderHistory();toast('Istoric local curățat')};
 $('settingsRefresh').onclick=syncAll;$('marketRefresh').onclick=marketData;
 $('modalClose').onclick=()=>{$('modal').classList.remove('show');show('trade')};$('modalAction').onclick=()=>{if(state.openUrl)location.href=state.openUrl;else $('modal').classList.remove('show')};
+async function forceLatestAuron(){
+  const stateEl=$('updateState'); if(stateEl) stateEl.textContent='Checking latest AURON build…';
+  try{
+    const r=await fetch(CFG.versionUrl+'?t='+Date.now(),{cache:'no-store'});
+    const v=await r.json();
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map(x=>x.unregister()));
+    }
+    if(window.caches){
+      const ks=await caches.keys();
+      await Promise.all(ks.map(k=>caches.delete(k)));
+    }
+    if(stateEl) stateEl.textContent='Latest UI '+(v.version||'')+' loaded. Refreshing…';
+    setTimeout(()=>location.replace('./?updated='+Date.now()+'#update'),500);
+  }catch(e){
+    if(stateEl) stateEl.textContent='Update check failed. Internet connection required.';
+  }
+}
+$('checkUpdate').onclick=forceLatestAuron;
+
 const session=JSON.parse(localStorage.getItem('auronSession')||'null');if(session?.email){$('profileEmail').textContent=session.email;show(location.hash.slice(1)||'home');syncAll()}else show('login');
 if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 setInterval(()=>{if(!$('nav').classList.contains('hidden'))backendStatus()},20000);

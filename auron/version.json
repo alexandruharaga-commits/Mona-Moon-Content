@@ -1,0 +1,9 @@
+{
+  "app": "AURON",
+  "version": "0.10",
+  "nativeVersionCode": 10,
+  "channel": "private-beta",
+  "ui": "approved-black-gold-responsive",
+  "updateMode": "web-first",
+  "published": "2026-10-09"
+}
