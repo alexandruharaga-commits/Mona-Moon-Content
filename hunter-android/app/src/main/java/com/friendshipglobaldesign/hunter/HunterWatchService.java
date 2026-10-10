@@ -167,7 +167,7 @@ public class HunterWatchService extends JobService {
 
         Intent launchIntent = new Intent(this, MainActivity.class);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        launchIntent.putExtra("open_notifications", true);
+        launchIntent.putExtra("open_notifications", true);\n        launchIntent.putExtra("alert_key", keyOf(alert));
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,

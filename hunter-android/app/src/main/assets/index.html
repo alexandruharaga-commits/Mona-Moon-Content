@@ -979,6 +979,14 @@ window.hunterOpenNotificationsFromNative=function(){
     go('notifications');
   }
 }
+window.hunterOpenNotificationFromNative=function(key){
+  if(localStorage.hunterReady!=='1'){showGate();return}
+  bootApp();
+  const wanted=String(key||'').toLowerCase();
+  const arr=notificationItems();
+  selected=arr.find(a=>alertKey(a)===wanted)||null;
+  if(selected){renderDetail()}else{go('notifications')}
+}
 
 function renderAlerts(){
   let on=false,permission=true;

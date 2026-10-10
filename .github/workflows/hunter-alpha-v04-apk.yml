@@ -1,4 +1,4 @@
-name: Build HUNTER ALPHA v0.6.0 Release
+name: Build HUNTER ALPHA v0.6.1 Release
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: HUNTER-ALPHA-v0.6.0-unsigned
+          name: HUNTER-ALPHA-v0.6.1-unsigned
           path: hunter-android/app/build/outputs/apk/release/app-release-unsigned.apk
           if-no-files-found: error
 

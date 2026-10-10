@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 
     private WebView webView;
     private SharedPreferences prefs;
-    private boolean openNotificationsAfterLoad = false;
+    private boolean openNotificationsAfterLoad = false;\n    private String notificationKeyAfterLoad = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,10 +151,23 @@ public class MainActivity extends Activity {
     }
 
     private void dispatchNotificationOpen(){
-        if(openNotificationsAfterLoad&&webView!=null){
-            openNotificationsAfterLoad=false;
-            webView.postDelayed(()->webView.evaluateJavascript("window.hunterOpenNotificationsFromNative&&window.hunterOpenNotificationsFromNative();",null),350);
-        }
+        if(!openNotificationsAfterLoad||webView==null)return;
+        openNotificationsAfterLoad=false;
+        final String key=notificationKeyAfterLoad;
+        notificationKeyAfterLoad="";
+        webView.postDelayed(()->{
+            if(key!=null&&!key.isEmpty()){
+                webView.evaluateJavascript(
+                    "window.hunterOpenNotificationFromNative&&window.hunterOpenNotificationFromNative("+JSONObject.quote(key)+");",
+                    null
+                );
+            }else{
+                webView.evaluateJavascript(
+                    "window.hunterOpenNotificationsFromNative&&window.hunterOpenNotificationsFromNative();",
+                    null
+                );
+            }
+        },350);
     }
 
     @Override protected void onNewIntent(Intent intent){
