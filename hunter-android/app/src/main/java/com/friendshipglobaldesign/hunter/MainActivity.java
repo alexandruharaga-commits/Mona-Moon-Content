@@ -53,7 +53,8 @@ public class MainActivity extends Activity {
 
     private WebView webView;
     private SharedPreferences prefs;
-    private boolean openNotificationsAfterLoad = false;\n    private String notificationKeyAfterLoad = "";
+    private boolean openNotificationsAfterLoad = false;
+    private String notificationKeyAfterLoad = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
