@@ -1,11 +1,11 @@
 package com.auron.assistant;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -13,10 +13,19 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import java.util.concurrent.Executor;
+
+public class MainActivity extends FragmentActivity {
     private static final String HOME =
             "https://alexandruharaga-commits.github.io/Mona-Moon-Content/auron/";
     private WebView webView;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +48,10 @@ public class MainActivity extends Activity {
         settings.setAllowFileAccess(false);
         settings.setAllowContentAccess(false);
         settings.setMediaPlaybackRequiresUserGesture(true);
-        settings.setUserAgentString(settings.getUserAgentString() + " AURON-Android/0.10");
+        settings.setUserAgentString(settings.getUserAgentString() + " AURON-Android/0.11");
 
+        setupBiometrics();
+        webView.addJavascriptInterface(new AuronNativeBridge(), "AuronNative");
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -57,6 +68,71 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) webView.loadUrl(HOME);
         else webView.restoreState(savedInstanceState);
+    }
+
+    private void setupBiometrics() {
+        Executor executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(this, executor,
+                new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        sendBiometricResult(true, "Authenticated");
+                    }
+
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        sendBiometricResult(false, errString == null ? "Authentication cancelled" : errString.toString());
+                    }
+
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        sendBiometricResult(false, "Biometric not recognized");
+                    }
+                });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("AURON")
+                .setSubtitle("Confirm your identity")
+                .setAllowedAuthenticators(
+                        BiometricManager.Authenticators.BIOMETRIC_STRONG |
+                        BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                .setNegativeButtonText("Cancel")
+                .build();
+    }
+
+    private void sendBiometricResult(boolean ok, String message) {
+        if (webView == null) return;
+        String safe = message == null ? "" : message.replace("\\", "\\\\").replace("'", "\\'");
+        webView.post(() -> webView.evaluateJavascript(
+                "window.onAuronBiometric && window.onAuronBiometric(" + ok + ",'" + safe + "')", null));
+    }
+
+    private final class AuronNativeBridge {
+        @JavascriptInterface
+        public boolean canUseBiometrics() {
+            int result = BiometricManager.from(MainActivity.this).canAuthenticate(
+                    BiometricManager.Authenticators.BIOMETRIC_STRONG |
+                    BiometricManager.Authenticators.BIOMETRIC_WEAK);
+            return result == BiometricManager.BIOMETRIC_SUCCESS;
+        }
+
+        @JavascriptInterface
+        public void requestBiometric() {
+            runOnUiThread(() -> {
+                int result = BiometricManager.from(MainActivity.this).canAuthenticate(
+                        BiometricManager.Authenticators.BIOMETRIC_STRONG |
+                        BiometricManager.Authenticators.BIOMETRIC_WEAK);
+                if (result == BiometricManager.BIOMETRIC_SUCCESS) {
+                    biometricPrompt.authenticate(promptInfo);
+                } else {
+                    sendBiometricResult(false, "Biometric authentication is not available on this device");
+                }
+            });
+        }
     }
 
     private boolean handleUrl(Uri uri) {
@@ -88,6 +164,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onBackPressed() {
         if (webView != null && webView.canGoBack()) webView.goBack();
         else super.onBackPressed();
