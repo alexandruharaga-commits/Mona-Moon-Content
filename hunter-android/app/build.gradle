@@ -14,3 +14,4 @@ android {
     debug { minifyEnabled false }
   }
 }
+// Rebuild release with corrected Java newline separators.
