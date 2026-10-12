@@ -1,12 +1,12 @@
 {
-  "version": "0.6.0",
-  "versionCode": 20,
-  "sha256": "32d5b7f4c8eedea5a8d0f4a1db5f8c24b8d1325195a0559718d8b1b3a3fb2a0b",
+  "version": "0.6.1",
+  "versionCode": 21,
+  "sha256": "99601172c236e1674b4feb7aad3409e126556aeda7ee28480010172a39756f08",
   "parts": [
-    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.0.apk.part001.txt",
-    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.0.apk.part002.txt",
-    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.0.apk.part003.txt",
-    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.0.apk.part004.txt"
+    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.1.apk.part001.txt",
+    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.1.apk.part002.txt",
+    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.1.apk.part003.txt",
+    "https://raw.githubusercontent.com/alexandruharaga-commits/Mona-Moon-Content/hunter-alpha-v0.4/hunter-releases/HUNTER-ALPHA-v0.6.1.apk.part004.txt"
   ],
-  "notes": "Final visual lock, robust alerts, durable notification history, biometric local unlock, scan controls, and signed in-app update channel."
+  "notes": "Fix Java compilation errors caused by literal newline separators."
 }
