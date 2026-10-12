@@ -1,9 +1,10 @@
 {
   "app": "AURON",
-  "version": "0.10",
-  "nativeVersionCode": 10,
+  "version": "0.11",
+  "nativeVersionCode": 11,
   "channel": "private-beta",
-  "ui": "approved-black-gold-responsive",
+  "ui": "design-bible-black-gold-v1",
   "updateMode": "web-first",
-  "published": "2026-10-09"
+  "published": "2026-10-11",
+  "graphics": "approved-reference-applied"
 }

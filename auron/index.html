@@ -54,6 +54,215 @@ button{cursor:pointer}
 .toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,20px);opacity:0;background:#17191d;border:1px solid #353a42;padding:12px 15px;border-radius:999px;z-index:50;transition:.2s;font-size:12px}.toast.show{opacity:1;transform:translate(-50%,0)}
 .modal{position:fixed;inset:0;background:#000c;display:none;align-items:end;z-index:60}.modal.show{display:flex}.sheet{width:min(100%,760px);margin:auto;background:#0c0d0f;border:1px solid #34363a;border-radius:25px 25px 0 0;padding:19px 16px calc(20px + env(safe-area-inset-bottom))}.sheet h3{font:500 25px Georgia;margin:0 0 7px}.sheet p{color:#aaa;font-size:12px;line-height:1.5}
 @media(max-width:560px){.shell{padding-left:10px;padding-right:10px}.topbar{padding-top:7px}.brandText b{font-size:18px}.brandText small{font-size:6.5px}.brandMark{width:40px;height:40px}.iconbtn{width:38px;height:38px}.heroBal{font-size:34px}.title{font-size:27px}.chartBox{height:min(54vw,270px)}.radarItem{padding:10px 8px}.radarItem b{font-size:12px}.radarScore{font-size:18px}.radarLabel{font-size:8px;padding:3px 5px}.brainMini{padding:9px 7px}.quickGrid{grid-template-columns:repeat(4,1fr);gap:6px}.quick{padding:12px 3px;min-height:98px}.quick b{font-size:19px}.quick small{font-size:9px;line-height:1.22}.stats{grid-template-columns:repeat(4,1fr)}.stat{padding:8px 5px}.stat small{font-size:8px}.stat b{font-size:10px}.signalData{grid-template-columns:1fr 1fr}.loginTitle h1{font-size:40px}.radarGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.nav button{font-size:9px}}@media(max-width:390px){.quickGrid{gap:4px}.quick{padding:10px 2px}.quick small{font-size:8px}.radarGrid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.signalData{grid-template-columns:1fr 1fr}.brandText small{display:none}}@media(min-width:561px){.shell{padding-bottom:185px}.chartBox{height:300px}}
+
+/* AURON DESIGN BIBLE v0.11 — approved visual system */
+:root{
+  --auron-bg:#020304;
+  --auron-card:#080a0c;
+  --auron-card2:#0c0f12;
+  --auron-gold:#d9ab49;
+  --auron-gold-hi:#f6d77e;
+  --auron-gold-dim:#6c5123;
+  --auron-line:#25272b;
+  --auron-green:#00d88a;
+  --auron-red:#ff4057;
+}
+html,body{
+  background:
+    radial-gradient(circle at 50% -12%,rgba(190,128,35,.16),transparent 28%),
+    linear-gradient(180deg,#050607 0%,#020304 52%,#000 100%) !important;
+}
+body{letter-spacing:.005em}
+.shell{
+  width:min(100%,500px)!important;
+  padding-left:clamp(10px,3.2vw,16px)!important;
+  padding-right:clamp(10px,3.2vw,16px)!important;
+  padding-bottom:calc(150px + env(safe-area-inset-bottom))!important;
+}
+.screen{max-width:500px;margin:0 auto}
+.topbar{
+  min-height:64px;
+  padding:8px 0 10px!important;
+  background:linear-gradient(180deg,rgba(3,4,5,.98),rgba(3,4,5,.9) 72%,rgba(3,4,5,0))!important;
+  border-bottom:0;
+}
+.brand{gap:9px!important}
+.brandMark{
+  width:42px!important;height:42px!important;border-radius:50%!important;
+  border:1px solid rgba(217,171,73,.52)!important;
+  background:#050505!important;
+  box-shadow:0 0 0 3px rgba(217,171,73,.035),0 0 18px rgba(217,171,73,.16)!important;
+}
+.brandMark img{border-radius:50%;object-fit:cover}
+.brandText b{
+  font-family:Georgia,"Times New Roman",serif!important;
+  font-size:20px!important;font-weight:600!important;letter-spacing:.17em!important;
+  color:#f1cb73!important;
+}
+.brandText small{font-size:6.8px!important;letter-spacing:.18em!important;color:#85775d!important}
+.iconbtn{
+  width:38px!important;height:38px!important;border-radius:12px!important;
+  border:1px solid #25282d!important;background:#090b0d!important;color:#caa256!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.025);
+}
+.glass{
+  background:linear-gradient(155deg,rgba(13,16,18,.98),rgba(5,6,7,.98))!important;
+  border:1px solid #22252a!important;border-radius:18px!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.43),inset 0 1px rgba(255,255,255,.025)!important;
+}
+.goldline{
+  border-color:rgba(177,129,44,.62)!important;
+  box-shadow:0 0 0 1px rgba(255,211,113,.05),0 15px 40px rgba(0,0,0,.5)!important;
+}
+.card{padding:14px!important}
+.section{margin-top:10px!important}
+.sectionHead{margin:0 1px 9px!important}
+.sectionHead h2,.title{font-family:Georgia,"Times New Roman",serif!important}
+.sectionHead h2{font-size:20px!important;font-weight:500!important;letter-spacing:.01em}
+.eyebrow{
+  color:#bd9544!important;font-size:9px!important;letter-spacing:.18em!important;font-weight:800!important;
+}
+.pill{
+  border-color:#34312a!important;background:#080a0b!important;color:#c8b78f!important;
+  padding:6px 9px!important;font-size:9.5px!important;
+}
+.pill.live{color:#19df95!important;border-color:#1b553f!important;background:#06110d!important}
+.hero{
+  padding:16px!important;
+  background:
+    radial-gradient(circle at 92% 4%,rgba(218,168,69,.11),transparent 30%),
+    linear-gradient(155deg,#0c0f11,#050607)!important;
+}
+.heroBal{font-size:37px!important;font-weight:720!important;letter-spacing:-.025em}
+.heroChart{height:88px!important;margin-top:10px!important}
+.timeframes{gap:4px!important}
+.timeframes button{
+  min-width:42px;border-radius:9px!important;border-color:#26292e!important;background:#090b0d!important;
+  color:#82868b!important;padding:8px 10px!important;font-size:10px!important;font-weight:700;
+}
+.timeframes button.active{
+  color:#1a1308!important;background:linear-gradient(135deg,#bd8831,#f2d174)!important;
+  border-color:#e3bd67!important;box-shadow:0 5px 16px rgba(191,137,48,.18)
+}
+.quickGrid{gap:6px!important}
+.quick{
+  min-height:92px!important;border-radius:15px!important;
+  border:1px solid rgba(136,101,42,.52)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(213,163,69,.11),transparent 42%),
+    linear-gradient(160deg,#0d0f10,#070809)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.34)!important;
+}
+.quick b{
+  width:34px;height:34px;display:grid!important;place-items:center;margin:0 auto 8px!important;
+  border:1px solid rgba(215,171,79,.42);border-radius:11px;
+  background:#090a0b;color:#e5bd62!important;font-size:18px!important;font-weight:500!important;
+}
+.quick small{font-size:8.7px!important;line-height:1.15!important;color:#d7d3ca!important}
+.radarGrid{grid-template-columns:1fr!important;gap:7px!important}
+.radarItem{
+  display:grid;grid-template-columns:minmax(82px,1fr) auto;align-items:center;column-gap:10px;
+  border-radius:14px!important;border:1px solid #28251e!important;
+  background:linear-gradient(155deg,#0b0d0f,#070809)!important;padding:11px 12px!important;
+}
+.radarItem b{font-size:12px!important}
+.radarScore{grid-column:2;grid-row:1/3;margin:0!important;font-size:21px!important;text-align:right}
+.radarLabel{grid-column:1;justify-self:start;margin-top:6px!important}
+.radarMeta{grid-column:1/3;border-top:1px solid #1e2024;padding-top:7px;margin-top:8px!important}
+.brainStrip{gap:6px!important}
+.brainMini{
+  border-radius:12px!important;border-color:#29251c!important;background:#070809!important;padding:9px!important
+}
+.brainMini b{color:#d9b15c!important}
+.coin{padding:11px 0!important}
+.coinIcon{
+  width:36px!important;height:36px!important;background:#101317!important;border:1px solid #262a30;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.01)
+}
+.insight{grid-template-columns:72px 1fr!important}
+.aiFace{min-height:116px!important;background:radial-gradient(circle,#3b2a0e 0,#0a0b0d 63%)!important}
+.aiFace img{width:58px!important;height:58px!important}
+.insightBody{padding:12px!important}
+.priceHeader .right strong{font-size:22px!important}
+.stats{
+  border-radius:12px!important;background:#24272b!important;margin-top:10px!important
+}
+.stat{background:#090b0d!important;padding:9px 7px!important}
+.chartBox{
+  height:min(64vw,290px)!important;border-radius:15px!important;border-color:#22252a!important;
+  background:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),
+    #06080a!important;
+  background-size:100% 25%,20% 100%,auto!important;
+}
+.rsi{height:78px!important}
+.signalBox h2{font-size:25px!important;letter-spacing:.01em}
+.signalData{gap:6px!important}
+.signalCell{
+  border-radius:11px!important;border-color:#25282d!important;background:#07090a!important;padding:9px!important
+}
+.signalCell b{font-size:12px!important}
+.btn{
+  min-height:45px;border-radius:12px!important;font-size:12px!important;letter-spacing:.02em
+}
+.btnGold{
+  background:linear-gradient(135deg,#a87328,#e0b653 48%,#f0d47d 72%,#a77328)!important;
+  box-shadow:0 8px 20px rgba(173,117,36,.18)!important;
+}
+.btnDark{background:#090b0d!important;border-color:#292c31!important}
+.setting{padding:12px 0!important}
+.setting>b,.setting .grow b{font-size:12px}
+.setting small{font-size:10px;line-height:1.35}
+.nav{
+  width:min(calc(100% - 20px),480px)!important;
+  bottom:max(8px,env(safe-area-inset-bottom))!important;
+  border-radius:20px!important;border:1px solid #26292e!important;
+  background:rgba(8,10,12,.97)!important;padding:5px 6px!important;
+  box-shadow:0 16px 42px rgba(0,0,0,.7)!important;
+}
+.nav button{padding:7px 3px!important;font-size:8.5px!important}
+.nav button span{font-size:18px!important}
+.nav button.active{background:linear-gradient(145deg,#261d0d,#0d0e0f)!important}
+.nav button.center{
+  width:52px!important;max-width:52px!important;margin-top:-12px!important;
+  border-color:#9b7131!important;box-shadow:0 0 0 4px #020304,0 0 22px rgba(207,153,56,.28)!important;
+}
+.loginWrap{gap:13px!important;padding:18px 9px!important}
+.loginLogo{
+  width:132px!important;height:132px!important;padding:8px!important;border-radius:50%!important;
+  border-color:#8d682d!important;background:radial-gradient(circle,#261906,#050505 68%)!important;
+  box-shadow:0 0 42px rgba(195,137,38,.25),0 20px 55px rgba(0,0,0,.65)!important;
+}
+.loginLogo img{border-radius:50%!important}
+.loginTitle h1{font-size:43px!important;letter-spacing:.16em!important}
+.loginTitle p{font-size:8.5px!important;color:#96876a!important}
+.tag{font-size:10px!important;color:#be974e!important}
+.field{
+  height:48px;border-radius:12px!important;border-color:#292c31!important;background:#080a0c!important
+}
+.formAux{font-size:11px!important}
+.notice{border-color:#44351c!important;background:#100d08!important;color:#bca874!important}
+.tradeGrid{gap:7px!important}
+.kpi{padding:12px!important}
+.kpi strong{font-size:20px!important}
+#scanner .grid3 .kpi strong{font-size:16px!important}
+#walletAssets .coin,#watchlistRows .coin{padding:10px 0!important}
+#help .setting span:first-child{
+  width:28px;height:28px;display:grid;place-items:center;border:1px solid #4b3a1d;border-radius:8px;color:#c7a053;font-size:9px
+}
+#update article{text-align:center}
+@media(max-width:390px){
+  .shell{padding-left:9px!important;padding-right:9px!important}
+  .quickGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .quick{min-height:86px!important}
+  .quick b{width:30px;height:30px;font-size:16px!important}
+  .quick small{font-size:7.8px!important}
+  .heroBal{font-size:32px!important}
+  .brandText b{font-size:18px!important}
+  .chartBox{height:58vw!important}
+}
+
 </style>
 </head>
 <body>
@@ -68,6 +277,7 @@ button{cursor:pointer}
       <div class="field"><span>▣</span><input id="password" type="password" autocomplete="current-password" placeholder="Password"></div>
       <div class="formAux"><label><input id="remember" type="checkbox" checked> Remember me</label><button id="forgot">Forgot password?</button></div>
       <button class="btn btnGold btnWide" id="loginBtn">LOG IN →</button>
+      <button class="btn btnDark btnWide" id="biometricBtn">LOGIN WITH BIOMETRICS</button>
       <button class="btn btnDark btnWide" id="demoBtn">ENTER DEMO</button>
       <div class="disclaimer">By continuing, you agree to our <a href="#">Terms</a> & <a href="#">Privacy Policy</a>.<br>Trading involves risk. AURON provides decision support, not guaranteed returns.</div>
     </div>
@@ -82,11 +292,11 @@ button{cursor:pointer}
   </article>
   <section class="section quickGrid">
     <button class="quick" data-go="markets"><b>⌁</b><small>Market Analysis</small></button>
-    <button class="quick" data-go="signal"><b>◎</b><small>AI Analysis</small></button>
+    <button class="quick" data-go="markets"><b>◎</b><small>AI Insights</small></button>
     <button class="quick" data-go="signal"><b>⇄</b><small>Trade Suggestions</small></button>
-    <button class="quick" data-go="settings"><b>▣</b><small>Wallet Overview</small></button>
+    <button class="quick" data-go="wallet"><b>▣</b><small>Wallet Overview</small></button>
   </section>
-  <section class="section glass card goldline"><div class="sectionHead"><h2>Opportunity Radar</h2><span class="pill live"><i class="dot"></i>SCAN</span></div><div class="muted" style="font-size:10px;line-height:1.45;margin-bottom:10px">AURON ranks liquid markets by momentum, volatility and volume after a liquidity filter. Scores measure market activity, not profit certainty.</div><div id="opportunityList" class="radarGrid"></div><div class="brainStrip"><div class="brainMini"><small>Scanner</small><b id="brainScanner">Loading</b></div><div class="brainMini"><small>Risk filter</small><b>Enabled</b></div><div class="brainMini"><small>Execution</small><b>Manual final submit</b></div></div></section>
+  <section class="section glass card goldline"><div class="sectionHead"><h2>Opportunity Radar</h2><span class="pill live"><i class="dot"></i>SCAN</span></div><div class="muted" style="font-size:10px;line-height:1.45;margin-bottom:10px">AURON ranks liquid markets by momentum, volatility and volume after a liquidity filter. Scores measure market activity, not profit certainty.</div><div id="opportunityList" class="radarGrid"></div><button class="btn btnDark btnWide" style="margin-top:10px" data-go="scanner">OPEN OPPORTUNITY SCANNER</button><div class="brainStrip"><div class="brainMini"><small>Scanner</small><b id="brainScanner">Loading</b></div><div class="brainMini"><small>Risk filter</small><b>Enabled</b></div><div class="brainMini"><small>Execution</small><b>Manual final submit</b></div></div></section>
   <section class="section"><div class="sectionHead"><h2>Top Coins</h2><button data-go="markets">See All ›</button></div><div class="glass card" id="coins"></div></section>
   <section class="section glass insight goldline"><div class="aiFace"><img src="icon-exact.jpg" alt="AURON AI" style="width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 0 24px #d69b3b66"></div><div class="insightBody"><div class="monitorStatus"><div class="eyebrow">AURON AI INSIGHT</div><span class="pill live"><i class="dot"></i>LIVE</span></div><p id="homeInsight">Waiting for AURON Brain to surface a valid market setup.</p><div class="tags"><span class="tagPill" id="homePair">Market</span><span class="tagPill">Confirmation required</span></div></div></section>
 </section>
@@ -97,10 +307,47 @@ button{cursor:pointer}
     <div class="priceHeader"><div class="coinIcon">₿</div><div><div class="eyebrow">SELECTED MARKET</div><b id="marketPair">BTC/USDT</b></div><div class="right"><strong id="marketPrice">$—</strong><small id="marketChange" class="muted">Live data</small></div></div>
     <div class="stats"><div class="stat"><small>Scanner</small><b id="scannerState">Standby</b></div><div class="stat"><small>Universe</small><b id="scannerUniverse">0</b></div><div class="stat"><small>Mode</small><b>Spot</b></div><div class="stat"><small>Risk</small><b>5–10 USDT</b></div></div>
   </article>
-  <div class="timeframes"><button>1m</button><button>5m</button><button>15m</button><button>1H</button><button class="active">4H</button><button>1D</button><button>1W</button></div>
-  <div class="chartBox"><svg viewBox="0 0 760 270" preserveAspectRatio="none"><g stroke="#1f2226" stroke-width="1"><path d="M0 45H760M0 90H760M0 135H760M0 180H760M0 225H760"/><path d="M95 0V270M190 0V270M285 0V270M380 0V270M475 0V270M570 0V270M665 0V270"/></g><polyline points="0,216 35,205 68,220 100,194 132,188 165,170 198,178 230,150 260,157 295,133 330,147 365,126 400,137 435,111 470,95 505,108 540,82 575,68 610,77 640,51 675,42 710,58 760,33" fill="none" stroke="#e0b45b" stroke-width="4"/><polyline points="0,230 60,220 120,211 180,202 240,191 300,181 360,173 420,164 480,151 540,139 600,127 660,117 760,100" fill="none" stroke="#5270bd" stroke-width="2"/></svg></div>
-  <div class="chartBox rsi"><svg viewBox="0 0 760 74" preserveAspectRatio="none"><path d="M0 39 L45 48 L90 31 L135 44 L180 29 L225 35 L270 20 L315 41 L360 45 L405 24 L450 30 L495 16 L540 24 L585 12 L630 28 L675 19 L720 36 L760 31" fill="none" stroke="#d6aa4e" stroke-width="3"/></svg></div>
+  <div class="timeframes" id="marketTimeframes"><button data-days="1">1D</button><button data-days="7" class="active">1W</button><button data-days="30">1M</button><button data-days="90">3M</button><button data-days="365">1Y</button><button data-days="max">ALL</button></div>
+  <div class="chartBox" id="marketChart"><div class="muted" style="padding:24px">Loading live chart…</div></div>
+  <div class="chartBox rsi" id="marketRsi"><div class="muted" style="padding:18px">RSI loading…</div></div>
   <section class="section glass card signalBox goldline"><div class="monitorStatus"><div class="eyebrow">AURON ANALYSIS</div><span class="pill live"><i class="dot"></i>LIVE</span></div><h2 id="analysisTitle">WAIT</h2><p id="analysisText">AURON is scanning the market. A trade suggestion appears only when the configured conditions are met.</p><div class="tags"><span class="tagPill">Technical</span><span class="tagPill">Risk gated</span><span class="tagPill">Human approval</span></div><button class="btn btnGold btnWide" style="margin-top:12px" data-go="signal">View Trade Suggestion</button></section>
+</section>
+
+
+<section id="scanner" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>OPPORTUNITY SCANNER</small></div></div><button class="iconbtn" id="scannerRefresh">↻</button></header>
+  <article class="glass card goldline">
+    <div class="monitorStatus"><div><div class="eyebrow">LIVE MARKET DISCOVERY</div><h2 class="title" style="font-size:26px">Opportunity Scanner</h2></div><span class="pill live"><i class="dot"></i>ACTIVE</span></div>
+    <p class="muted" style="font-size:11px;line-height:1.5">Ranks liquid markets using momentum, volatility and volume. Scores describe market activity, not guaranteed profit.</p>
+    <div class="grid3"><div class="kpi glass"><small>Risk</small><strong>Gated</strong></div><div class="kpi glass"><small>Universe</small><strong id="scannerCount">—</strong></div><div class="kpi glass"><small>Mode</small><strong>Spot</strong></div></div>
+    <button class="btn btnGold btnWide" style="margin-top:12px" id="startScan">START SCAN</button>
+  </article>
+  <section class="section glass card"><div class="sectionHead"><h2>Ranked Opportunities</h2><span class="pill">High / Medium / Low</span></div><div id="scannerList" class="radarGrid"></div></section>
+</section>
+
+<section id="wallet" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>WALLET OVERVIEW</small></div></div><button class="iconbtn" id="walletRefresh">↻</button></header>
+  <article class="glass card goldline"><div class="eyebrow">TOTAL BALANCE</div><div class="heroBal" id="walletTotal">$—</div><div id="walletStatus" class="muted">Waiting for OKX account data…</div></article>
+  <section class="section glass card"><div class="sectionHead"><h2>Assets</h2><span class="pill">OKX</span></div><div id="walletAssets"><div class="muted">No live balances yet.</div></div></section>
+  <button class="btn btnDark btnWide section" data-go="watchlist">OPEN WATCHLIST</button>
+</section>
+
+<section id="watchlist" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="wallet">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>WATCHLIST</small></div></div><button class="iconbtn" id="watchlistRefresh">↻</button></header>
+  <article class="glass card goldline"><div class="sectionHead"><h2>Your Markets</h2><span class="pill">Tap ☆ / ★</span></div><div id="watchlistRows"></div></article>
+</section>
+
+<section id="help" class="screen">
+  <header class="topbar"><button class="iconbtn" data-go="profile">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>GUIDE & HELP</small></div></div><span></span></header>
+  <article class="glass card goldline"><div class="eyebrow">FIRST 5 MINUTES</div><h2 class="title" style="font-size:26px">Start with AURON</h2><p class="muted" style="line-height:1.55">1. Connect/check OKX. 2. Add markets to Watchlist. 3. Run Opportunity Scanner. 4. Review AURON Analysis. 5. Approve or reject a suggestion. Final trade submission remains in OKX.</p></article>
+  <section class="section glass card">
+    <div class="setting"><span>01</span><div class="grow"><b>How AURON Works</b><small>Decision support with human approval</small></div></div>
+    <div class="setting"><span>02</span><div class="grow"><b>Opportunity Scanner</b><small>Momentum · volatility · volume</small></div></div>
+    <div class="setting"><span>03</span><div class="grow"><b>Trade Suggestions</b><small>Entry · target · stop loss · confidence</small></div></div>
+    <div class="setting"><span>04</span><div class="grow"><b>Wallet & OKX</b><small>Read account data and hand off approved trades</small></div></div>
+    <div class="setting"><span>05</span><div class="grow"><b>Security & Biometrics</b><small>Biometrics become available after initial sign-in</small></div></div>
+    <div class="setting"><span>06</span><div class="grow"><b>Updates</b><small>Check the latest AURON version from Settings</small></div></div>
+  </section>
 </section>
 
 <section id="signal" class="screen">
@@ -131,15 +378,17 @@ button{cursor:pointer}
     <div class="setting"><span>✓</span><div class="grow"><b>Confirmation Gate</b><small>Required before every trade handoff</small></div><div class="switch on"></div></div>
     <div class="setting"><span>⇧</span><div class="grow"><b>Withdraw / Transfer</b><small>Disabled by design</small></div><div class="switch"></div></div>
     <div class="setting"><span>◉</span><div class="grow"><b>Market Scanner</b><small id="scannerSetting">OKX SPOT · scheduled</small></div><span class="pill live"><i class="dot"></i>ON</span></div><div class="setting"><span>⌁</span><div class="grow"><b>Opportunity Scanner</b><small>Liquidity · momentum · volatility ranking</small></div><span class="pill live"><i class="dot"></i>ON</span></div>
-    <div class="setting"><span>🔔</span><div class="grow"><b>In-app notifications</b><small>Signal and backend status</small></div><div class="switch on"></div></div><div class="setting" data-go="update" style="cursor:pointer"><span>↻</span><div class="grow"><b>App Update</b><small>Check and load latest AURON build</small></div><span>›</span></div>
+    <div class="setting"><span>🔔</span><div class="grow"><b>In-app notifications</b><small>Signal and backend status</small></div><div class="switch on"></div></div><div class="setting" data-go="wallet" style="cursor:pointer"><span>▣</span><div class="grow"><b>Wallet Overview</b><small>Live OKX balances and assets</small></div><span>›</span></div>
+    <div class="setting" data-go="watchlist" style="cursor:pointer"><span>★</span><div class="grow"><b>Watchlist</b><small>Your tracked markets and quick analysis</small></div><span>›</span></div>
+    <div class="setting" data-go="update" style="cursor:pointer"><span>↻</span><div class="grow"><b>App Update</b><small>Check and load latest AURON build</small></div><span>›</span></div>
   </article>
   <button class="btn btnDark btnWide section" id="logout">Log out</button>
 </section>
 
 <section id="profile" class="screen">
   <header class="topbar"><button class="iconbtn" data-go="home">‹</button><div class="brand"><div class="brandMark"><img src="icon-exact.jpg" alt=""></div><div class="brandText"><b>AURON</b><small>PROFILE</small></div></div><span></span></header>
-  <article class="glass card goldline" style="text-align:center"><div class="loginLogo" style="width:96px;height:96px;border-radius:24px"><img src="icon-exact.jpg" alt="AURON"></div><h2 style="margin-bottom:2px">AURON Trader</h2><div class="muted" id="profileEmail">Local session</div><div class="pill" style="margin-top:12px">v0.10 · PRIVATE BETA</div></article>
-  <section class="section glass card"><div class="setting"><span>♛</span><div class="grow"><b>Plan</b><small>Private beta</small></div><span class="pill">BETA</span></div><div class="setting"><span>?</span><div class="grow"><b>Help & Support</b><small>Product setup in progress</small></div><span>›</span></div><div class="setting"><span>i</span><div class="grow"><b>About AURON</b><small>Secure crypto decision assistant</small></div><span>›</span></div></section>
+  <article class="glass card goldline" style="text-align:center"><div class="loginLogo" style="width:96px;height:96px;border-radius:24px"><img src="icon-exact.jpg" alt="AURON"></div><h2 style="margin-bottom:2px">AURON Trader</h2><div class="muted" id="profileEmail">Local session</div><div class="pill" style="margin-top:12px">v0.11 · PRIVATE BETA</div></article>
+  <section class="section glass card"><div class="setting"><span>♛</span><div class="grow"><b>Plan</b><small>Private beta</small></div><span class="pill">BETA</span></div><div class="setting" data-go="help" style="cursor:pointer"><span>?</span><div class="grow"><b>Help & Support</b><small>Guide, security and product help</small></div><span>›</span></div><div class="setting"><span>i</span><div class="grow"><b>About AURON</b><small>Secure crypto decision assistant · human approval required</small></div><span>›</span></div></section>
   <button class="btn btnGold btnWide section" data-go="update">CHECK FOR UPDATES</button>
 <div style="height:90px"></div></section>
 
@@ -149,7 +398,7 @@ button{cursor:pointer}
     <div style="font-size:54px;color:var(--gold2);margin:8px 0">↻</div>
     <h2 class="title" style="font-size:27px;margin-bottom:8px">AURON Update Center</h2>
     <p class="muted" style="font-size:12px;line-height:1.55">Most interface and logic improvements are delivered automatically. Use this button to force the latest AURON web build without reinstalling the app.</p>
-    <div class="pill" style="margin:10px 0">Current UI: <b style="margin-left:5px">v0.10</b></div>
+    <div class="pill" style="margin:10px 0">Current UI: <b style="margin-left:5px">v0.11</b></div>
     <button class="btn btnGold btnWide" id="checkUpdate">CHECK & UPDATE NOW</button>
     <div id="updateState" class="muted" style="font-size:11px;margin-top:12px">Ready to check.</div>
   </article>
@@ -166,7 +415,7 @@ button{cursor:pointer}
   <button data-go="markets"><span>⌁</span>Markets</button>
   <button data-go="signal" class="center"><img src="icon-exact.jpg" alt="AURON"></button>
   <button data-go="trade"><span>⇄</span>Trades</button>
-  <button data-go="profile"><span>◯</span>Profile</button>
+  <button data-go="wallet"><span>▣</span>Wallet</button>
 </nav>
 <div id="toast" class="toast"></div>
 <div id="modal" class="modal"><div class="sheet"><h3 id="modalTitle">AURON</h3><p id="modalText"></p><div class="actions2"><button class="btn btnDark" id="modalClose">Close</button><button class="btn btnGold" id="modalAction">Continue</button></div></div></div>
@@ -177,6 +426,7 @@ const CFG={
   decisionUrl:'https://alalex.app.n8n.cloud/webhook/john-v56/decision',
   coingecko:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin&order=market_cap_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h', radar:'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=volume_desc&per_page=20&page=1&sparkline=true&price_change_percentage=24h',versionUrl:'./version.json'
 };
+const MARKET_CHART=days=>'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days='+days;
 const $=id=>document.getElementById(id);
 let state={
   status:null,
@@ -203,6 +453,18 @@ function login(){
   setSession(email);
 }
 $('loginBtn').onclick=login;
+function biometricAvailable(){return !!(window.AuronNative&&typeof window.AuronNative.requestBiometric==='function')}
+function biometricLogin(){
+  const saved=JSON.parse(localStorage.getItem('auronSession')||'null');
+  if(!saved?.email){toast('Biometria se activează după primul login reușit.');return}
+  if(!biometricAvailable()){toast('Autentificarea biometrică este disponibilă în aplicația Android AURON.');return}
+  window.AuronNative.requestBiometric();
+}
+window.onAuronBiometric=function(ok,msg){
+  if(ok){const saved=JSON.parse(localStorage.getItem('auronSession')||'null');if(saved?.email)setSession(saved.email)}
+  else toast(msg||'Autentificarea biometrică nu a reușit.');
+};
+$('biometricBtn').onclick=biometricLogin;
 $('demoBtn').onclick=()=>setSession('demo@auron.app');
 $('forgot').onclick=()=>toast('Resetarea parolei va fi conectată în modulul Auth.');
 $('logout').onclick=()=>{localStorage.removeItem('auronSession');show('login')};
@@ -241,13 +503,46 @@ function renderRadar(rows){
   const maxVol=Math.max(1,...liquid.map(d=>Number(d.total_volume||0)));
   const ranked=liquid.map(d=>({...d,_score:opportunityScore(d,maxVol)}))
     .sort((a,b)=>b._score-a._score).slice(0,3);
-  $('opportunityList').innerHTML=ranked.length?ranked.map(d=>{
+  const radarHtml=ranked.length?ranked.map(d=>{
     const ch=Number(d.price_change_percentage_24h||0);
     const band=opportunityBand(d._score);
     const dir=ch>=0?'Momentum ↑':'Momentum ↓';
     return '<div class="radarItem"><b>'+String(d.symbol||'').toUpperCase()+'/USD</b><small>'+dir+'</small><div class="radarScore">'+d._score+'<span style="font-size:10px;color:#8c8e94"> / 100</span></div><span class="radarLabel '+band.cls+'">'+band.label+' ACTIVITY</span><div class="radarMeta"><span>24h '+(ch>=0?'+':'')+ch.toFixed(1)+'%</span><span>Vol '+(Number(d.total_volume)/1e9).toFixed(1)+'B</span></div></div>';
   }).join(''):'<div class="muted">No liquid market currently passes the scanner filters.</div>';
+  $('opportunityList').innerHTML=radarHtml;
+  if($('scannerList'))$('scannerList').innerHTML=radarHtml;
+  if($('scannerCount'))$('scannerCount').textContent=liquid.length;
   $('brainScanner').textContent=ranked.length?liquid.length+' liquid markets':'Waiting';
+}
+function rsi14(values){
+  const v=(values||[]).map(Number).filter(Number.isFinite); if(v.length<15)return null;
+  let gains=0,losses=0; for(let i=v.length-14;i<v.length;i++){const d=v[i]-v[i-1];if(d>=0)gains+=d;else losses-=d}
+  if(losses===0)return 100; const rs=(gains/14)/(losses/14); return 100-(100/(1+rs));
+}
+async function loadMarketChart(days='7'){
+  const box=$('marketChart'),rsiBox=$('marketRsi'); if(!box||!rsiBox)return;
+  box.innerHTML='<div class="muted" style="padding:24px">Loading live chart…</div>';
+  try{
+    const r=await fetch(MARKET_CHART(days),{cache:'no-store'}); if(!r.ok)throw new Error('chart');
+    const d=await r.json(); const values=(d.prices||[]).map(x=>Number(x[1])).filter(Number.isFinite);
+    box.innerHTML=sparkSvg(values,'#e8bd63');
+    const rsi=rsi14(values); rsiBox.innerHTML='<div style="padding:18px"><div class="eyebrow">RSI (14)</div><strong style="font-size:26px;color:'+(rsi!=null&&rsi>=70?'var(--red)':rsi!=null&&rsi<=30?'var(--green)':'var(--gold2)')+'">'+(rsi==null?'—':rsi.toFixed(1))+'</strong></div>';
+  }catch(e){box.innerHTML='<div class="muted" style="padding:24px">Live chart unavailable.</div>';rsiBox.innerHTML='<div class="muted" style="padding:18px">RSI unavailable.</div>'}
+}
+function renderWallet(){
+  const a=state.status?.account||{};
+  $('walletTotal').textContent=a.ok?(a.totalEq?money(a.totalEq):((a.balance??'—')+' '+(a.currency||'USDT'))):'$—';
+  $('walletStatus').textContent=a.ok?'OKX account data connected':'OKX account read unavailable';
+  const balances=Array.isArray(a.balances)?a.balances:[];
+  $('walletAssets').innerHTML=balances.length?balances.slice(0,12).map(x=>'<div class="coin"><div class="coinIcon">'+String(x.ccy||x.symbol||'?').slice(0,1)+'</div><div class="coinMeta"><b>'+String(x.ccy||x.symbol||'Asset')+'</b><small>Available '+fmt(x.availBal??x.available??x.balance)+'</small></div><div class="coinPrice"><b>'+fmt(x.eq??x.balance)+'</b><small class="muted">live</small></div></div>').join(''):'<div class="muted">No individual asset balances returned by the current backend.</div>';
+}
+function getWatchlist(){try{return JSON.parse(localStorage.getItem('auronWatchlist')||'["bitcoin","ethereum","solana"]')}catch(e){return['bitcoin','ethereum','solana']}}
+function renderWatchlist(){
+  const ids=getWatchlist(),rows=state.market||[];
+  $('watchlistRows').innerHTML=rows.length?rows.map(d=>{const on=ids.includes(d.id),ch=Number(d.price_change_percentage_24h||0);return '<div class="coin" data-market="'+d.id+'"><button class="iconbtn watchToggle" data-id="'+d.id+'" style="width:34px;height:34px">'+(on?'★':'☆')+'</button><div class="coinMeta"><b>'+String(d.symbol||'').toUpperCase()+'</b><small>'+d.name+'</small></div><div class="coinPrice"><b>'+money(d.current_price)+'</b><small class="'+(ch>=0?'positive':'negative')+'">'+(ch>=0?'+':'')+ch.toFixed(2)+'%</small></div></div>'}).join(''):'<div class="muted">Market feed unavailable.</div>';
+}
+function toggleWatch(id){
+  let x=getWatchlist(); x=x.includes(id)?x.filter(v=>v!==id):[...x,id]; localStorage.setItem('auronWatchlist',JSON.stringify(x));renderWatchlist();
 }
 async function marketData(){
   try{
@@ -257,6 +552,7 @@ async function marketData(){
     const btc=rows.find(x=>x.id==='bitcoin')||{};$('marketPrice').textContent=money(btc.current_price);const ch=Number(btc.price_change_percentage_24h||0);$('marketChange').textContent=(ch>=0?'+':'')+ch.toFixed(2)+'% (24h)';$('marketChange').className=ch>=0?'positive':'negative';
     $('portfolioChart').innerHTML=sparkSvg(btc.sparkline_in_7d?.price||[], '#e8bd63');
     if(rr.ok)renderRadar(await rr.json()); else renderRadar(rows);
+    renderWatchlist(); renderWallet(); loadMarketChart(document.querySelector('#marketTimeframes button.active')?.dataset.days||'7');
   }catch(e){
     if(!$('coins').children.length)renderCoins([]);$('marketChange').textContent='Public price feed unavailable';$('marketChange').className='muted';$('portfolioChart').innerHTML='<div class="muted" style="padding-top:34px;font-size:11px">Live chart unavailable</div>';renderRadar([]);
   }
@@ -279,6 +575,7 @@ function renderStatus(d){
   $('okxState').textContent=a.ok?'Authorized read-only account connection':(a.message||'Unavailable');$('okxBadge').textContent=a.ok?'AUTHORIZED':'OFFLINE';$('okxBadge').className=a.ok?'pill live':'pill';
   if(m.pair)$('marketPair').textContent=String(m.pair).replace('-','/');
   renderProposal(d?.proposal||d?.tradeProposal||d?.pendingTrade);
+  renderWallet();
 }
 async function backendStatus(){
   try{const r=await fetch(CFG.statusUrl,{cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d?.message||'Backend');renderStatus(d)}
@@ -325,7 +622,12 @@ function getHistory(){try{return JSON.parse(localStorage.getItem('auronHistory')
 function pushHistory(x){const h=getHistory();h.unshift(x);localStorage.setItem('auronHistory',JSON.stringify(h.slice(0,100)));renderHistory()}
 function renderHistory(){const h=getHistory();$('histSignals').textContent=h.length;$('histApproved').textContent=h.filter(x=>x.decision==='approve').length;$('histRejected').textContent=h.filter(x=>x.decision==='reject').length;$('historyList').innerHTML=h.length?h.map(x=>'<div class="historyItem"><div class="coinIcon">'+(x.decision==='approve'?'✓':'×')+'</div><div><b>'+String(x.pair||'Signal').replace('-','/')+'</b><small>'+new Date(x.at).toLocaleString()+' · '+x.status+'</small></div><div class="amount '+(x.decision==='approve'?'positive':'negative')+'">'+x.decision.toUpperCase()+'<small>'+(x.amount?x.amount+' USDT':'')+'</small></div></div>').join(''):'<div class="muted">No AURON decisions stored on this device yet.</div>'}
 $('clearHistory').onclick=()=>{localStorage.removeItem('auronHistory');renderHistory();toast('Istoric local curățat')};
-$('settingsRefresh').onclick=syncAll;$('marketRefresh').onclick=marketData;
+$('settingsRefresh').onclick=syncAll;$('marketRefresh').onclick=()=>{marketData();loadMarketChart(document.querySelector('#marketTimeframes button.active')?.dataset.days||'7')};
+$('scannerRefresh').onclick=marketData;$('startScan').onclick=()=>{toast('AURON scan pornit');marketData()};
+$('walletRefresh').onclick=syncAll;$('watchlistRefresh').onclick=marketData;
+$('watchlistRows').addEventListener('click',e=>{const b=e.target.closest('.watchToggle');if(b){toggleWatch(b.dataset.id);e.stopPropagation();return}const row=e.target.closest('[data-market]');if(row){show('markets')}});
+$('marketTimeframes').addEventListener('click',e=>{const b=e.target.closest('button[data-days]');if(!b)return;document.querySelectorAll('#marketTimeframes button').forEach(x=>x.classList.toggle('active',x===b));loadMarketChart(b.dataset.days)});
+
 $('modalClose').onclick=()=>{$('modal').classList.remove('show');show('trade')};$('modalAction').onclick=()=>{if(state.openUrl)location.href=state.openUrl;else $('modal').classList.remove('show')};
 async function forceLatestAuron(){
   const stateEl=$('updateState'); if(stateEl) stateEl.textContent='Checking latest AURON build…';
